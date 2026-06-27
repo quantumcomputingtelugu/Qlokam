@@ -54,7 +54,9 @@ export default function Navigation() {
       </div>
       <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
         <Link href="/tutorials" className="nav-link" style={{ fontWeight: 500, color: pathname === '/tutorials' ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Tutorials</Link>
-        <Link href="/arena" className="nav-link" style={{ fontWeight: 500, color: pathname?.startsWith('/arena') ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Arena</Link>
+        {user && (
+          <Link href="/arena" className="nav-link" style={{ fontWeight: 500, color: pathname?.startsWith('/arena') ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Arena</Link>
+        )}
         <Link href="/playground" className="nav-link" style={{ fontWeight: 500, color: pathname === '/playground' ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Playground</Link>
         
         {!loading && (
