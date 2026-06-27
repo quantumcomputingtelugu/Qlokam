@@ -12,6 +12,10 @@ export default function Navigation() {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
@@ -20,6 +24,7 @@ export default function Navigation() {
   }, []);
 
   const handleSignIn = async () => {
+    if (!auth) return;
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (error) {
@@ -28,6 +33,7 @@ export default function Navigation() {
   };
 
   const handleSignOut = async () => {
+    if (!auth) return;
     try {
       await signOut(auth);
     } catch (error) {

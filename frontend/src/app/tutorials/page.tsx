@@ -79,6 +79,10 @@ export default function TutorialsPage() {
   ];
 
   useEffect(() => {
+    if (!auth) {
+      setLoadingUser(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
@@ -101,7 +105,7 @@ export default function TutorialsPage() {
   }, []);
 
   const handleMarkComplete = async () => {
-    if (!user || completedTutorials.includes(activeTutorialId)) return;
+    if (!user || !db || completedTutorials.includes(activeTutorialId)) return;
     setSaving(true);
     const newCompleted = [...completedTutorials, activeTutorialId];
     try {
