@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Editor from '@monaco-editor/react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,7 +15,6 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const NUM_QUBITS = 12;
 const NUM_STEPS = 20;
 const GATES = ['H', 'X', 'Y', 'Z', 'CX'];
 
@@ -26,8 +26,10 @@ export default function VisualPlayground() {
   const [probabilities, setProbabilities] = useState<Record<string, number>>({});
   const [isExecuting, setIsExecuting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-
-  const [generatedCode, setGeneratedCode] = useState('');
+  
+  const [code, setCode] = useState('');
+  const [isTyping, setIsTyping] = useState(false); // Source of truth flag
+  const typeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const addQubit = () => {
     if (numQubits >= 16) {
@@ -36,6 +38,7 @@ export default function VisualPlayground() {
     }
     setNumQubits(prev => prev + 1);
     setGrid(prev => [...prev, Array(NUM_STEPS).fill('')]);
+    setIsTyping(false); // Let grid update the code
   };
 
   const handleDragStart = (e: React.DragEvent, gate: string) => {
@@ -48,56 +51,147 @@ export default function VisualPlayground() {
     const gate = e.dataTransfer.getData('gate');
     if (!gate) return;
 
-    const newGrid = [...grid];
-    newGrid[qIdx] = [...newGrid[qIdx]];
-    
-    if (gate === 'CX' && qIdx === numQubits - 1) {
+    if (gate === 'CX' && qIdx >= numQubits - 1) {
       alert("Cannot place CNOT control on the last qubit (needs a target below it).");
       return;
     }
     
-    newGrid[qIdx][sIdx] = gate;
-    setGrid(newGrid);
+    setIsTyping(false); // User interacted with grid, grid is source of truth
+    setGrid(prevGrid => {
+      const newGrid = [...prevGrid];
+      newGrid[qIdx] = [...newGrid[qIdx]];
+      newGrid[qIdx][sIdx] = gate;
+      return newGrid;
+    });
   };
 
   const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); };
 
   const removeGate = (qIdx: number, sIdx: number) => {
-    const newGrid = [...grid];
-    newGrid[qIdx] = [...newGrid[qIdx]];
-    newGrid[qIdx][sIdx] = '';
-    setGrid(newGrid);
+    setIsTyping(false);
+    setGrid(prevGrid => {
+      const newGrid = [...prevGrid];
+      newGrid[qIdx] = [...newGrid[qIdx]];
+      newGrid[qIdx][sIdx] = '';
+      return newGrid;
+    });
   };
 
+  // 1. Grid -> Code (When isTyping is false)
   useEffect(() => {
-    const runCircuit = async () => {
-      setIsExecuting(true);
-      setErrorMsg('');
-      
-      let pythonCode = '';
-      let displayCode = '';
+    if (isTyping) return; // Ignore grid changes if they were caused by typing
 
-      if (language === 'qiskit') {
-        pythonCode = `
-from qiskit import QuantumCircuit
-from qiskit.quantum_info import Statevector
-import json
-
-qc = QuantumCircuit(${numQubits})
-`;
-        displayCode = `from qiskit import QuantumCircuit\n\nqc = QuantumCircuit(${numQubits})\n`;
-
-        for (let sIdx = 0; sIdx < NUM_STEPS; sIdx++) {
-          for (let qIdx = 0; qIdx < numQubits; qIdx++) {
-            const gate = grid[qIdx][sIdx];
-            if (gate === 'H') { pythonCode += `qc.h(${qIdx})\n`; displayCode += `qc.h(${qIdx})\n`; }
-            else if (gate === 'X') { pythonCode += `qc.x(${qIdx})\n`; displayCode += `qc.x(${qIdx})\n`; }
-            else if (gate === 'Y') { pythonCode += `qc.y(${qIdx})\n`; displayCode += `qc.y(${qIdx})\n`; }
-            else if (gate === 'Z') { pythonCode += `qc.z(${qIdx})\n`; displayCode += `qc.z(${qIdx})\n`; }
-            else if (gate === 'CX') { pythonCode += `qc.cx(${qIdx}, ${qIdx + 1})\n`; displayCode += `qc.cx(${qIdx}, ${qIdx + 1})\n`; }
-          }
+    let displayCode = '';
+    if (language === 'qiskit') {
+      displayCode = `from qiskit import QuantumCircuit\n\nqc = QuantumCircuit(${numQubits})\n`;
+      for (let sIdx = 0; sIdx < NUM_STEPS; sIdx++) {
+        for (let qIdx = 0; qIdx < numQubits; qIdx++) {
+          const gate = grid[qIdx][sIdx];
+          if (gate === 'H') displayCode += `qc.h(${qIdx})\n`;
+          else if (gate === 'X') displayCode += `qc.x(${qIdx})\n`;
+          else if (gate === 'Y') displayCode += `qc.y(${qIdx})\n`;
+          else if (gate === 'Z') displayCode += `qc.z(${qIdx})\n`;
+          else if (gate === 'CX') displayCode += `qc.cx(${qIdx}, ${qIdx + 1})\n`;
         }
-        pythonCode += `
+      }
+    } else if (language === 'cirq') {
+      displayCode = `import cirq\n\nqubits = [cirq.LineQubit(i) for i in range(${numQubits})]\ncircuit = cirq.Circuit()\n`;
+      for (let sIdx = 0; sIdx < NUM_STEPS; sIdx++) {
+        for (let qIdx = 0; qIdx < numQubits; qIdx++) {
+          const gate = grid[qIdx][sIdx];
+          if (gate === 'H') displayCode += `circuit.append(cirq.H(qubits[${qIdx}]))\n`;
+          else if (gate === 'X') displayCode += `circuit.append(cirq.X(qubits[${qIdx}]))\n`;
+          else if (gate === 'Y') displayCode += `circuit.append(cirq.Y(qubits[${qIdx}]))\n`;
+          else if (gate === 'Z') displayCode += `circuit.append(cirq.Z(qubits[${qIdx}]))\n`;
+          else if (gate === 'CX') displayCode += `circuit.append(cirq.CNOT(qubits[${qIdx}], qubits[${qIdx + 1}]))\n`;
+        }
+      }
+    }
+    setCode(displayCode);
+  }, [grid, language, numQubits, isTyping]);
+
+  // 2. Code -> Grid (Parser)
+  const handleCodeChange = (newCode: string | undefined) => {
+    if (newCode === undefined) return;
+    setCode(newCode);
+    setIsTyping(true);
+
+    if (typeTimeoutRef.current) clearTimeout(typeTimeoutRef.current);
+    
+    // Debounce grid rebuild slightly
+    typeTimeoutRef.current = setTimeout(() => {
+       const operations: { gate: string, q?: number, c?: number, t?: number }[] = [];
+       let newNumQ = numQubits;
+       const lines = newCode.split('\n');
+       
+       for (const line of lines) {
+         const l = line.trim();
+         if (language === 'qiskit') {
+            const qcMatch = l.match(/qc\s*=\s*QuantumCircuit\((\d+)\)/);
+            if (qcMatch) newNumQ = parseInt(qcMatch[1], 10);
+            
+            const singleGateMatch = l.match(/qc\.(h|x|y|z)\s*\(\s*(\d+)\s*\)/);
+            if (singleGateMatch) operations.push({ gate: singleGateMatch[1].toUpperCase(), q: parseInt(singleGateMatch[2], 10) });
+            
+            const cxMatch = l.match(/qc\.cx\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)/);
+            if (cxMatch) operations.push({ gate: 'CX', c: parseInt(cxMatch[1], 10), t: parseInt(cxMatch[2], 10) });
+         } else {
+            const qMatch = l.match(/range\((\d+)\)/);
+            if (qMatch) newNumQ = parseInt(qMatch[1], 10);
+            
+            const singleGateMatch = l.match(/cirq\.(H|X|Y|Z)\(qubits\[(\d+)\]\)/);
+            if (singleGateMatch) operations.push({ gate: singleGateMatch[1].toUpperCase(), q: parseInt(singleGateMatch[2], 10) });
+            
+            const cxMatch = l.match(/cirq\.CNOT\(qubits\[(\d+)\],\s*qubits\[(\d+)\]\)/);
+            if (cxMatch) operations.push({ gate: 'CX', c: parseInt(cxMatch[1], 10), t: parseInt(cxMatch[2], 10) });
+         }
+       }
+
+       if (newNumQ !== numQubits && newNumQ > 0 && newNumQ <= 16) {
+           setNumQubits(newNumQ);
+       }
+
+       // Rebuild Grid
+       const newGrid = Array(newNumQ).fill([]).map(() => Array(NUM_STEPS).fill(''));
+       const nextFreeStep = Array(newNumQ).fill(0);
+       
+       for (const op of operations) {
+         if (op.gate !== 'CX' && op.q !== undefined) {
+           const q = op.q;
+           if (q >= newNumQ) continue;
+           const step = nextFreeStep[q];
+           if (step < NUM_STEPS) {
+             newGrid[q][step] = op.gate;
+             nextFreeStep[q]++;
+           }
+         } else if (op.gate === 'CX' && op.c !== undefined && op.t !== undefined) {
+           const c = op.c;
+           const t = op.t;
+           if (c >= newNumQ || t >= newNumQ) continue;
+           if (t !== c + 1) continue; // Only visual support for adjacent CNOT right now
+           const step = Math.max(nextFreeStep[c], nextFreeStep[t]);
+           if (step < NUM_STEPS) {
+             newGrid[c][step] = 'CX';
+             nextFreeStep[c] = step + 1;
+             nextFreeStep[t] = step + 1;
+           }
+         }
+       }
+       setGrid(newGrid);
+    }, 500); // 500ms debounce
+  };
+
+  // 3. Execution Debouncer
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const runCircuit = async () => {
+        setIsExecuting(true);
+        setErrorMsg('');
+        
+        let pythonCode = code + '\n';
+
+        if (language === 'qiskit') {
+          pythonCode = `from qiskit.quantum_info import Statevector\nimport json\n` + code + `\n
 try:
     sv = Statevector(qc)
     probs = sv.probabilities_dict()
@@ -107,29 +201,9 @@ try:
     print("##JSON_END##")
 except Exception as e:
     print("ERROR:", str(e))
-`;
-      } else if (language === 'cirq') {
-        pythonCode = `
-import cirq
-import json
-import numpy as np
-
-qubits = [cirq.LineQubit(i) for i in range(${numQubits})]
-circuit = cirq.Circuit()
-`;
-        displayCode = `import cirq\n\nqubits = [cirq.LineQubit(i) for i in range(${numQubits})]\ncircuit = cirq.Circuit()\n`;
-
-        for (let sIdx = 0; sIdx < NUM_STEPS; sIdx++) {
-          for (let qIdx = 0; qIdx < numQubits; qIdx++) {
-            const gate = grid[qIdx][sIdx];
-            if (gate === 'H') { pythonCode += `circuit.append(cirq.H(qubits[${qIdx}]))\n`; displayCode += `circuit.append(cirq.H(qubits[${qIdx}]))\n`; }
-            else if (gate === 'X') { pythonCode += `circuit.append(cirq.X(qubits[${qIdx}]))\n`; displayCode += `circuit.append(cirq.X(qubits[${qIdx}]))\n`; }
-            else if (gate === 'Y') { pythonCode += `circuit.append(cirq.Y(qubits[${qIdx}]))\n`; displayCode += `circuit.append(cirq.Y(qubits[${qIdx}]))\n`; }
-            else if (gate === 'Z') { pythonCode += `circuit.append(cirq.Z(qubits[${qIdx}]))\n`; displayCode += `circuit.append(cirq.Z(qubits[${qIdx}]))\n`; }
-            else if (gate === 'CX') { pythonCode += `circuit.append(cirq.CNOT(qubits[${qIdx}], qubits[${qIdx + 1}]))\n`; displayCode += `circuit.append(cirq.CNOT(qubits[${qIdx}], qubits[${qIdx + 1}]))\n`; }
-          }
-        }
-        pythonCode += `
+  `;
+        } else if (language === 'cirq') {
+          pythonCode = `import numpy as np\nimport json\n` + code + `\n
 try:
     simulator = cirq.Simulator()
     result = simulator.simulate(circuit)
@@ -139,7 +213,7 @@ try:
     filtered_probs = {}
     for i, p in enumerate(probs):
         if p > 1e-5:
-            bin_str = format(i, f'0{${numQubits}}b')
+            bin_str = format(i, f'0{numQubits}b')
             filtered_probs[bin_str] = float(p)
             
     print("##JSON_START##")
@@ -147,45 +221,43 @@ try:
     print("##JSON_END##")
 except Exception as e:
     print("ERROR:", str(e))
-`;
-      }
-
-      setGeneratedCode(displayCode);
-
-      try {
-        const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
-        const response = await fetch(`${BACKEND_URL}/execute`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code: pythonCode, language }),
-        });
-        const data = await response.json();
-        if (data.success && data.output) {
-          const match = (data.output as string).match(/##JSON_START##\s*([\s\S]*?)\s*##JSON_END##/);
-          if (match && match[1]) {
-            setProbabilities(JSON.parse(match[1]));
-          } else {
-            setErrorMsg("Could not parse output: " + data.output);
-          }
-        } else {
-          setErrorMsg(data.error || "Execution failed");
+  `;
         }
-      } catch (err: unknown) {
-        setErrorMsg("Backend connection failed.");
-      }
-      setIsExecuting(false);
-    };
 
-    const isEmpty = grid.every(row => row.every(cell => cell === ''));
-    if (isEmpty) {
-      setTimeout(() => {
-        setProbabilities({ ['0'.repeat(numQubits)]: 1.0 });
-        setGeneratedCode('# Drag gates onto the grid to generate code!');
-      }, 0);
-    } else {
-      runCircuit();
-    }
-  }, [grid, language, numQubits]);
+        try {
+          const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+          const response = await fetch(`${BACKEND_URL}/execute`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: pythonCode, language }),
+          });
+          const data = await response.json();
+          if (data.success && data.output) {
+            const match = (data.output as string).match(/##JSON_START##\s*([\s\S]*?)\s*##JSON_END##/);
+            if (match && match[1]) {
+              setProbabilities(JSON.parse(match[1]));
+            } else {
+              setErrorMsg("Could not parse output.");
+            }
+          } else {
+            setErrorMsg(data.error || "Execution failed");
+          }
+        } catch (err: unknown) {
+          setErrorMsg("Backend connection failed.");
+        }
+        setIsExecuting(false);
+      };
+
+      if (code && !code.includes('# Drag gates')) {
+        runCircuit();
+      } else {
+         setProbabilities({ ['0'.repeat(numQubits)]: 1.0 });
+      }
+    }, 1000); // 1 second debounce for execution
+
+    return () => clearTimeout(handler);
+  }, [code, language, numQubits]);
+
 
   const chartData = {
     labels: Object.keys(probabilities).sort(),
@@ -218,7 +290,7 @@ except Exception as e:
       <div className="flex-between">
         <select 
           value={language} 
-          onChange={(e) => setLanguage(e.target.value as 'qiskit' | 'cirq')}
+          onChange={(e) => { setLanguage(e.target.value as 'qiskit' | 'cirq'); setIsTyping(false); }}
           className="editor-select"
           style={{ padding: '8px', borderRadius: '4px', background: 'var(--surface-color)', color: 'var(--text-primary)', border: '1px solid var(--surface-border)' }}
         >
@@ -325,11 +397,11 @@ except Exception as e:
                                 border: '2px solid var(--accent-secondary)',
                                 borderRadius: '50%',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                background: 'var(--background)',
+                                background: 'var(--bg-color)',
                                 zIndex: 2
                               }}>
-                                <div style={{ position: 'absolute', width: '20px', height: '2px', background: 'var(--accent-secondary)' }} />
-                                <div style={{ position: 'absolute', width: '2px', height: '20px', background: 'var(--accent-secondary)' }} />
+                                <div style={{ position: 'absolute', width: '16px', height: '2px', background: 'var(--accent-secondary)' }} />
+                                <div style={{ position: 'absolute', width: '2px', height: '16px', background: 'var(--accent-secondary)' }} />
                               </div>
                             )}
                           </div>
@@ -361,13 +433,25 @@ except Exception as e:
         </div>
 
         {/* Bottom Panel: Visualization and Code */}
-        <div style={{ display: 'flex', gap: '16px', minHeight: '250px' }}>
+        <div style={{ display: 'flex', gap: '16px', minHeight: '300px' }}>
           
           <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column' }}>
-            <h3 style={{ fontSize: '12px', marginBottom: '8px', color: 'var(--text-secondary)' }}>Generated Code</h3>
-            <pre style={{ flex: 1, margin: 0, padding: '12px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', overflowY: 'auto', color: '#e6edf3', fontSize: '12px', fontFamily: 'Consolas, monospace' }}>
-              {generatedCode}
-            </pre>
+            <h3 style={{ fontSize: '12px', marginBottom: '8px', color: 'var(--accent-primary)' }}>Python Code (Editable)</h3>
+            <div style={{ flex: 1, overflow: 'hidden', borderRadius: '8px' }}>
+              <Editor
+                height="100%"
+                defaultLanguage="python"
+                theme="vs-dark"
+                value={code}
+                onChange={handleCodeChange}
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  fontFamily: 'Consolas, "Courier New", monospace',
+                  scrollBeyondLastLine: false,
+                }}
+              />
+            </div>
           </div>
 
           <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column' }}>

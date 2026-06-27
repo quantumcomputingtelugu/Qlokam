@@ -53,7 +53,7 @@ export default function Navigation() {
       zIndex: 100
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <div style={{ width: '32px', height: '32px', background: 'var(--accent-gradient)', borderRadius: '8px' }}></div>
+        <img src="/icon.svg" alt="Qlokam Logo" style={{ width: '32px', height: '32px' }} />
         <Link href="/" style={{ textDecoration: 'none' }}>
           <h2 style={{ margin: 0, fontWeight: 700 }}><span className="text-gradient">Q</span>lokam</h2>
         </Link>
