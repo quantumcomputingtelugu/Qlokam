@@ -88,6 +88,7 @@ export default function TutorialsPage() {
       if (currentUser) {
         // Fetch progress
         try {
+          if (!db) return;
           const docRef = doc(db, 'users', currentUser.uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists() && docSnap.data().completedTutorials) {
