@@ -16,6 +16,9 @@ export default function TutorialsPage() {
   const [completedTutorials, setCompletedTutorials] = useState<number[]>([]);
   const [saving, setSaving] = useState(false);
   
+  // Sidebar state
+  const [expandedSessions, setExpandedSessions] = useState<string[]>(tutorialSessions.map(s => s.sessionName));
+  
   // Quiz state
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [showQuizResults, setShowQuizResults] = useState(false);
@@ -85,11 +88,24 @@ export default function TutorialsPage() {
         <h2 style={{ marginBottom: '24px', fontSize: '24px', color: 'var(--accent-primary)' }}>Quantum Modules</h2>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-          {tutorialSessions.map((session, sIndex) => (
+          {tutorialSessions.map((session, sIndex) => {
+            const isExpanded = expandedSessions.includes(session.sessionName);
+            return (
             <div key={sIndex}>
-              <h3 style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)', marginBottom: '16px', borderBottom: '1px solid var(--surface-border)', paddingBottom: '8px' }}>
+              <h3 
+                onClick={() => {
+                  if (isExpanded) {
+                    setExpandedSessions(expandedSessions.filter(s => s !== session.sessionName));
+                  } else {
+                    setExpandedSessions([...expandedSessions, session.sessionName]);
+                  }
+                }}
+                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)', marginBottom: '16px', borderBottom: '1px solid var(--surface-border)', paddingBottom: '8px' }}
+              >
                 {session.sessionName}
+                <span style={{ fontSize: '12px', transition: 'transform 0.2s' }}>{isExpanded ? '▼' : '▶'}</span>
               </h3>
+              {isExpanded && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {session.modules.map((tutorial) => {
                   const completed = completedTutorials.includes(tutorial.id);
@@ -126,8 +142,9 @@ export default function TutorialsPage() {
                   );
                 })}
               </div>
+              )}
             </div>
-          ))}
+          )})}
         </div>
       </div>
 
