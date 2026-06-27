@@ -6,7 +6,7 @@ import io
 import contextlib
 import traceback
 
-app = FastAPI(title="QuVerse Execution Backend")
+app = FastAPI(title="Qlokam Execution Backend")
 
 # Allow CORS for local development from the Next.js frontend
 app.add_middleware(
@@ -23,7 +23,7 @@ class CodeExecutionRequest(BaseModel):
 
 @app.get("/")
 def read_root():
-    return {"status": "QuVerse Execution Engine is running."}
+    return {"status": "Qlokam Execution Engine is running."}
 
 @app.post("/execute")
 def execute_code(request: CodeExecutionRequest):

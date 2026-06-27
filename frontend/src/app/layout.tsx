@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "QuVerse | Quantum Computing Arena",
+  title: "Qlokam | Quantum Computing Arena",
   description: "Learn, compete, and execute quantum circuits.",
 };
 
@@ -26,7 +26,7 @@ export default function RootLayout({
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '32px', height: '32px', background: 'var(--accent-gradient)', borderRadius: '8px' }}></div>
-            <h2 style={{ margin: 0, fontWeight: 700 }}><span className="text-gradient">Qu</span>Verse</h2>
+            <h2 style={{ margin: 0, fontWeight: 700 }}><span className="text-gradient">Q</span>lokam</h2>
           </div>
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
             <a href="/tutorials" className="nav-link" style={{ fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.2s' }}>Tutorials</a>
