@@ -170,7 +170,7 @@ except Exception as e:
         } else {
           setErrorMsg(data.error || "Execution failed");
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         setErrorMsg("Backend connection failed.");
       }
       setIsExecuting(false);
@@ -178,8 +178,10 @@ except Exception as e:
 
     const isEmpty = grid.every(row => row.every(cell => cell === ''));
     if (isEmpty) {
-      setProbabilities({ ['0'.repeat(numQubits)]: 1.0 });
-      setGeneratedCode('# Drag gates onto the grid to generate code!');
+      setTimeout(() => {
+        setProbabilities({ ['0'.repeat(numQubits)]: 1.0 });
+        setGeneratedCode('# Drag gates onto the grid to generate code!');
+      }, 0);
     } else {
       runCircuit();
     }

@@ -49,7 +49,7 @@ print("Circuit Output Counts:", counts)`
       } else {
         setOutput(`Error: ${data.error}`);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setOutput(`Connection Error: Make sure the Python backend is running on port 8000.`);
     }
     setIsExecuting(false);
