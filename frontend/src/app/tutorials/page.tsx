@@ -5,78 +5,22 @@ import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import VisualPlayground from '@/components/VisualPlayground';
+import { tutorialSessions, getAllTutorials } from '@/data/tutorials';
 
 export default function TutorialsPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
   
-  const [activeTab, setActiveTab] = useState<'lesson' | 'practice'>('lesson');
+  const [activeTab, setActiveTab] = useState<'lesson' | 'quiz' | 'practice'>('lesson');
   const [activeTutorialId, setActiveTutorialId] = useState(1);
   const [completedTutorials, setCompletedTutorials] = useState<number[]>([]);
   const [saving, setSaving] = useState(false);
+  
+  // Quiz state
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
+  const [showQuizResults, setShowQuizResults] = useState(false);
 
-  // Hardcoded for now. In reality, you'd fetch this from a DB or JSON file.
-  const tutorials = [
-    {
-      id: 1,
-      title: 'Introduction to Qubits',
-      description: 'Learn the fundamentals of quantum bits, superposition, and how they differ from classical bits.',
-      difficulty: 'Beginner',
-      lessonContent: (
-        <>
-          <p style={{ marginBottom: '16px' }}>
-            Welcome to the quantum world! In classical computing, information is processed in bits, which can be either a <strong>0</strong> or a <strong>1</strong>. 
-            However, quantum computing uses <strong>quantum bits</strong>, or <strong>qubits</strong>.
-          </p>
-          <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Superposition</h3>
-          <p style={{ marginBottom: '16px' }}>
-            Unlike classical bits, qubits can exist in a state that is a combination of both 0 and 1 simultaneously. This property is known as <strong>superposition</strong>.
-            Mathematically, a qubit&apos;s state $|\psi\rangle$ is represented as a linear combination of the computational basis states $|0\rangle$ and $|1\rangle$:
-          </p>
-          <div style={{ background: 'rgba(0,0,0,0.3)', padding: '16px', borderRadius: '8px', marginBottom: '16px', fontFamily: 'monospace', textAlign: 'center', fontSize: '18px', color: 'var(--accent-primary)' }}>
-            |\psi\rangle = \alpha|0\rangle + \beta|1\rangle
-          </div>
-        </>
-      ),
-      practiceGoal: 'Place a single qubit in superposition by dragging a Hadamard (H) gate onto it!',
-    },
-    {
-      id: 2,
-      title: 'Quantum Gates: Pauli-X, Y, and Z',
-      description: 'Understand single-qubit rotations and how to manipulate quantum states.',
-      difficulty: 'Beginner',
-      lessonContent: (
-        <>
-          <p style={{ marginBottom: '16px' }}>
-            The Pauli gates act as rotations on the Bloch sphere. They are fundamental single-qubit operations.
-          </p>
-          <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-            <li style={{ marginBottom: '8px' }}><strong>Pauli-X:</strong> Often called the quantum NOT gate. It flips |0⟩ to |1⟩ and vice versa.</li>
-            <li style={{ marginBottom: '8px' }}><strong>Pauli-Y:</strong> A rotation around the Y axis of the Bloch sphere.</li>
-            <li style={{ marginBottom: '8px' }}><strong>Pauli-Z:</strong> Leaves |0⟩ unchanged, but flips the phase of |1⟩ to -|1⟩.</li>
-          </ul>
-        </>
-      ),
-      practiceGoal: 'Apply a Pauli-X gate to flip a qubit from |0> to |1>.',
-    },
-    {
-      id: 3,
-      title: 'Entanglement and CNOT',
-      description: 'Dive into two-qubit gates and the spooky action at a distance: Quantum Entanglement.',
-      difficulty: 'Intermediate',
-      lessonContent: (
-        <>
-          <p style={{ marginBottom: '16px' }}>
-            Entanglement is a unique quantum phenomenon where two qubits become inextricably linked.
-          </p>
-          <p style={{ marginBottom: '16px' }}>
-            The <strong>CNOT (Controlled-NOT)</strong> gate flips the state of a target qubit ONLY if the control qubit is in the |1⟩ state.
-          </p>
-        </>
-      ),
-      practiceGoal: 'Create a Bell State! Place an H gate on q0, and a CX gate with control on q0 and target on q1.',
-    }
-  ];
+  const allTutorials = getAllTutorials();
 
   useEffect(() => {
     if (!auth) {
@@ -86,7 +30,6 @@ export default function TutorialsPage() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // Fetch progress
         try {
           if (!db) return;
           const docRef = doc(db, 'users', currentUser.uid);
@@ -98,7 +41,7 @@ export default function TutorialsPage() {
           console.error("Error fetching progress", e);
         }
       } else {
-        setCompletedTutorials([]); // clear on logout
+        setCompletedTutorials([]); 
       }
       setLoadingUser(false);
     });
@@ -119,8 +62,21 @@ export default function TutorialsPage() {
     setSaving(false);
   };
 
-  const activeTutorial = tutorials.find(t => t.id === activeTutorialId) || tutorials[0];
+  const activeTutorial = allTutorials.find(t => t.id === activeTutorialId) || allTutorials[0];
   const isCompleted = completedTutorials.includes(activeTutorial.id);
+
+  const handleTabChange = (tab: 'lesson' | 'quiz' | 'practice') => {
+    setActiveTab(tab);
+  };
+
+  const handleQuizOptionSelect = (qIndex: number, optIndex: number) => {
+    if (showQuizResults) return; // prevent changing after submitted
+    setSelectedAnswers(prev => ({ ...prev, [qIndex]: optIndex }));
+  };
+
+  const handleQuizSubmit = () => {
+    setShowQuizResults(true);
+  };
 
   return (
     <div className="container" style={{ paddingTop: '24px', display: 'flex', gap: '24px', height: 'calc(100vh - 100px)' }}>
@@ -128,36 +84,50 @@ export default function TutorialsPage() {
       <div className="glass-panel" style={{ flex: 1, padding: '24px', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
         <h2 style={{ marginBottom: '24px', fontSize: '24px', color: 'var(--accent-primary)' }}>Quantum Modules</h2>
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {tutorials.map((tutorial) => {
-            const completed = completedTutorials.includes(tutorial.id);
-            const isActive = activeTutorialId === tutorial.id;
-            return (
-              <div 
-                key={tutorial.id} 
-                onClick={() => { setActiveTutorialId(tutorial.id); setActiveTab('lesson'); }}
-                style={{ 
-                  padding: '16px', 
-                  background: isActive ? 'rgba(69, 243, 255, 0.1)' : 'rgba(255,255,255,0.03)', 
-                  border: `1px solid ${isActive ? 'var(--accent-primary)' : 'var(--surface-border)'}`, 
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-                className="tutorial-card"
-              >
-                <div className="flex-between" style={{ marginBottom: '8px' }}>
-                  <h3 style={{ fontSize: '16px', margin: 0, color: 'var(--text-primary)' }}>{tutorial.id}. {tutorial.title}</h3>
-                  {completed && (
-                    <span style={{ fontSize: '12px', padding: '4px 8px', borderRadius: '12px', background: 'rgba(63, 185, 80, 0.2)', color: 'var(--success)' }}>
-                      Completed
-                    </span>
-                  )}
-                </div>
-                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>{tutorial.description}</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          {tutorialSessions.map((session, sIndex) => (
+            <div key={sIndex}>
+              <h3 style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)', marginBottom: '16px', borderBottom: '1px solid var(--surface-border)', paddingBottom: '8px' }}>
+                {session.sessionName}
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {session.modules.map((tutorial) => {
+                  const completed = completedTutorials.includes(tutorial.id);
+                  const isActive = activeTutorialId === tutorial.id;
+                  return (
+                    <div 
+                      key={tutorial.id} 
+                      onClick={() => { 
+                        setActiveTutorialId(tutorial.id); 
+                        setActiveTab('lesson'); 
+                        setSelectedAnswers({}); 
+                        setShowQuizResults(false); 
+                      }}
+                      style={{ 
+                        padding: '16px', 
+                        background: isActive ? 'rgba(69, 243, 255, 0.1)' : 'rgba(255,255,255,0.03)', 
+                        border: `1px solid ${isActive ? 'var(--accent-primary)' : 'var(--surface-border)'}`, 
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                      className="tutorial-card"
+                    >
+                      <div className="flex-between" style={{ marginBottom: '8px' }}>
+                        <h4 style={{ fontSize: '16px', margin: 0, color: 'var(--text-primary)' }}>{tutorial.id}. {tutorial.title}</h4>
+                        {completed && (
+                          <span style={{ fontSize: '12px', padding: '4px 8px', borderRadius: '12px', background: 'rgba(63, 185, 80, 0.2)', color: 'var(--success)' }}>
+                            Completed
+                          </span>
+                        )}
+                      </div>
+                      <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>{tutorial.description}</p>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -166,30 +136,22 @@ export default function TutorialsPage() {
         
         {/* Header Tabs */}
         <div style={{ display: 'flex', borderBottom: '1px solid var(--surface-border)', padding: '0 24px' }}>
-          <button 
-            onClick={() => setActiveTab('lesson')}
-            style={{ 
-              padding: '16px 24px', background: 'none', border: 'none', cursor: 'pointer',
-              color: activeTab === 'lesson' ? 'var(--accent-primary)' : 'var(--text-secondary)',
-              borderBottom: activeTab === 'lesson' ? '2px solid var(--accent-primary)' : '2px solid transparent',
-              fontWeight: activeTab === 'lesson' ? 600 : 400,
-              fontSize: '16px'
-            }}
-          >
-            Lesson
-          </button>
-          <button 
-            onClick={() => setActiveTab('practice')}
-            style={{ 
-              padding: '16px 24px', background: 'none', border: 'none', cursor: 'pointer',
-              color: activeTab === 'practice' ? 'var(--accent-primary)' : 'var(--text-secondary)',
-              borderBottom: activeTab === 'practice' ? '2px solid var(--accent-primary)' : '2px solid transparent',
-              fontWeight: activeTab === 'practice' ? 600 : 400,
-              fontSize: '16px'
-            }}
-          >
-            Practice
-          </button>
+          {(['lesson', 'quiz', 'practice'] as const).map(tab => (
+            <button 
+              key={tab}
+              onClick={() => handleTabChange(tab)}
+              style={{ 
+                padding: '16px 24px', background: 'none', border: 'none', cursor: 'pointer',
+                color: activeTab === tab ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                borderBottom: activeTab === tab ? '2px solid var(--accent-primary)' : '2px solid transparent',
+                fontWeight: activeTab === tab ? 600 : 400,
+                fontSize: '16px',
+                textTransform: 'capitalize'
+              }}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
 
         {/* Content Body */}
@@ -202,10 +164,91 @@ export default function TutorialsPage() {
               {activeTutorial.lessonContent}
               
               <div style={{ marginTop: '48px', padding: '24px', background: 'rgba(69, 243, 255, 0.05)', border: '1px solid rgba(69, 243, 255, 0.2)', borderRadius: '12px' }}>
-                <h4 style={{ margin: '0 0 16px 0', color: 'var(--accent-primary)' }}>Ready for practice?</h4>
-                <p style={{ margin: '0 0 16px 0' }}>Switch to the Practice tab to apply what you&apos;ve learned!</p>
-                <button className="btn-primary" onClick={() => setActiveTab('practice')} style={{ padding: '8px 16px' }}>Go to Practice</button>
+                <h4 style={{ margin: '0 0 16px 0', color: 'var(--accent-primary)' }}>Finished reading?</h4>
+                <p style={{ margin: '0 0 16px 0' }}>Test your knowledge with a quick quiz, or jump straight to practice!</p>
+                <div style={{ display: 'flex', gap: '16px' }}>
+                  {activeTutorial.quizzes && activeTutorial.quizzes.length > 0 && (
+                    <button className="btn-secondary" onClick={() => handleTabChange('quiz')} style={{ padding: '8px 16px' }}>Take Quiz</button>
+                  )}
+                  <button className="btn-primary" onClick={() => handleTabChange('practice')} style={{ padding: '8px 16px' }}>Go to Practice</button>
+                </div>
               </div>
+            </div>
+          ) : activeTab === 'quiz' ? (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+              {!activeTutorial.quizzes || activeTutorial.quizzes.length === 0 ? (
+                <div style={{ textAlign: 'center', marginTop: '40px', color: 'var(--text-secondary)' }}>
+                  No quiz available for this module yet. Jump to Practice!
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                  {activeTutorial.quizzes.map((quiz, qIndex) => (
+                    <div key={qIndex} style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid var(--surface-border)' }}>
+                      <h4 style={{ fontSize: '18px', color: 'var(--text-primary)', marginBottom: '16px' }}>{quiz.question}</h4>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        {quiz.options.map((opt, optIndex) => {
+                          const isSelected = selectedAnswers[qIndex] === optIndex;
+                          let btnBorder = '1px solid var(--surface-border)';
+                          let btnBg = isSelected ? 'rgba(69, 243, 255, 0.1)' : 'transparent';
+                          let btnColor = isSelected ? 'var(--accent-primary)' : 'var(--text-secondary)';
+
+                          if (showQuizResults) {
+                            if (optIndex === quiz.correctAnswerIndex) {
+                              btnBorder = '1px solid var(--success)';
+                              btnBg = 'rgba(63, 185, 80, 0.1)';
+                              btnColor = 'var(--success)';
+                            } else if (isSelected) {
+                              btnBorder = '1px solid var(--error)';
+                              btnBg = 'rgba(248, 81, 73, 0.1)';
+                              btnColor = 'var(--error)';
+                            }
+                          }
+
+                          return (
+                            <button
+                              key={optIndex}
+                              onClick={() => handleQuizOptionSelect(qIndex, optIndex)}
+                              style={{
+                                padding: '16px',
+                                textAlign: 'left',
+                                background: btnBg,
+                                border: btnBorder,
+                                color: btnColor,
+                                borderRadius: '8px',
+                                cursor: showQuizResults ? 'default' : 'pointer',
+                                transition: 'all 0.2s',
+                                fontSize: '16px'
+                              }}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {showQuizResults && quiz.explanation && (
+                        <div style={{ marginTop: '16px', padding: '16px', background: 'rgba(69, 243, 255, 0.05)', borderRadius: '8px', color: 'var(--text-secondary)' }}>
+                          <strong>Explanation:</strong> {quiz.explanation}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {!showQuizResults ? (
+                    <button 
+                      className="btn-primary" 
+                      onClick={handleQuizSubmit} 
+                      disabled={Object.keys(selectedAnswers).length < activeTutorial.quizzes.length}
+                      style={{ alignSelf: 'flex-start', padding: '12px 32px' }}
+                    >
+                      Submit Answers
+                    </button>
+                  ) : (
+                    <div style={{ display: 'flex', gap: '16px' }}>
+                      <button className="btn-secondary" onClick={() => { setShowQuizResults(false); setSelectedAnswers({}); }} style={{ padding: '8px 16px' }}>Retry Quiz</button>
+                      <button className="btn-primary" onClick={() => handleTabChange('practice')} style={{ padding: '8px 16px' }}>Continue to Practice</button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ) : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -257,14 +300,12 @@ export default function TutorialsPage() {
                       {saving ? 'Saving...' : isCompleted ? 'Completed' : 'Mark as Complete'}
                     </button>
                   </div>
-
                 </div>
               )}
             </div>
           )}
         </div>
       </div>
-
     </div>
   );
 }
