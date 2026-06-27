@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Editor from '@monaco-editor/react';
 import VisualPlayground from '@/components/VisualPlayground';
 import { arenaProblems, ArenaProblem } from '@/data/arena';
 import { auth, db } from '@/lib/firebase';
@@ -17,12 +16,6 @@ export default function ArenaPage() {
   const [activeProblemId, setActiveProblemId] = useState<string | null>(null);
   const [listTab, setListTab] = useState<'practice' | 'contests'>('practice');
 
-  // Editor states
-  const [language, setLanguage] = useState('qiskit');
-  const [code, setCode] = useState('');
-  const [output, setOutput] = useState('Output will appear here...');
-  const [isExecuting, setIsExecuting] = useState(false);
-  const [activeTab, setActiveTab] = useState<'code' | 'visual'>('code');
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'verifying' | 'success' | 'failed'>('idle');
 
   useEffect(() => {
@@ -56,61 +49,56 @@ export default function ArenaPage() {
 
   const handleOpenProblem = (p: ArenaProblem) => {
     setActiveProblemId(p.id);
-    setCode(p.initialCode);
-    setOutput('Output will appear here...');
     setSubmitStatus('idle');
-    setActiveTab('code');
   };
 
   const activeProblem = arenaProblems.find(p => p.id === activeProblemId);
   const isSolved = activeProblem ? solvedProblems.includes(activeProblem.id) : false;
 
-  const handleRunCode = async (isSubmit = false) => {
-    setIsExecuting(true);
-    if (isSubmit) setSubmitStatus('verifying');
-    setOutput('Running on Quantum Backend...');
-    try {
-      const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
-      const response = await fetch(`${BACKEND_URL}/execute`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, language }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        setOutput(data.output || 'Execution complete with no output.');
-        
-        // MOCK VERIFICATION LOGIC
-        if (isSubmit && activeProblem) {
-           if ((data.output || '').includes(activeProblem.expectedOutputSubstring)) {
-             setSubmitStatus('success');
-             if (!isSolved && user && db) {
-               // Update Rating!
-               const newRating = rating + activeProblem.points;
-               const newSolved = [...solvedProblems, activeProblem.id];
-               setRating(newRating);
-               setSolvedProblems(newSolved);
-               try {
-                 const docRef = doc(db, 'users', user.uid);
-                 await setDoc(docRef, { rating: newRating, solvedArenaProblems: newSolved }, { merge: true });
-               } catch (e) {
-                 console.error('Failed to save rating', e);
-               }
-             }
-           } else {
-             setSubmitStatus('failed');
-           }
-        }
+  const handleSubmit = async (probs: Record<string, number>) => {
+    if (!activeProblem) return;
+    setSubmitStatus('verifying');
+    
+    // Check if probabilities match expectedDistribution
+    const expected = activeProblem.expectedDistribution;
+    let isCorrect = true;
 
-      } else {
-        setOutput(`Error: ${data.error}`);
-        if (isSubmit) setSubmitStatus('failed');
+    // Check if every expected key is roughly present
+    for (const key of Object.keys(expected)) {
+      const userProb = probs[key] || 0;
+      const expectedProb = expected[key];
+      // Tolerance of 0.05
+      if (Math.abs(userProb - expectedProb) > 0.05) {
+        isCorrect = false;
+        break;
       }
-    } catch (err: unknown) {
-      setOutput(`Connection Error: Make sure the Python backend is running on port 8000.`);
-      if (isSubmit) setSubmitStatus('failed');
     }
-    setIsExecuting(false);
+
+    // Check if user has unexpected keys with high probability
+    for (const key of Object.keys(probs)) {
+      if (probs[key] > 0.05 && !expected[key]) {
+        isCorrect = false;
+        break;
+      }
+    }
+
+    if (isCorrect) {
+      setSubmitStatus('success');
+      if (!isSolved && user && db) {
+        const newRating = rating + activeProblem.points;
+        const newSolved = [...solvedProblems, activeProblem.id];
+        setRating(newRating);
+        setSolvedProblems(newSolved);
+        try {
+          const docRef = doc(db, 'users', user.uid);
+          await setDoc(docRef, { rating: newRating, solvedArenaProblems: newSolved }, { merge: true });
+        } catch (e) {
+          console.error('Failed to save rating', e);
+        }
+      }
+    } else {
+      setSubmitStatus('failed');
+    }
   };
 
   // -------------------------
@@ -295,86 +283,19 @@ export default function ArenaPage() {
         </div>
       </div>
 
-      {/* Right Panel: Editor / Builder & Output */}
-      <div style={{ flex: 2, display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        
-        {/* Editor Controls */}
-        <div className="flex-between glass-panel" style={{ padding: '12px 24px' }}>
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <button 
-              onClick={() => setActiveTab('code')}
-              style={{ background: 'none', border: 'none', color: activeTab === 'code' ? 'var(--accent-primary)' : 'var(--text-secondary)', fontWeight: activeTab === 'code' ? 'bold' : 'normal', cursor: 'pointer', borderBottom: activeTab === 'code' ? '2px solid var(--accent-primary)' : '2px solid transparent', paddingBottom: '4px' }}
-            >
-              Code Editor
-            </button>
-            <button 
-              onClick={() => setActiveTab('visual')}
-              style={{ background: 'none', border: 'none', color: activeTab === 'visual' ? 'var(--accent-primary)' : 'var(--text-secondary)', fontWeight: activeTab === 'visual' ? 'bold' : 'normal', cursor: 'pointer', borderBottom: activeTab === 'visual' ? '2px solid var(--accent-primary)' : '2px solid transparent', paddingBottom: '4px' }}
-            >
-              Visual Builder
-            </button>
-          </div>
-          
-          {activeTab === 'code' && (
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-              <select 
-                className="editor-select" 
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-              >
-                <option value="qiskit">Qiskit (Python)</option>
-                <option value="cirq">Cirq (Python)</option>
-              </select>
-              <button className="btn-secondary" onClick={() => handleRunCode(false)} disabled={isExecuting}>
-                Run Code
-              </button>
-              <button className="btn-primary" onClick={() => handleRunCode(true)} disabled={isExecuting || !user}>
-                {isExecuting && submitStatus === 'verifying' ? 'Submitting...' : 'Submit'}
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Tab Content */}
-        {activeTab === 'code' ? (
-          <>
-            <div className="glass-panel" style={{ flex: 2, overflow: 'hidden', padding: '16px 0' }}>
-              {!user && (
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '8px', background: 'rgba(210, 153, 34, 0.9)', color: '#000', textAlign: 'center', zIndex: 10, fontSize: '14px', fontWeight: 'bold' }}>
-                  Sign in to submit your solution and gain rating points!
-                </div>
-              )}
-              <Editor
-                height="100%"
-                defaultLanguage="python"
-                theme="vs-dark"
-                value={code}
-                onChange={(value) => setCode(value || '')}
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 14,
-                  fontFamily: 'Consolas, "Courier New", monospace',
-                  padding: { top: 32 }
-                }}
-              />
-            </div>
-            <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column' }}>
-              <div className="flex-between" style={{ marginBottom: '8px' }}>
-                <div style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)' }}>Console Output</div>
-                {submitStatus === 'failed' && <div style={{ color: 'var(--error)', fontSize: '12px', fontWeight: 'bold' }}>Failed Test Case</div>}
-                {submitStatus === 'success' && <div style={{ color: 'var(--success)', fontSize: '12px', fontWeight: 'bold' }}>Accepted!</div>}
-              </div>
-              <pre style={{ flex: 1, background: '#0d1117', padding: '16px', borderRadius: '8px', overflowY: 'auto', color: '#e6edf3', margin: 0, fontFamily: 'Consolas, "Courier New", monospace' }}>
-                {output}
-              </pre>
-            </div>
-          </>
-        ) : (
-          <div className="glass-panel" style={{ flex: 1, padding: '24px', display: 'flex', flexDirection: 'column' }}>
-            <VisualPlayground />
+      {/* Right Panel: Visual Builder */}
+      <div className="glass-panel" style={{ flex: 2, padding: '24px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+        {!user && (
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '8px', background: 'rgba(210, 153, 34, 0.9)', color: '#000', textAlign: 'center', zIndex: 10, fontSize: '14px', fontWeight: 'bold', borderTopLeftRadius: '12px', borderTopRightRadius: '12px' }}>
+            Sign in to submit your solution and gain rating points!
           </div>
         )}
-
+        <VisualPlayground 
+           arenaMode={true} 
+           arenaProblemId={activeProblemId}
+           onSubmit={handleSubmit}
+           submitStatus={submitStatus}
+        />
       </div>
 
     </div>

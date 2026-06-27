@@ -18,7 +18,19 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const NUM_STEPS = 20;
 const GATES = ['H', 'X', 'Y', 'Z', 'CX'];
 
-export default function VisualPlayground() {
+interface VisualPlaygroundProps {
+  arenaMode?: boolean;
+  arenaProblemId?: string | null;
+  onSubmit?: (probs: Record<string, number>) => void;
+  submitStatus?: 'idle' | 'verifying' | 'success' | 'failed';
+}
+
+export default function VisualPlayground({ 
+  arenaMode = false, 
+  arenaProblemId = null,
+  onSubmit, 
+  submitStatus = 'idle' 
+}: VisualPlaygroundProps = {}) {
   const [language, setLanguage] = useState<'qiskit' | 'cirq'>('qiskit');
   const [numQubits, setNumQubits] = useState(3);
   const [grid, setGrid] = useState<string[][]>(Array(3).fill([]).map(() => Array(NUM_STEPS).fill('')));
@@ -30,6 +42,17 @@ export default function VisualPlayground() {
   const [code, setCode] = useState('');
   const [isTyping, setIsTyping] = useState(false); // Source of truth flag
   const typeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Reset state when problem changes
+  useEffect(() => {
+    if (arenaMode && arenaProblemId) {
+      setGrid(Array(3).fill([]).map(() => Array(NUM_STEPS).fill('')));
+      setNumQubits(3);
+      setProbabilities({});
+      setErrorMsg('');
+      setCode('');
+    }
+  }, [arenaProblemId, arenaMode]);
 
   const addQubit = () => {
     if (numQubits >= 16) {
@@ -56,7 +79,7 @@ export default function VisualPlayground() {
       return;
     }
     
-    setIsTyping(false); // User interacted with grid, grid is source of truth
+    setIsTyping(false);
     setGrid(prevGrid => {
       const newGrid = [...prevGrid];
       newGrid[qIdx] = [...newGrid[qIdx]];
@@ -77,9 +100,9 @@ export default function VisualPlayground() {
     });
   };
 
-  // 1. Grid -> Code (When isTyping is false)
+  // 1. Grid -> Code
   useEffect(() => {
-    if (isTyping) return; // Ignore grid changes if they were caused by typing
+    if (isTyping) return;
 
     let displayCode = '';
     if (language === 'qiskit') {
@@ -110,7 +133,7 @@ export default function VisualPlayground() {
     setCode(displayCode);
   }, [grid, language, numQubits, isTyping]);
 
-  // 2. Code -> Grid (Parser)
+  // 2. Code -> Grid
   const handleCodeChange = (newCode: string | undefined) => {
     if (newCode === undefined) return;
     setCode(newCode);
@@ -118,7 +141,6 @@ export default function VisualPlayground() {
 
     if (typeTimeoutRef.current) clearTimeout(typeTimeoutRef.current);
     
-    // Debounce grid rebuild slightly
     typeTimeoutRef.current = setTimeout(() => {
        const operations: { gate: string, q?: number, c?: number, t?: number }[] = [];
        let newNumQ = numQubits;
@@ -129,29 +151,22 @@ export default function VisualPlayground() {
          if (language === 'qiskit') {
             const qcMatch = l.match(/qc\s*=\s*QuantumCircuit\((\d+)\)/);
             if (qcMatch) newNumQ = parseInt(qcMatch[1], 10);
-            
             const singleGateMatch = l.match(/qc\.(h|x|y|z)\s*\(\s*(\d+)\s*\)/);
             if (singleGateMatch) operations.push({ gate: singleGateMatch[1].toUpperCase(), q: parseInt(singleGateMatch[2], 10) });
-            
             const cxMatch = l.match(/qc\.cx\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)/);
             if (cxMatch) operations.push({ gate: 'CX', c: parseInt(cxMatch[1], 10), t: parseInt(cxMatch[2], 10) });
          } else {
             const qMatch = l.match(/range\((\d+)\)/);
             if (qMatch) newNumQ = parseInt(qMatch[1], 10);
-            
             const singleGateMatch = l.match(/cirq\.(H|X|Y|Z)\(qubits\[(\d+)\]\)/);
             if (singleGateMatch) operations.push({ gate: singleGateMatch[1].toUpperCase(), q: parseInt(singleGateMatch[2], 10) });
-            
             const cxMatch = l.match(/cirq\.CNOT\(qubits\[(\d+)\],\s*qubits\[(\d+)\]\)/);
             if (cxMatch) operations.push({ gate: 'CX', c: parseInt(cxMatch[1], 10), t: parseInt(cxMatch[2], 10) });
          }
        }
 
-       if (newNumQ !== numQubits && newNumQ > 0 && newNumQ <= 16) {
-           setNumQubits(newNumQ);
-       }
+       if (newNumQ !== numQubits && newNumQ > 0 && newNumQ <= 16) setNumQubits(newNumQ);
 
-       // Rebuild Grid
        const newGrid = Array(newNumQ).fill([]).map(() => Array(NUM_STEPS).fill(''));
        const nextFreeStep = Array(newNumQ).fill(0);
        
@@ -167,8 +182,7 @@ export default function VisualPlayground() {
          } else if (op.gate === 'CX' && op.c !== undefined && op.t !== undefined) {
            const c = op.c;
            const t = op.t;
-           if (c >= newNumQ || t >= newNumQ) continue;
-           if (t !== c + 1) continue; // Only visual support for adjacent CNOT right now
+           if (c >= newNumQ || t >= newNumQ || t !== c + 1) continue;
            const step = Math.max(nextFreeStep[c], nextFreeStep[t]);
            if (step < NUM_STEPS) {
              newGrid[c][step] = 'CX';
@@ -178,32 +192,32 @@ export default function VisualPlayground() {
          }
        }
        setGrid(newGrid);
-    }, 500); // 500ms debounce
+    }, 500);
   };
 
-  // 3. Execution Debouncer
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      const runCircuit = async () => {
-        setIsExecuting(true);
-        setErrorMsg('');
-        
-        let pythonCode = code + '\n';
+  const executeCircuit = async (isSubmit = false) => {
+    setIsExecuting(true);
+    setErrorMsg('');
+    
+    let pythonCode = code + '\n';
+    let expectedBitsFormat = `0${numQubits}b`;
 
-        if (language === 'qiskit') {
-          pythonCode = `from qiskit.quantum_info import Statevector\nimport json\n` + code + `\n
+    if (language === 'qiskit') {
+      pythonCode = `from qiskit.quantum_info import Statevector\nimport json\n` + code + `\n
 try:
     sv = Statevector(qc)
     probs = sv.probabilities_dict()
     filtered_probs = {k: v for k, v in probs.items() if v > 1e-5}
+    # Pad to correct length just in case
+    padded_probs = {k.zfill(${numQubits}): v for k,v in filtered_probs.items()}
     print("##JSON_START##")
-    print(json.dumps(filtered_probs))
+    print(json.dumps(padded_probs))
     print("##JSON_END##")
 except Exception as e:
     print("ERROR:", str(e))
-  `;
-        } else if (language === 'cirq') {
-          pythonCode = `import numpy as np\nimport json\n` + code + `\n
+`;
+    } else if (language === 'cirq') {
+      pythonCode = `import numpy as np\nimport json\n` + code + `\n
 try:
     simulator = cirq.Simulator()
     result = simulator.simulate(circuit)
@@ -213,7 +227,7 @@ try:
     filtered_probs = {}
     for i, p in enumerate(probs):
         if p > 1e-5:
-            bin_str = format(i, f'0{numQubits}b')
+            bin_str = format(i, '${expectedBitsFormat}')
             filtered_probs[bin_str] = float(p)
             
     print("##JSON_START##")
@@ -221,43 +235,54 @@ try:
     print("##JSON_END##")
 except Exception as e:
     print("ERROR:", str(e))
-  `;
-        }
+`;
+    }
 
-        try {
-          const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
-          const response = await fetch(`${BACKEND_URL}/execute`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: pythonCode, language }),
-          });
-          const data = await response.json();
-          if (data.success && data.output) {
-            const match = (data.output as string).match(/##JSON_START##\s*([\s\S]*?)\s*##JSON_END##/);
-            if (match && match[1]) {
-              setProbabilities(JSON.parse(match[1]));
-            } else {
-              setErrorMsg("Could not parse output.");
-            }
-          } else {
-            setErrorMsg(data.error || "Execution failed");
+    try {
+      const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+      const response = await fetch(`${BACKEND_URL}/execute`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: pythonCode, language }),
+      });
+      const data = await response.json();
+      if (data.success && data.output) {
+        const match = (data.output as string).match(/##JSON_START##\s*([\s\S]*?)\s*##JSON_END##/);
+        if (match && match[1]) {
+          const parsed = JSON.parse(match[1]);
+          setProbabilities(parsed);
+          if (isSubmit && onSubmit) {
+            onSubmit(parsed);
           }
-        } catch (err: unknown) {
-          setErrorMsg("Backend connection failed.");
+        } else {
+          setErrorMsg("Could not parse output.");
+          if (isSubmit && onSubmit) onSubmit({});
         }
-        setIsExecuting(false);
-      };
+      } else {
+        setErrorMsg(data.error || "Execution failed");
+        if (isSubmit && onSubmit) onSubmit({});
+      }
+    } catch (err: unknown) {
+      setErrorMsg("Backend connection failed.");
+      if (isSubmit && onSubmit) onSubmit({});
+    }
+    setIsExecuting(false);
+  };
 
+  // Auto-run when typing/dragging (only outside Arena Mode)
+  useEffect(() => {
+    if (arenaMode) return;
+
+    const handler = setTimeout(() => {
       if (code && !code.includes('# Drag gates')) {
-        runCircuit();
+        executeCircuit(false);
       } else {
          setProbabilities({ ['0'.repeat(numQubits)]: 1.0 });
       }
-    }, 1000); // 1 second debounce for execution
+    }, 1000);
 
     return () => clearTimeout(handler);
-  }, [code, language, numQubits]);
-
+  }, [code, language, numQubits, arenaMode]);
 
   const chartData = {
     labels: Object.keys(probabilities).sort(),
@@ -297,7 +322,19 @@ except Exception as e:
           <option value="qiskit">Qiskit Engine</option>
           <option value="cirq">Cirq Engine</option>
         </select>
-        <div style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>{isExecuting ? 'Executing...' : 'Ready'}</div>
+        
+        {arenaMode ? (
+           <div style={{ display: 'flex', gap: '12px' }}>
+              <button className="btn-secondary" onClick={() => executeCircuit(false)} disabled={isExecuting}>
+                Run Output
+              </button>
+              <button className="btn-primary" onClick={() => executeCircuit(true)} disabled={isExecuting}>
+                {isExecuting && submitStatus === 'verifying' ? 'Submitting...' : 'Submit'}
+              </button>
+           </div>
+        ) : (
+          <div style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>{isExecuting ? 'Executing...' : 'Ready'}</div>
+        )}
       </div>
       
       <div style={{ display: 'flex', gap: '24px', flexDirection: 'column', flex: 1 }}>
@@ -367,39 +404,11 @@ except Exception as e:
                               position: 'relative'
                             }}
                           >
-                            {/* Standard Gates */}
                             {cell && cell !== 'CX' && cell}
-                            
-                            {/* CX Control (Dot) */}
-                            {cell === 'CX' && (
-                              <div style={{ 
-                                width: '10px', height: '10px', 
-                                background: 'var(--accent-secondary)', 
-                                borderRadius: '50%', 
-                                zIndex: 2 
-                              }} />
-                            )}
-                            
-                            {/* Vertical Line for CX */}
-                            {cell === 'CX' && (
-                              <div style={{ 
-                                position: 'absolute', top: '50%', left: '15px', 
-                                width: '2px', height: '36px', 
-                                background: 'var(--accent-secondary)', 
-                                zIndex: -1 
-                              }} />
-                            )}
-
-                            {/* CX Target (Cross in Circle) */}
+                            {cell === 'CX' && <div style={{ width: '10px', height: '10px', background: 'var(--accent-secondary)', borderRadius: '50%', zIndex: 2 }} />}
+                            {cell === 'CX' && <div style={{ position: 'absolute', top: '50%', left: '15px', width: '2px', height: '36px', background: 'var(--accent-secondary)', zIndex: -1 }} />}
                             {isCXTarget && (
-                              <div style={{
-                                width: '20px', height: '20px',
-                                border: '2px solid var(--accent-secondary)',
-                                borderRadius: '50%',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                background: 'var(--bg-color)',
-                                zIndex: 2
-                              }}>
+                              <div style={{ width: '20px', height: '20px', border: '2px solid var(--accent-secondary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-color)', zIndex: 2 }}>
                                 <div style={{ position: 'absolute', width: '16px', height: '2px', background: 'var(--accent-secondary)' }} />
                                 <div style={{ position: 'absolute', width: '2px', height: '16px', background: 'var(--accent-secondary)' }} />
                               </div>
@@ -412,23 +421,15 @@ except Exception as e:
                 ))}
              </div>
              
-             {/* Add Qubit Button */}
              <div style={{ display: 'flex', alignItems: 'center', marginTop: '12px' }}>
-               <div style={{ width: '32px' }} /> {/* spacer */}
+               <div style={{ width: '32px' }} />
                <button 
                  onClick={addQubit}
-                 style={{ 
-                   background: 'rgba(255,255,255,0.05)', 
-                   border: '1px solid rgba(255,255,255,0.1)', 
-                   color: 'var(--text-secondary)',
-                   borderRadius: '4px', padding: '4px 12px', fontSize: '12px',
-                   cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px'
-                 }}
+                 style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-secondary)', borderRadius: '4px', padding: '4px 12px', fontSize: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
                >
                  + Add Qubit
                </button>
              </div>
-
           </div>
         </div>
 
