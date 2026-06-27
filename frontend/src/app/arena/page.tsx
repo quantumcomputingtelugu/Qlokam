@@ -15,6 +15,7 @@ export default function ArenaPage() {
   const [solvedProblems, setSolvedProblems] = useState<string[]>([]);
 
   const [activeProblemId, setActiveProblemId] = useState<string | null>(null);
+  const [listTab, setListTab] = useState<'practice' | 'contests'>('practice');
 
   // Editor states
   const [language, setLanguage] = useState('qiskit');
@@ -146,55 +147,101 @@ export default function ArenaPage() {
           </div>
         </div>
 
-        {/* Right Panel: Problem List */}
-        <div className="glass-panel" style={{ flex: 3, padding: '24px', display: 'flex', flexDirection: 'column' }}>
-          <h2 style={{ marginBottom: '24px', fontSize: '24px', color: 'var(--accent-primary)' }}>Practice Problems</h2>
+        {/* Right Panel: Problem List or Contests */}
+        <div className="glass-panel" style={{ flex: 3, display: 'flex', flexDirection: 'column' }}>
           
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '1px solid var(--surface-border)', color: 'var(--text-secondary)', fontSize: '14px' }}>
-                <th style={{ padding: '12px 16px', width: '60px' }}>Status</th>
-                <th style={{ padding: '12px 16px' }}>Title</th>
-                <th style={{ padding: '12px 16px', width: '100px' }}>Difficulty</th>
-                <th style={{ padding: '12px 16px', width: '100px' }}>Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {arenaProblems.map(p => {
-                const solved = solvedProblems.includes(p.id);
-                return (
-                  <tr 
-                    key={p.id} 
-                    onClick={() => handleOpenProblem(p)}
-                    style={{ 
-                      borderBottom: '1px solid rgba(255,255,255,0.05)', 
-                      cursor: 'pointer',
-                      transition: 'background 0.2s'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
-                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                  >
-                    <td style={{ padding: '16px', color: solved ? 'var(--success)' : 'var(--surface-border)' }}>
-                      {solved ? '✔' : '○'}
-                    </td>
-                    <td style={{ padding: '16px', fontWeight: 500, color: 'var(--text-primary)' }}>
-                      {p.number}. {p.title}
-                    </td>
-                    <td style={{ padding: '16px' }}>
-                      <span style={{ 
-                        color: p.difficulty === 'Easy' ? 'var(--success)' : p.difficulty === 'Medium' ? '#d29922' : 'var(--error)' 
-                      }}>
-                        {p.difficulty}
-                      </span>
-                    </td>
-                    <td style={{ padding: '16px', color: 'var(--text-secondary)' }}>
-                      +{p.points}
-                    </td>
+          {/* Header Tabs */}
+          <div style={{ display: 'flex', borderBottom: '1px solid var(--surface-border)', padding: '0 24px' }}>
+            <button 
+              onClick={() => setListTab('practice')}
+              style={{ 
+                padding: '16px 24px', background: 'none', border: 'none', cursor: 'pointer',
+                color: listTab === 'practice' ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                borderBottom: listTab === 'practice' ? '2px solid var(--accent-primary)' : '2px solid transparent',
+                fontWeight: listTab === 'practice' ? 600 : 400, fontSize: '16px'
+              }}
+            >
+              Practice Problems
+            </button>
+            <button 
+              onClick={() => setListTab('contests')}
+              style={{ 
+                padding: '16px 24px', background: 'none', border: 'none', cursor: 'pointer',
+                color: listTab === 'contests' ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                borderBottom: listTab === 'contests' ? '2px solid var(--accent-primary)' : '2px solid transparent',
+                fontWeight: listTab === 'contests' ? 600 : 400, fontSize: '16px'
+              }}
+            >
+              Contests
+            </button>
+          </div>
+
+          <div style={{ padding: '24px', flex: 1, overflowY: 'auto' }}>
+            {listTab === 'practice' ? (
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--surface-border)', color: 'var(--text-secondary)', fontSize: '14px' }}>
+                    <th style={{ padding: '12px 16px', width: '60px' }}>Status</th>
+                    <th style={{ padding: '12px 16px' }}>Title</th>
+                    <th style={{ padding: '12px 16px', width: '100px' }}>Difficulty</th>
+                    <th style={{ padding: '12px 16px', width: '100px' }}>Points</th>
                   </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {arenaProblems.map(p => {
+                    const solved = solvedProblems.includes(p.id);
+                    return (
+                      <tr 
+                        key={p.id} 
+                        onClick={() => handleOpenProblem(p)}
+                        style={{ 
+                          borderBottom: '1px solid rgba(255,255,255,0.05)', 
+                          cursor: 'pointer',
+                          transition: 'background 0.2s'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <td style={{ padding: '16px', color: solved ? 'var(--success)' : 'var(--surface-border)' }}>
+                          {solved ? '✔' : '○'}
+                        </td>
+                        <td style={{ padding: '16px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                          {p.number}. {p.title}
+                        </td>
+                        <td style={{ padding: '16px' }}>
+                          <span style={{ 
+                            color: p.difficulty === 'Easy' ? 'var(--success)' : p.difficulty === 'Medium' ? '#d29922' : 'var(--error)' 
+                          }}>
+                            {p.difficulty}
+                          </span>
+                        </td>
+                        <td style={{ padding: '16px', color: 'var(--text-secondary)' }}>
+                          +{p.points}
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <h2 style={{ fontSize: '20px', color: 'var(--text-primary)' }}>Contest Arenas</h2>
+                <p style={{ color: 'var(--text-secondary)' }}>Compete in live events to test your skills and climb the global leaderboard!</p>
+                
+                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                  {['Quantum Cryptography', 'Error Correction', 'Advanced Algorithms'].map(category => (
+                    <div key={category} style={{ flex: '1 1 300px', padding: '24px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--surface-border)', borderRadius: '12px' }}>
+                      <h3 style={{ fontSize: '18px', color: 'var(--accent-primary)', marginBottom: '8px' }}>{category}</h3>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '16px' }}>Test your skills in {category.toLowerCase()} challenges.</p>
+                      <div style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', fontSize: '13px', color: 'var(--text-secondary)', display: 'inline-block' }}>
+                        No active contests
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
