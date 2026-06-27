@@ -82,10 +82,10 @@ export default function TutorialsPage() {
   };
 
   return (
-    <div className="container" style={{ paddingTop: '24px', display: 'flex', gap: '24px', height: 'calc(100vh - 100px)' }}>
+    <div style={{ paddingTop: '24px', paddingLeft: '24px', paddingRight: '24px', display: 'flex', gap: '24px', height: 'calc(100vh - 100px)', width: '100%' }}>
       {/* Left Panel: Tutorial List */}
-      <div className="glass-panel" style={{ flex: 1, padding: '24px', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-        <h2 style={{ marginBottom: '24px', fontSize: '24px', color: 'var(--accent-primary)' }}>Quantum Modules</h2>
+      <div className="glass-panel" style={{ width: '280px', flexShrink: 0, padding: '20px', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+        <h2 style={{ marginBottom: '24px', fontSize: '20px', color: 'var(--accent-primary)' }}>Quantum Modules</h2>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
           {tutorialSessions.map((session, sIndex) => {
@@ -129,15 +129,14 @@ export default function TutorialsPage() {
                       }}
                       className="tutorial-card"
                     >
-                      <div className="flex-between" style={{ marginBottom: '8px' }}>
-                        <h4 style={{ fontSize: '16px', margin: 0, color: 'var(--text-primary)' }}>{tutorial.id}. {tutorial.title}</h4>
+                      <div className="flex-between">
+                        <h4 style={{ fontSize: '15px', margin: 0, color: 'var(--text-primary)' }}>{tutorial.id}. {tutorial.title}</h4>
                         {completed && (
-                          <span style={{ fontSize: '12px', padding: '4px 8px', borderRadius: '12px', background: 'rgba(63, 185, 80, 0.2)', color: 'var(--success)' }}>
-                            Completed
+                          <span style={{ fontSize: '12px', color: 'var(--success)' }}>
+                            ✔
                           </span>
                         )}
                       </div>
-                      <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>{tutorial.description}</p>
                     </div>
                   );
                 })}
