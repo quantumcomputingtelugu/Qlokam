@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { User } from 'firebase/auth';
 
 interface UsernameModalProps {
@@ -12,6 +13,11 @@ export default function UsernameModal({ user, onUsernameSet }: UsernameModalProp
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +51,9 @@ export default function UsernameModal({ user, onUsernameSet }: UsernameModalProp
     }
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div style={{
       position: 'fixed',
       top: 0, left: 0, right: 0, bottom: 0,
@@ -96,6 +104,7 @@ export default function UsernameModal({ user, onUsernameSet }: UsernameModalProp
           </button>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
