@@ -37,6 +37,7 @@ export default function VisualPlayground({
   const [numQubits, setNumQubits] = useState(3);
   const [grid, setGrid] = useState<string[][]>(Array(3).fill([]).map(() => Array(NUM_STEPS).fill('')));
   const [draggedGate, setDraggedGate] = useState<string | null>(null);
+  const [selectedGate, setSelectedGate] = useState<string | null>(null);
   const [pendingCX, setPendingCX] = useState<{qIdx: number, sIdx: number} | null>(null);
   const [probabilities, setProbabilities] = useState<Record<string, number>>({});
   const [isExecuting, setIsExecuting] = useState(false);
@@ -406,15 +407,18 @@ except Exception as e:
                   key={gate}
                   draggable
                   onDragStart={(e) => handleDragStart(e, gate)}
+                  onClick={() => setSelectedGate(gate === selectedGate ? null : gate)}
                   style={{ 
                     width: '36px', height: '36px', 
-                    background: 'rgba(255, 255, 255, 0.1)', 
-                    border: '1px solid var(--surface-border)', 
+                    background: selectedGate === gate ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)', 
+                    border: selectedGate === gate ? '2px solid var(--accent-primary)' : '1px solid var(--surface-border)', 
+                    boxShadow: selectedGate === gate ? '0 0 10px rgba(69, 243, 255, 0.4)' : 'none',
                     borderRadius: '8px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'grab',
+                    cursor: 'pointer',
                     fontWeight: 'bold', fontSize: '14px',
-                    color: gate === 'CX' ? 'var(--accent-secondary)' : gate === 'M' ? '#ff7b72' : 'var(--accent-primary)'
+                    color: gate === 'CX' ? 'var(--accent-secondary)' : gate === 'M' ? '#ff7b72' : 'var(--accent-primary)',
+                    transition: 'all 0.2s ease'
                   }}
                 >
                   {gate}
@@ -496,6 +500,24 @@ except Exception as e:
                                  return;
                               }
 
+                              if (selectedGate) {
+                                if (!isCXTarget && !cell) {
+                                  let finalGate = selectedGate;
+                                  if (selectedGate === 'CX') {
+                                    setPendingCX({ qIdx, sIdx });
+                                    finalGate = 'CX_PENDING';
+                                  }
+                                  setIsTyping(false);
+                                  setGrid(prev => {
+                                    const newGrid = [...prev];
+                                    newGrid[qIdx] = [...newGrid[qIdx]];
+                                    newGrid[qIdx][sIdx] = finalGate;
+                                    return newGrid;
+                                  });
+                                }
+                                return;
+                              }
+
                               if (isCXTarget) {
                                 controlQubits.forEach(c => removeGate(c, sIdx));
                               } else if (cell) {
@@ -551,9 +573,9 @@ except Exception as e:
         {/* Bottom Panel: Visualization and Code */}
         <div className="responsive-flex" style={{ display: 'flex', gap: '16px', minHeight: '300px', minWidth: 0 }}>
           
-          <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+          <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '300px' }}>
             <h3 style={{ fontSize: '12px', marginBottom: '8px', color: 'var(--accent-primary)' }}>Python Code (Editable)</h3>
-            <div style={{ flex: 1, overflow: 'hidden', borderRadius: '8px' }}>
+            <div style={{ flex: 1, overflow: 'hidden', borderRadius: '8px', minHeight: '250px' }}>
               <Editor
                 height="100%"
                 defaultLanguage="python"
@@ -565,18 +587,19 @@ except Exception as e:
                   fontSize: 14,
                   fontFamily: 'Consolas, "Courier New", monospace',
                   scrollBeyondLastLine: false,
+                  wordWrap: "on",
                 }}
               />
             </div>
           </div>
 
-          <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+          <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '300px' }}>
             {errorMsg && (
               <div style={{ padding: '8px', background: 'rgba(248, 81, 73, 0.1)', border: '1px solid var(--error)', borderRadius: '8px', color: 'var(--error)', fontSize: '12px', marginBottom: '8px', whiteSpace: 'pre-wrap' }}>
                 {errorMsg}
               </div>
             )}
-            <div style={{ flex: 1, position: 'relative' }}>
+            <div style={{ flex: 1, position: 'relative', minHeight: '250px' }}>
                 <Bar data={chartData} options={chartOptions} />
             </div>
           </div>
