@@ -12,7 +12,6 @@ import { usePathname } from 'next/navigation';
 export default function Navigation() {
   const [user, setUser] = useState<User | null>(null);
   const [username, setUsername] = useState<string | null>(null);
-  const [needsUsername, setNeedsUsername] = useState(false);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
 
@@ -28,15 +27,9 @@ export default function Navigation() {
           const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
           if (userDoc.exists() && userDoc.data().username) {
             setUsername(userDoc.data().username);
-            setNeedsUsername(false);
-          } else {
-            setNeedsUsername(true);
           }
         } catch (error) {
           console.error("Error fetching user data", error);
-          // If we can't read the document (e.g., due to strict security rules),
-          // default to asking for a username. The secure backend will verify if they actually need one.
-          setNeedsUsername(true);
         }
       }
       setLoading(false);
@@ -113,12 +106,11 @@ export default function Navigation() {
         )}
       </div>
 
-      {user && needsUsername && (
+      {user && !loading && !username && (
         <UsernameModal 
           user={user} 
           onUsernameSet={(newUsername) => {
             setUsername(newUsername);
-            setNeedsUsername(false);
           }} 
         />
       )}
