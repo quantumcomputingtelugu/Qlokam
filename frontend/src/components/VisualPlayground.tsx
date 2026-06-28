@@ -23,13 +23,15 @@ interface VisualPlaygroundProps {
   arenaProblemId?: string | null;
   onSubmit?: (probs: Record<string, number>) => void;
   submitStatus?: 'idle' | 'verifying' | 'success' | 'failed';
+  disableSubmit?: boolean;
 }
 
 export default function VisualPlayground({ 
   arenaMode = false, 
   arenaProblemId = null,
   onSubmit, 
-  submitStatus = 'idle' 
+  submitStatus = 'idle',
+  disableSubmit = false
 }: VisualPlaygroundProps = {}) {
   const [language, setLanguage] = useState<'qiskit' | 'cirq'>('qiskit');
   const [numQubits, setNumQubits] = useState(3);
@@ -382,8 +384,8 @@ except Exception as e:
               <button className="btn-secondary" onClick={() => executeCircuit(false)} disabled={isExecuting}>
                 Run Output
               </button>
-              <button className="btn-primary" onClick={() => executeCircuit(true)} disabled={isExecuting}>
-                {isExecuting && submitStatus === 'verifying' ? 'Submitting...' : 'Submit'}
+              <button className="btn-primary" onClick={() => executeCircuit(true)} disabled={isExecuting || disableSubmit}>
+                {disableSubmit ? 'Sign In to Submit' : (isExecuting && submitStatus === 'verifying' ? 'Submitting...' : 'Submit')}
               </button>
            </div>
         ) : (
@@ -547,7 +549,7 @@ except Exception as e:
         </div>
 
         {/* Bottom Panel: Visualization and Code */}
-        <div style={{ display: 'flex', gap: '16px', minHeight: '300px', minWidth: 0 }}>
+        <div className="responsive-flex" style={{ display: 'flex', gap: '16px', minHeight: '300px', minWidth: 0 }}>
           
           <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
             <h3 style={{ fontSize: '12px', marginBottom: '8px', color: 'var(--accent-primary)' }}>Python Code (Editable)</h3>

@@ -106,7 +106,7 @@ export default function ArenaPage() {
   // -------------------------
   if (!activeProblem) {
     return (
-      <div className="container" style={{ paddingTop: '24px', display: 'flex', gap: '24px', minHeight: 'calc(100vh - 100px)' }}>
+      <div className="container responsive-flex" style={{ paddingTop: '24px', display: 'flex', gap: '24px', minHeight: 'calc(100vh - 100px)' }}>
         
         {/* Left Panel: Profile & Stats */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -239,7 +239,7 @@ export default function ArenaPage() {
   // RENDER: SOLVER VIEW
   // -------------------------
   return (
-    <div className="container" style={{ paddingTop: '24px', display: 'flex', gap: '24px', minHeight: 'calc(100vh - 100px)' }}>
+    <div className="container responsive-flex" style={{ paddingTop: '24px', display: 'flex', gap: '24px', minHeight: 'calc(100vh - 100px)' }}>
       
       {/* Left Panel: Problem Description */}
       <div className="glass-panel" style={{ flex: 1, padding: '24px', display: 'flex', flexDirection: 'column' }}>
@@ -295,6 +295,7 @@ export default function ArenaPage() {
            arenaProblemId={activeProblemId}
            onSubmit={handleSubmit}
            submitStatus={submitStatus}
+           disableSubmit={!user}
         />
       </div>
 

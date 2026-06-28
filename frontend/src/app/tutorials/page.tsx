@@ -82,9 +82,9 @@ export default function TutorialsPage() {
   };
 
   return (
-    <div style={{ paddingTop: '24px', paddingLeft: '24px', paddingRight: '24px', display: 'flex', gap: '24px', height: 'calc(100vh - 100px)', width: '100%' }}>
+    <div className="container responsive-flex" style={{ paddingTop: '24px', display: 'flex', gap: '24px', height: 'calc(100vh - 100px)', width: '100%' }}>
       {/* Left Panel: Tutorial List */}
-      <div className="glass-panel" style={{ width: '280px', flexShrink: 0, padding: '20px', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+      <div className="glass-panel responsive-sidebar" style={{ width: '280px', flexShrink: 0, padding: '20px', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
         <h2 style={{ marginBottom: '24px', fontSize: '20px', color: 'var(--accent-primary)' }}>Quantum Modules</h2>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>

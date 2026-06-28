@@ -42,8 +42,9 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="glass-panel" style={{ 
-      margin: '16px 24px', 
+    <nav className="glass-panel nav-container" style={{ 
+      margin: '16px auto', 
+      maxWidth: '1200px', 
       padding: '16px 32px', 
       display: 'flex', 
       justifyContent: 'space-between', 
@@ -56,7 +57,7 @@ export default function Navigation() {
           <h2 style={{ margin: 0, fontWeight: 700 }}><span className="text-gradient">Q</span>lokam</h2>
         </Link>
       </div>
-      <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+      <div className="nav-menu" style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
         <Link href="/tutorials" className="nav-link" style={{ fontWeight: 500, color: pathname === '/tutorials' ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Tutorials</Link>
         {user && (
           <Link href="/arena" className="nav-link" style={{ fontWeight: 500, color: pathname?.startsWith('/arena') ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Arena</Link>
