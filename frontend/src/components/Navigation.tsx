@@ -56,7 +56,8 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="glass-panel nav-container" style={{ 
+    <>
+      <nav className="glass-panel nav-container" style={{ 
       margin: '16px auto', 
       maxWidth: '1200px', 
       padding: '16px 32px', 
@@ -104,8 +105,8 @@ export default function Navigation() {
             </button>
           )
         )}
-      </div>
-
+      </nav>
+      
       {user && !loading && !username && (
         <UsernameModal 
           user={user} 
@@ -114,6 +115,6 @@ export default function Navigation() {
           }} 
         />
       )}
-    </nav>
+    </>
   );
 }
