@@ -4,9 +4,9 @@ export async function getFirebaseAdmin() {
     appModule = await import('firebase-admin/app');
     firestoreModule = await import('firebase-admin/firestore');
     authModule = await import('firebase-admin/auth');
-  } catch (err) {
+  } catch (err: any) {
     console.error('Failed to import firebase-admin modules:', err);
-    return null;
+    return { error: 'Dynamic import failed: ' + err.message };
   }
 
   const { initializeApp, getApps, cert } = appModule;
