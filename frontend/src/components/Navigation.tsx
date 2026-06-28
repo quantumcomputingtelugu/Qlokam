@@ -105,9 +105,10 @@ export default function Navigation() {
             </button>
           )
         )}
-      </nav>
+      </div>
+    </nav>
       
-      {user && !loading && !username && (
+    {user && !loading && !username && (
         <UsernameModal 
           user={user} 
           onUsernameSet={(newUsername) => {
