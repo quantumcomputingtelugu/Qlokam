@@ -8,6 +8,7 @@ import { signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/aut
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import UsernameModal from './UsernameModal';
+import ProfileModal from './ProfileModal';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -17,6 +18,7 @@ export default function Navigation() {
   const [loading, setLoading] = useState(true);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -163,7 +165,12 @@ export default function Navigation() {
                   </div>
                 )}
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '20px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <div 
+                style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '20px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', transition: 'background 0.2s' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
+                onClick={() => setShowProfileModal(true)}
+              >
                 <img 
                   src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`} 
                   alt="Profile" 
@@ -197,6 +204,10 @@ export default function Navigation() {
           }} 
         />
       )}
+      
+    {user && showProfileModal && (
+      <ProfileModal user={user} onClose={() => setShowProfileModal(false)} />
+    )}
     </>
   );
 }
