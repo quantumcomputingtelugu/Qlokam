@@ -452,7 +452,7 @@ except Exception as e:
                            const target = parseInt(cell.split('|')[1], 10);
                            cxDist = target - qIdx;
                            cxLineHeight = Math.abs(cxDist) * 36; // 32px height + 4px gap
-                           cxLineTop = cxDist > 0 ? '50%' : \`calc(50% - \${cxLineHeight}px)\`;
+                           cxLineTop = cxDist > 0 ? '50%' : `calc(50% - ${cxLineHeight}px)`;
                         }
 
                         return (
@@ -485,7 +485,7 @@ except Exception as e:
                           >
                             {cell && !isCX && cell}
                             {isCX && <div style={{ width: '10px', height: '10px', background: 'var(--accent-secondary)', borderRadius: '50%', zIndex: 2 }} />}
-                            {isCX && <div style={{ position: 'absolute', top: cxLineTop, left: '15px', width: '2px', height: \`\${cxLineHeight}px\`, background: 'var(--accent-secondary)', zIndex: -1 }} />}
+                            {isCX && <div style={{ position: 'absolute', top: cxLineTop, left: '15px', width: '2px', height: `${cxLineHeight}px`, background: 'var(--accent-secondary)', zIndex: -1 }} />}
                             {isCXTarget && (
                               <div style={{ width: '20px', height: '20px', border: '2px solid var(--accent-secondary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-color)', zIndex: 2 }}>
                                 <div style={{ position: 'absolute', width: '16px', height: '2px', background: 'var(--accent-secondary)' }} />
