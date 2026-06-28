@@ -15,6 +15,8 @@ export default function Navigation() {
   const [user, setUser] = useState<User | null>(null);
   const [username, setUsername] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showUsernameModal, setShowUsernameModal] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -38,6 +40,14 @@ export default function Navigation() {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = () => setShowNotifications(false);
+    if (showNotifications) {
+      document.addEventListener('click', handleClickOutside);
+    }
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showNotifications]);
 
   const handleSignIn = async () => {
     if (!auth) return;
@@ -87,13 +97,71 @@ export default function Navigation() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
               <div 
                 style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-                onClick={() => alert("Notifications coming soon!")}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowNotifications(!showNotifications);
+                }}
               >
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'stroke 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.stroke = 'var(--text-primary)'} onMouseLeave={(e) => e.currentTarget.style.stroke = 'var(--text-secondary)'}>
                   <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                   <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                 </svg>
-                <span style={{ position: 'absolute', top: '-2px', right: '0px', width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', border: '2px solid var(--background-elevated)' }}></span>
+                {!username && (
+                  <span style={{ position: 'absolute', top: '-2px', right: '0px', width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', border: '2px solid var(--background-elevated)' }}></span>
+                )}
+
+                {showNotifications && (
+                  <div className="glass-panel" style={{
+                    position: 'absolute',
+                    top: '100%',
+                    right: '-10px',
+                    marginTop: '16px',
+                    width: '320px',
+                    padding: '16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px',
+                    zIndex: 1000,
+                    cursor: 'default',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
+                  }} onClick={(e) => e.stopPropagation()}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Notifications</h3>
+                      {!username && <span style={{ fontSize: '12px', background: 'var(--accent-color)', color: '#fff', padding: '2px 8px', borderRadius: '12px', fontWeight: 600 }}>1 New</span>}
+                    </div>
+                    
+                    {!username ? (
+                      <div 
+                        style={{ 
+                          padding: '12px', 
+                          borderRadius: '8px', 
+                          background: 'rgba(255, 255, 255, 0.03)', 
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          cursor: 'pointer',
+                          transition: 'background 0.2s'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'}
+                        onClick={() => {
+                          setShowUsernameModal(true);
+                          setShowNotifications(false);
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                          <span style={{ width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%' }}></span>
+                          <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>Action Required</span>
+                        </div>
+                        <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)', paddingLeft: '16px' }}>
+                          Please set your username to appear on the global leaderboard. Click here to set it up!
+                        </p>
+                      </div>
+                    ) : (
+                      <div style={{ textAlign: 'center', padding: '24px 0', color: 'var(--text-secondary)', fontSize: '14px' }}>
+                        No new notifications
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '20px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <img 
@@ -120,11 +188,12 @@ export default function Navigation() {
       </div>
     </nav>
       
-    {user && !loading && !username && (
+    {user && !loading && showUsernameModal && !username && (
         <UsernameModal 
           user={user} 
           onUsernameSet={(newUsername) => {
             setUsername(newUsername);
+            setShowUsernameModal(false);
           }} 
         />
       )}
