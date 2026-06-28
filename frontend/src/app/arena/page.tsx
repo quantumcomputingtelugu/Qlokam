@@ -11,14 +11,46 @@ import AdBanner from '@/components/AdBanner';
 
 export default function ArenaPage() {
   const [user, setUser] = useState<User | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const [rating, setRating] = useState(0);
   const [solvedProblems, setSolvedProblems] = useState<string[]>([]);
 
   const [activeProblemId, setActiveProblemId] = useState<string | null>(null);
-  const [listTab, setListTab] = useState<'practice' | 'contests'>('practice');
-
+  const [listTab, setListTab] = useState<'practice' | 'contests' | 'leaderboard'>('practice');
+  const [leaderboard, setLeaderboard] = useState<any[]>([]);
+  const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'verifying' | 'success' | 'failed'>('idle');
+
+  // Fetch leaderboard initially to populate Global Rank
+  useEffect(() => {
+    fetch('/api/leaderboard')
+      .then(res => res.json())
+      .then(data => {
+        if (data.leaderboard) {
+          setLeaderboard(data.leaderboard);
+        }
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    if (listTab === 'leaderboard' && leaderboard.length === 0) {
+      setLoadingLeaderboard(true);
+      fetch('/api/leaderboard')
+        .then(res => res.json())
+        .then(data => {
+          if (data.leaderboard) {
+            setLeaderboard(data.leaderboard);
+          }
+          setLoadingLeaderboard(false);
+        })
+        .catch(err => {
+          console.error('Failed to load leaderboard', err);
+          setLoadingLeaderboard(false);
+        });
+    }
+  }, [listTab]);
 
   useEffect(() => {
     if (!auth) {
@@ -36,6 +68,7 @@ export default function ArenaPage() {
             const data = docSnap.data();
             if (data.rating) setRating(data.rating);
             if (data.solvedArenaProblems) setSolvedProblems(data.solvedArenaProblems);
+            if (data.username) setUsername(data.username);
           }
         } catch (e) {
           console.error("Error fetching user data", e);
@@ -43,6 +76,7 @@ export default function ArenaPage() {
       } else {
         setRating(0);
         setSolvedProblems([]);
+        setUsername(null);
       }
       setLoadingUser(false);
     });
@@ -103,6 +137,10 @@ export default function ArenaPage() {
     }
   };
 
+  // Compute Rank
+  const userRankIndex = username ? leaderboard.findIndex(entry => entry.username === username) : -1;
+  const userRankDisplay = userRankIndex !== -1 ? `#${userRankIndex + 1}` : 'Unranked';
+
   // -------------------------
   // RENDER: LIST VIEW
   // -------------------------
@@ -126,7 +164,9 @@ export default function ArenaPage() {
                 <div style={{ fontSize: '48px', fontWeight: 'bold', color: '#d29922', textShadow: '0 0 20px rgba(210, 153, 34, 0.3)' }}>
                   {rating}
                 </div>
-                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '8px' }}>Global Rank: Unranked</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '8px' }}>
+                  Global Rank: <strong style={{ color: userRankIndex !== -1 ? '#d29922' : 'inherit' }}>{userRankDisplay}</strong>
+                </p>
               </div>
             )}
           </div>
@@ -165,6 +205,17 @@ export default function ArenaPage() {
               }}
             >
               Contests
+            </button>
+            <button 
+              onClick={() => setListTab('leaderboard')}
+              style={{ 
+                padding: '16px 24px', background: 'none', border: 'none', cursor: 'pointer',
+                color: listTab === 'leaderboard' ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                borderBottom: listTab === 'leaderboard' ? '2px solid var(--accent-primary)' : '2px solid transparent',
+                fontWeight: listTab === 'leaderboard' ? 600 : 400, fontSize: '16px'
+              }}
+            >
+              Leaderboard
             </button>
           </div>
 
@@ -215,7 +266,7 @@ export default function ArenaPage() {
                   })}
                 </tbody>
               </table>
-            ) : (
+            ) : listTab === 'contests' ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 <h2 style={{ fontSize: '20px', color: 'var(--text-primary)' }}>Contest Arenas</h2>
                 <p style={{ color: 'var(--text-secondary)' }}>Compete in live events to test your skills and climb the global leaderboard!</p>
@@ -231,6 +282,57 @@ export default function ArenaPage() {
                     </div>
                   ))}
                 </div>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <h2 style={{ fontSize: '20px', color: 'var(--text-primary)' }}>Global Leaderboard</h2>
+                <p style={{ color: 'var(--text-secondary)' }}>Top ranked quantum pioneers based on Arena Rating.</p>
+                
+                {loadingLeaderboard ? (
+                   <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>Loading Leaderboard...</div>
+                ) : (
+                  <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid var(--surface-border)', color: 'var(--text-secondary)', fontSize: '14px' }}>
+                        <th style={{ padding: '12px 16px', width: '80px', textAlign: 'center' }}>Rank</th>
+                        <th style={{ padding: '12px 16px' }}>Pioneer</th>
+                        <th style={{ padding: '12px 16px', width: '120px', textAlign: 'center' }}>Rating</th>
+                        <th style={{ padding: '12px 16px', width: '120px', textAlign: 'center' }}>Problems Solved</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {leaderboard.map((entry, idx) => (
+                        <tr 
+                          key={entry.username} 
+                          style={{ 
+                            borderBottom: '1px solid rgba(255,255,255,0.05)',
+                            background: idx === 0 ? 'rgba(210, 153, 34, 0.05)' : idx === 1 ? 'rgba(192, 192, 192, 0.05)' : idx === 2 ? 'rgba(205, 127, 50, 0.05)' : 'transparent'
+                          }}
+                        >
+                          <td style={{ padding: '16px', textAlign: 'center', fontWeight: 'bold', color: idx === 0 ? '#d29922' : idx === 1 ? '#c0c0c0' : idx === 2 ? '#cd7f32' : 'var(--text-secondary)' }}>
+                            #{idx + 1}
+                          </td>
+                          <td style={{ padding: '16px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                            @{entry.username}
+                          </td>
+                          <td style={{ padding: '16px', textAlign: 'center', color: '#d29922', fontWeight: 'bold' }}>
+                            {entry.rating}
+                          </td>
+                          <td style={{ padding: '16px', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                            {entry.solvedCount}
+                          </td>
+                        </tr>
+                      ))}
+                      {leaderboard.length === 0 && (
+                        <tr>
+                          <td colSpan={4} style={{ padding: '40px', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                            No ranked pioneers yet.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                )}
               </div>
             )}
           </div>
