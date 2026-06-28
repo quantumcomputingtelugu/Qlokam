@@ -271,6 +271,16 @@ export default function TutorialsPage() {
                 <div style={{ textAlign: 'center', marginTop: '40px', color: 'var(--text-secondary)' }}>
                   No quiz available for this module yet. Jump to Practice!
                 </div>
+              ) : activeTutorial.id > 1 && !completedTutorials.includes(activeTutorial.id - 1) ? (
+                <div style={{ textAlign: 'center', marginTop: '64px', padding: '40px', background: 'rgba(210, 153, 34, 0.05)', borderRadius: '12px', border: '1px dashed rgba(210, 153, 34, 0.3)' }}>
+                  <h3 style={{ fontSize: '24px', color: '#d29922', margin: '0 0 16px 0' }}>Quiz is Locked</h3>
+                  <p style={{ color: 'var(--text-secondary)', margin: '0 auto 24px', maxWidth: '400px' }}>
+                    You must complete <strong>Module {activeTutorial.id - 1}</strong> before you can unlock this quiz!
+                  </p>
+                  <button className="btn-primary" onClick={() => { setActiveTutorialId(activeTutorial.id - 1); setActiveTab('lesson'); }} style={{ padding: '8px 16px' }}>
+                    Go to Module {activeTutorial.id - 1}
+                  </button>
+                </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                   {activeTutorial.quizzes.map((quiz, qIndex) => (
@@ -377,14 +387,6 @@ export default function TutorialsPage() {
                   <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', maxWidth: '400px', margin: '0 auto 24px' }}>
                     Sign in with Google to unlock interactive circuit building, save your progress, and track your learning journey!
                   </p>
-                </div>
-              ) : activeTutorial.id > 1 && !completedTutorials.includes(activeTutorial.id - 1) ? (
-                <div style={{ textAlign: 'center', marginTop: '64px', padding: '40px', background: 'rgba(210, 153, 34, 0.05)', borderRadius: '12px', border: '1px dashed rgba(210, 153, 34, 0.3)' }}>
-                  <h3 style={{ fontSize: '24px', color: '#d29922', marginBottom: '16px' }}>Practice is Locked</h3>
-                  <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', maxWidth: '400px', margin: '0 auto 24px' }}>
-                    You must complete the practice for <strong>Module {activeTutorial.id - 1}</strong> before you can unlock this one!
-                  </p>
-                  <button className="btn-primary" onClick={() => { setActiveTutorialId(activeTutorial.id - 1); setActiveTab('practice'); }} style={{ padding: '8px 16px' }}>Go to Module {activeTutorial.id - 1}</button>
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
