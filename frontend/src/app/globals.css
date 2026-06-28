@@ -118,3 +118,9 @@ a {
 }
 
 .nav-link:hover { color: var(--text-primary) !important; }
+
+@keyframes pulse {
+  0% { transform: translateX(-50%) scale(1); box-shadow: 0 0 0 0 rgba(192, 132, 252, 0.7); }
+  70% { transform: translateX(-50%) scale(1.05); box-shadow: 0 0 0 10px rgba(192, 132, 252, 0); }
+  100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 0 0 rgba(192, 132, 252, 0); }
+}

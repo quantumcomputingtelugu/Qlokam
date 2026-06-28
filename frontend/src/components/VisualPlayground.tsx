@@ -35,6 +35,7 @@ export default function VisualPlayground({
   const [numQubits, setNumQubits] = useState(3);
   const [grid, setGrid] = useState<string[][]>(Array(3).fill([]).map(() => Array(NUM_STEPS).fill('')));
   const [draggedGate, setDraggedGate] = useState<string | null>(null);
+  const [pendingCX, setPendingCX] = useState<{qIdx: number, sIdx: number} | null>(null);
   const [probabilities, setProbabilities] = useState<Record<string, number>>({});
   const [isExecuting, setIsExecuting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -51,6 +52,7 @@ export default function VisualPlayground({
       setProbabilities({});
       setErrorMsg('');
       setCode('');
+      setPendingCX(null);
     }
   }, [arenaProblemId, arenaMode]);
 
@@ -71,20 +73,16 @@ export default function VisualPlayground({
 
   const handleDrop = (e: React.DragEvent, qIdx: number, sIdx: number) => {
     e.preventDefault();
+    if (pendingCX) return; // Block drops while pending CX
+
     const gate = e.dataTransfer.getData('gate');
     if (!gate) return;
 
     let finalGate = gate;
 
     if (gate === 'CX') {
-      const targetStr = prompt(`Enter target qubit for CNOT (0 to ${numQubits - 1}, not ${qIdx}):`);
-      if (targetStr === null) return; // cancelled
-      const targetNum = parseInt(targetStr, 10);
-      if (isNaN(targetNum) || targetNum < 0 || targetNum >= numQubits || targetNum === qIdx) {
-        alert("Invalid target qubit.");
-        return;
-      }
-      finalGate = `CX|${targetNum}`;
+      setPendingCX({ qIdx, sIdx });
+      finalGate = 'CX_PENDING';
     }
     
     setIsTyping(false);
@@ -96,7 +94,9 @@ export default function VisualPlayground({
     });
   };
 
-  const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); };
+  const handleDragOver = (e: React.DragEvent) => { 
+    if (!pendingCX) e.preventDefault(); 
+  };
 
   const removeGate = (qIdx: number, sIdx: number) => {
     setIsTyping(false);
@@ -423,6 +423,13 @@ except Exception as e:
 
           {/* Circuit Grid */}
           <div className="glass-panel" style={{ padding: '16px', overflowX: 'auto', maxHeight: '600px', position: 'relative' }}>
+             
+             {pendingCX && (
+                <div style={{ position: 'absolute', top: '8px', left: '50%', transform: 'translateX(-50%)', background: 'var(--accent-secondary)', color: '#000', padding: '4px 12px', borderRadius: '12px', fontSize: '12px', fontWeight: 'bold', zIndex: 10, animation: 'pulse 1.5s infinite' }}>
+                   Select target qubit...
+                </div>
+             )}
+
              <div style={{ display: 'inline-flex', flexDirection: 'column', gap: '4px', minWidth: 'max-content' }}>
                 {grid.map((row, qIdx) => (
                   <div key={qIdx} style={{ display: 'flex', alignItems: 'center' }}>
@@ -442,7 +449,8 @@ except Exception as e:
                           }
                         }
                         const isCXTarget = controlQubits.length > 0;
-                        const isOccupied = cell !== '' || isCXTarget;
+                        const isCXPending = cell === 'CX_PENDING';
+                        const isOccupied = cell !== '' || isCXTarget || isCXPending;
                         const isCX = cell.startsWith('CX|');
                         
                         let cxDist = 0;
@@ -455,14 +463,37 @@ except Exception as e:
                            cxLineTop = cxDist > 0 ? '50%' : `calc(50% - ${cxLineHeight}px)`;
                         }
 
+                        const isPendingCol = pendingCX?.sIdx === sIdx;
+                        const isPendingRow = pendingCX?.qIdx === qIdx;
+
                         return (
                           <div 
                             key={sIdx}
                             onDrop={(e) => {
-                              if (!isCXTarget) handleDrop(e, qIdx, sIdx);
+                              if (!isCXTarget && !pendingCX) handleDrop(e, qIdx, sIdx);
                             }}
                             onDragOver={handleDragOver}
                             onClick={() => {
+                              if (pendingCX) {
+                                 if (sIdx === pendingCX.sIdx) {
+                                    if (qIdx !== pendingCX.qIdx) {
+                                       // Finalize target
+                                       setIsTyping(false);
+                                       setGrid(prev => {
+                                          const newGrid = [...prev];
+                                          newGrid[pendingCX.qIdx] = [...newGrid[pendingCX.qIdx]];
+                                          newGrid[pendingCX.qIdx][sIdx] = `CX|${qIdx}`;
+                                          return newGrid;
+                                       });
+                                    } else {
+                                       // Cancel
+                                       removeGate(qIdx, sIdx);
+                                    }
+                                    setPendingCX(null);
+                                 }
+                                 return;
+                              }
+
                               if (isCXTarget) {
                                 controlQubits.forEach(c => removeGate(c, sIdx));
                               } else if (cell) {
@@ -472,25 +503,28 @@ except Exception as e:
                             style={{
                               width: '32px', height: '32px',
                               margin: '0 2px',
-                              background: (cell && !isCX) ? 'var(--surface-color)' : 'transparent',
-                              border: (cell && !isCX) ? (cell === 'M' ? '1px solid #ff7b72' : '1px solid var(--accent-primary)') : 'none',
+                              background: (cell && !isCX && !isCXPending) ? 'var(--surface-color)' : (isPendingCol && !isOccupied ? 'rgba(69, 243, 255, 0.1)' : 'transparent'),
+                              border: (cell && !isCX && !isCXPending) ? (cell === 'M' ? '1px solid #ff7b72' : '1px solid var(--accent-primary)') : 'none',
                               borderRadius: '4px',
                               zIndex: 1,
                               display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              cursor: isOccupied ? 'pointer' : 'default',
+                              cursor: (isOccupied || isPendingCol) ? 'pointer' : 'default',
                               fontWeight: 'bold', fontSize: '12px',
                               color: cell === 'M' ? '#ff7b72' : 'var(--accent-primary)',
                               position: 'relative'
                             }}
                           >
-                            {cell && !isCX && cell}
-                            {isCX && <div style={{ width: '10px', height: '10px', background: 'var(--accent-secondary)', borderRadius: '50%', zIndex: 2 }} />}
+                            {cell && !isCX && !isCXPending && cell}
+                            {(isCX || isCXPending) && <div style={{ width: '10px', height: '10px', background: isCXPending ? '#fff' : 'var(--accent-secondary)', borderRadius: '50%', zIndex: 2, boxShadow: isCXPending ? '0 0 10px #fff' : 'none' }} />}
                             {isCX && <div style={{ position: 'absolute', top: cxLineTop, left: '15px', width: '2px', height: `${cxLineHeight}px`, background: 'var(--accent-secondary)', zIndex: -1 }} />}
                             {isCXTarget && (
                               <div style={{ width: '20px', height: '20px', border: '2px solid var(--accent-secondary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-color)', zIndex: 2 }}>
                                 <div style={{ position: 'absolute', width: '16px', height: '2px', background: 'var(--accent-secondary)' }} />
                                 <div style={{ position: 'absolute', width: '2px', height: '16px', background: 'var(--accent-secondary)' }} />
                               </div>
+                            )}
+                            {(isPendingCol && !isOccupied && !isPendingRow) && (
+                              <div style={{ width: '16px', height: '16px', border: '2px dashed rgba(69, 243, 255, 0.5)', borderRadius: '50%', zIndex: 2 }} />
                             )}
                           </div>
                         );
