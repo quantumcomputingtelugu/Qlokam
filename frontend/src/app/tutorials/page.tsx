@@ -49,22 +49,12 @@ export default function TutorialsPage() {
     setShowQuizResults(true);
   };
 
-  const handleWatchAd = (type: 'hint' | 'skip') => {
-    setAdLoading(type);
+  const handleWatchAd = () => {
+    setAdLoading('hint');
     // Simulate watching an ad (e.g. Google Publisher Tag Rewarded Ad)
-    setTimeout(async () => {
+    setTimeout(() => {
       setAdLoading(null);
-      if (type === 'hint') {
-        setHintUnlocked(true);
-      } else if (type === 'skip') {
-        // Automatically submit all correct answers and proceed to practice
-        const correctAnswers: Record<number, number> = {};
-        activeTutorial.quizzes?.forEach((q, i) => {
-          correctAnswers[i] = q.correctAnswerIndex;
-        });
-        setSelectedAnswers(correctAnswers);
-        setShowQuizResults(true);
-      }
+      setHintUnlocked(true);
     }, 2000); // 2 second simulated ad
   };
 
@@ -348,24 +338,16 @@ export default function TutorialsPage() {
                       <div style={{ display: 'flex', gap: '16px', marginTop: '16px', padding: '16px', background: 'rgba(210, 153, 34, 0.05)', borderRadius: '8px', border: '1px dashed rgba(210, 153, 34, 0.3)' }}>
                         <div style={{ flex: 1 }}>
                           <h4 style={{ margin: '0 0 8px 0', color: '#d29922' }}>Stuck on this quiz?</h4>
-                          <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '14px' }}>Watch a short sponsored message to unlock a hint, or skip this quiz entirely.</p>
+                          <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '14px' }}>Watch a short sponsored message to unlock a hint.</p>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                           <button 
                             className="btn-secondary" 
-                            onClick={() => handleWatchAd('hint')}
+                            onClick={handleWatchAd}
                             disabled={adLoading !== null || hintUnlocked}
                             style={{ padding: '8px 16px', fontSize: '14px' }}
                           >
                             {adLoading === 'hint' ? 'Loading Ad...' : hintUnlocked ? 'Hint Unlocked!' : '🎥 Watch Ad for Hint'}
-                          </button>
-                          <button 
-                            className="btn-secondary" 
-                            onClick={() => handleWatchAd('skip')}
-                            disabled={adLoading !== null}
-                            style={{ padding: '8px 16px', fontSize: '14px' }}
-                          >
-                            {adLoading === 'skip' ? 'Loading Ad...' : '⏭️ Watch Ad to Skip'}
                           </button>
                         </div>
                       </div>
