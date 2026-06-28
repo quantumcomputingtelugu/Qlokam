@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 import { adminDb, adminAuth } from '@/lib/firebaseAdmin';
 import { FieldValue, Transaction } from 'firebase-admin/firestore';

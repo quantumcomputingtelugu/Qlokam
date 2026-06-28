@@ -17,7 +17,7 @@ export default function AdBanner({
 }: AdBannerProps) {
   useEffect(() => {
     try {
-      // @ts-ignore
+      // @ts-expect-error Google Adsense adds adsbygoogle to window
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (err) {
       console.error(err);
