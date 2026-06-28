@@ -1,10 +1,21 @@
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
-import { getAuth } from 'firebase-admin/auth';
+export async function getFirebaseAdmin() {
+  let appModule, firestoreModule, authModule;
+  try {
+    appModule = await import('firebase-admin/app');
+    firestoreModule = await import('firebase-admin/firestore');
+    authModule = await import('firebase-admin/auth');
+  } catch (err) {
+    console.error('Failed to import firebase-admin modules:', err);
+    return null;
+  }
 
-export function getFirebaseAdmin() {
+  const { initializeApp, getApps, cert } = appModule;
+  const { getFirestore } = firestoreModule;
+  const { getAuth } = authModule;
+
   if (!getApps().length) {
     if (!process.env.FIREBASE_PRIVATE_KEY) {
+      console.error('No private key found');
       return null;
     }
     try {

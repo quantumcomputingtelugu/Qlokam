@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { getFirebaseAdmin } from '@/lib/firebaseAdmin';
 
 export async function POST(req: Request) {
-  const admin = getFirebaseAdmin();
+  const admin = await getFirebaseAdmin();
   if (!admin) {
     console.error('Firebase Admin is not initialized (missing environment variables)');
     return NextResponse.json({ error: 'Server misconfiguration: Firebase Admin not initialized' }, { status: 500 });
