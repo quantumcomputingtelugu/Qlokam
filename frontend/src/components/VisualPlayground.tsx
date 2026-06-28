@@ -16,7 +16,7 @@ import { Bar } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const NUM_STEPS = 20;
-const GATES = ['H', 'X', 'Y', 'Z', 'CX', 'M'];
+const GATES = ['H', 'X', 'Y', 'Z', 'CX', 'M', 'DEL'];
 
 interface VisualPlaygroundProps {
   arenaMode?: boolean;
@@ -417,11 +417,11 @@ except Exception as e:
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     cursor: 'pointer',
                     fontWeight: 'bold', fontSize: '14px',
-                    color: gate === 'CX' ? 'var(--accent-secondary)' : gate === 'M' ? '#ff7b72' : 'var(--accent-primary)',
+                    color: gate === 'DEL' ? '#ff7b72' : gate === 'CX' ? 'var(--accent-secondary)' : gate === 'M' ? '#ff7b72' : 'var(--accent-primary)',
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  {gate}
+                  {gate === 'DEL' ? '🗑️' : gate}
                 </div>
               ))}
             </div>
@@ -501,7 +501,14 @@ except Exception as e:
                               }
 
                               if (selectedGate) {
-                                if (!isCXTarget && !cell) {
+                                if (selectedGate === 'DEL') {
+                                  if (isCXTarget) {
+                                    controlQubits.forEach(c => removeGate(c, sIdx));
+                                  } else if (cell) {
+                                    removeGate(qIdx, sIdx);
+                                  }
+                                } else if (!isCXTarget) {
+                                  // Override existing gate or place new one
                                   let finalGate = selectedGate;
                                   if (selectedGate === 'CX') {
                                     setPendingCX({ qIdx, sIdx });
@@ -575,7 +582,7 @@ except Exception as e:
           
           <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '300px' }}>
             <h3 style={{ fontSize: '12px', marginBottom: '8px', color: 'var(--accent-primary)' }}>Python Code (Editable)</h3>
-            <div style={{ flex: 1, overflow: 'hidden', borderRadius: '8px', minHeight: '250px' }}>
+            <div style={{ height: '300px', flexShrink: 0, overflow: 'hidden', borderRadius: '8px' }}>
               <Editor
                 height="100%"
                 defaultLanguage="python"
@@ -599,7 +606,7 @@ except Exception as e:
                 {errorMsg}
               </div>
             )}
-            <div style={{ flex: 1, position: 'relative', minHeight: '250px' }}>
+            <div style={{ height: '300px', flexShrink: 0, position: 'relative' }}>
                 <Bar data={chartData} options={chartOptions} />
             </div>
           </div>
