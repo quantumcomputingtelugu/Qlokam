@@ -3,11 +3,16 @@
 import React, { useEffect, useState } from 'react';
 import { auth, googleProvider } from '@/lib/firebase';
 import { signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import UsernameModal from './UsernameModal';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
   const [user, setUser] = useState<User | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
+  const [needsUsername, setNeedsUsername] = useState(false);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
 
@@ -16,8 +21,21 @@ export default function Navigation() {
       setLoading(false);
       return;
     }
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      if (currentUser && db) {
+        try {
+          const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+          if (userDoc.exists() && userDoc.data().username) {
+            setUsername(userDoc.data().username);
+            setNeedsUsername(false);
+          } else {
+            setNeedsUsername(true);
+          }
+        } catch (error) {
+          console.error("Error fetching user data", error);
+        }
+      }
       setLoading(false);
     });
     return () => unsubscribe();
@@ -68,11 +86,14 @@ export default function Navigation() {
         {!loading && (
           user ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <img 
-                src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`} 
-                alt="Profile" 
-                style={{ width: '36px', height: '36px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.1)' }}
-              />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '20px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <img 
+                  src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`} 
+                  alt="Profile" 
+                  style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                />
+                {username && <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>@{username}</span>}
+              </div>
               <button onClick={handleSignOut} className="btn-secondary" style={{ padding: '6px 12px', fontSize: '12px' }}>Sign Out</button>
             </div>
           ) : (
@@ -88,6 +109,16 @@ export default function Navigation() {
           )
         )}
       </div>
+
+      {user && needsUsername && (
+        <UsernameModal 
+          user={user} 
+          onUsernameSet={(newUsername) => {
+            setUsername(newUsername);
+            setNeedsUsername(false);
+          }} 
+        />
+      )}
     </nav>
   );
 }
