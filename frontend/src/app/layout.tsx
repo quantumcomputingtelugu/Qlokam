@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   description: "Learn, compete, and execute quantum circuits.",
 };
 
-import Script from "next/script";
 
 export default function RootLayout({
   children,
@@ -17,12 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7454305472547947"
           crossOrigin="anonymous"
-          strategy="lazyOnload"
-        />
+        ></script>
       </head>
       <body>
         <Navigation />
