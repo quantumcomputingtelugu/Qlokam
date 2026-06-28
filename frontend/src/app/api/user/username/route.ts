@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 import { getFirebaseAdmin } from '@/lib/firebaseAdmin';
-import { FieldValue, Transaction } from 'firebase-admin/firestore';
 
 export async function POST(req: Request) {
   const admin = getFirebaseAdmin();
@@ -37,7 +36,7 @@ export async function POST(req: Request) {
     const lowerUsername = username.toLowerCase();
 
     // Run a transaction to ensure username uniqueness
-    const result = await adminDb.runTransaction(async (transaction: Transaction) => {
+    const result = await adminDb.runTransaction(async (transaction: any) => {
       const usernameRef = adminDb.collection('usernames').doc(lowerUsername);
       const userRef = adminDb.collection('users').doc(uid);
 
@@ -51,7 +50,7 @@ export async function POST(req: Request) {
          throw new Error('You already have a username.');
       }
 
-      transaction.set(usernameRef, { uid, createdAt: FieldValue.serverTimestamp() });
+      transaction.set(usernameRef, { uid, createdAt: new Date().toISOString() });
       transaction.set(userRef, { username: lowerUsername }, { merge: true });
 
       return lowerUsername;
