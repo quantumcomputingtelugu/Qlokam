@@ -16,7 +16,7 @@ export async function getFirebaseAdmin() {
   if (!getApps().length) {
     if (!process.env.FIREBASE_PRIVATE_KEY) {
       console.error('No private key found');
-      return null;
+      return { error: 'No FIREBASE_PRIVATE_KEY found in environment variables' };
     }
     try {
       initializeApp({
@@ -24,12 +24,12 @@ export async function getFirebaseAdmin() {
           projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
           clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
           // Handle newlines in the private key when loaded from env variables
-          privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+          privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')?.replace(/"/g, ''),
         }),
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Firebase admin initialization error', error);
-      return null;
+      return { error: error.message || 'Unknown initialization error' };
     }
   }
 
