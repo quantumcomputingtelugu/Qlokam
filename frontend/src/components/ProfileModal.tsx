@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { getAllTutorials } from '@/data/tutorials';
+import { tutorialSessions } from '@/data/tutorials';
 import { arenaProblems } from '@/data/arena';
 
 interface ProfileModalProps {
@@ -51,10 +51,15 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
     fetchProfile();
   }, [user]);
 
-  const allTutorials = getAllTutorials();
-  const completedTutorialTitles = profileData.completedTutorials
-    .map(id => allTutorials.find(t => t.id === id)?.title)
-    .filter(Boolean) as string[];
+  const completedCourses = tutorialSessions.filter(session => 
+    session.modules.length > 0 && session.modules.every(m => profileData.completedTutorials.includes(m.id))
+  );
+
+  const inProgressCourses = tutorialSessions.filter(session => 
+    session.modules.length > 0 && 
+    session.modules.some(m => profileData.completedTutorials.includes(m.id)) &&
+    !session.modules.every(m => profileData.completedTutorials.includes(m.id))
+  );
 
   const solvedProblemTitles = profileData.solvedArenaProblems
     .map(id => arenaProblems.find(p => p.id === id)?.title)
@@ -125,20 +130,39 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
             )}
 
             <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
-              {/* Lessons Completed */}
+              {/* Courses Completed */}
               <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--surface-border)', borderRadius: '12px', padding: '24px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--text-primary)' }}>Lessons Completed</h3>
+                  <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--text-primary)' }}>Courses Completed</h3>
                   <span style={{ background: 'var(--success)', color: '#fff', padding: '4px 12px', borderRadius: '12px', fontWeight: 'bold', fontSize: '14px' }}>
-                    {completedTutorialTitles.length}
+                    {completedCourses.length}
                   </span>
                 </div>
-                {completedTutorialTitles.length === 0 ? (
-                  <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px' }}>You haven't completed any lessons yet.</p>
+                {completedCourses.length === 0 ? (
+                  <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px' }}>You haven't completed any courses yet.</p>
                 ) : (
                   <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: 1.8 }}>
-                    {completedTutorialTitles.map((title, i) => (
-                      <li key={i}>{title}</li>
+                    {completedCourses.map((course) => (
+                      <li key={course.id}>{course.sessionName}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/* Courses In Progress */}
+              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--surface-border)', borderRadius: '12px', padding: '24px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--text-primary)' }}>Courses In Progress</h3>
+                  <span style={{ background: 'var(--accent-primary)', color: '#000', padding: '4px 12px', borderRadius: '12px', fontWeight: 'bold', fontSize: '14px' }}>
+                    {inProgressCourses.length}
+                  </span>
+                </div>
+                {inProgressCourses.length === 0 ? (
+                  <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px' }}>You don't have any courses in progress.</p>
+                ) : (
+                  <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: 1.8 }}>
+                    {inProgressCourses.map((course) => (
+                      <li key={course.id}>{course.sessionName}</li>
                     ))}
                   </ul>
                 )}
