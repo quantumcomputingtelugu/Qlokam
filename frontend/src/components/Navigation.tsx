@@ -34,6 +34,9 @@ export default function Navigation() {
           }
         } catch (error) {
           console.error("Error fetching user data", error);
+          // If we can't read the document (e.g., due to strict security rules),
+          // default to asking for a username. The secure backend will verify if they actually need one.
+          setNeedsUsername(true);
         }
       }
       setLoading(false);
