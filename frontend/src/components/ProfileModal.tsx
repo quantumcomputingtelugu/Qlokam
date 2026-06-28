@@ -125,16 +125,16 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
             )}
 
             <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
-              {/* Courses Completed */}
+              {/* Lessons Completed */}
               <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--surface-border)', borderRadius: '12px', padding: '24px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--text-primary)' }}>Courses Completed</h3>
+                  <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--text-primary)' }}>Lessons Completed</h3>
                   <span style={{ background: 'var(--success)', color: '#fff', padding: '4px 12px', borderRadius: '12px', fontWeight: 'bold', fontSize: '14px' }}>
                     {completedTutorialTitles.length}
                   </span>
                 </div>
                 {completedTutorialTitles.length === 0 ? (
-                  <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px' }}>You haven't completed any courses yet.</p>
+                  <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px' }}>You haven't completed any lessons yet.</p>
                 ) : (
                   <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: 1.8 }}>
                     {completedTutorialTitles.map((title, i) => (
