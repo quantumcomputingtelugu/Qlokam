@@ -239,7 +239,7 @@ export default function ArenaPage() {
   // RENDER: SOLVER VIEW
   // -------------------------
   return (
-    <div className="container" style={{ paddingTop: '24px', display: 'flex', gap: '24px', height: 'calc(100vh - 100px)' }}>
+    <div className="container" style={{ paddingTop: '24px', display: 'flex', gap: '24px', minHeight: 'calc(100vh - 100px)' }}>
       
       {/* Left Panel: Problem Description */}
       <div className="glass-panel" style={{ flex: 1, padding: '24px', display: 'flex', flexDirection: 'column' }}>

@@ -48,8 +48,6 @@ export default function Navigation() {
       display: 'flex', 
       justifyContent: 'space-between', 
       alignItems: 'center',
-      position: 'sticky',
-      top: '16px',
       zIndex: 100
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
