@@ -4,6 +4,11 @@ import { adminDb, adminAuth } from '@/lib/firebaseAdmin';
 import { FieldValue, Transaction } from 'firebase-admin/firestore';
 
 export async function POST(req: Request) {
+  if (!adminAuth || !adminDb) {
+    console.error('Firebase Admin is not initialized (missing environment variables)');
+    return NextResponse.json({ error: 'Server misconfiguration: Firebase Admin not initialized' }, { status: 500 });
+  }
+
   try {
     const { username } = await req.json();
     const authHeader = req.headers.get('authorization');
