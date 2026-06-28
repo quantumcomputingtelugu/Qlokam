@@ -19,12 +19,17 @@ export async function getFirebaseAdmin() {
       return { error: 'No FIREBASE_PRIVATE_KEY found in environment variables' };
     }
     try {
+      let formattedKey = process.env.FIREBASE_PRIVATE_KEY || '';
+      if (formattedKey.startsWith('"') && formattedKey.endsWith('"')) {
+        formattedKey = formattedKey.slice(1, -1);
+      }
+      formattedKey = formattedKey.replace(/\\n/g, '\n').trim();
+
       initializeApp({
         credential: cert({
           projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
           clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-          // Handle newlines in the private key when loaded from env variables
-          privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')?.replace(/"/g, ''),
+          privateKey: formattedKey,
         }),
       });
     } catch (error: any) {
