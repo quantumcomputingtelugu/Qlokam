@@ -31,6 +31,9 @@ export default function TutorialsPage() {
 
   const [adLoading, setAdLoading] = useState<'hint' | 'skip' | null>(null);
   const [hintUnlocked, setHintUnlocked] = useState(false);
+  
+  const [showSimulatedAd, setShowSimulatedAd] = useState(false);
+  const [adCountdown, setAdCountdown] = useState(5);
 
   const allTutorials = getAllTutorials();
   const activeTutorial = allTutorials.find(t => t.id === activeTutorialId) || allTutorials[0];
@@ -49,13 +52,18 @@ export default function TutorialsPage() {
     setShowQuizResults(true);
   };
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showSimulatedAd && adCountdown > 0) {
+      timer = setTimeout(() => {
+        setAdCountdown(prev => prev - 1);
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [showSimulatedAd, adCountdown]);
+
   const handleWatchAd = () => {
-    setAdLoading('hint');
-    // Simulate watching an ad (e.g. Google Publisher Tag Rewarded Ad)
-    setTimeout(() => {
-      setAdLoading(null);
-      setHintUnlocked(true);
-    }, 2000); // 2 second simulated ad
+    setShowSimulatedAd(true);
   };
 
   useEffect(() => {
@@ -426,6 +434,36 @@ export default function TutorialsPage() {
         </div>
       </div>
       
+      {/* Simulated Ad Modal */}
+      {showSimulatedAd && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div className="glass-panel" style={{ padding: '24px', textAlign: 'center', maxWidth: '600px', width: '100%', animation: 'scaleIn 0.3s ease-out', position: 'relative' }}>
+            <h2 style={{ fontSize: '24px', color: 'var(--text-primary)', marginBottom: '16px' }}>Sponsored Message</h2>
+            
+            <div style={{ background: '#000', width: '100%', height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px', marginBottom: '24px', border: '1px solid var(--surface-border)', overflow: 'hidden' }}>
+               <img src="/quantum_hardware_bg_1782555897437.png" alt="Ad Placeholder" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} />
+               <div style={{ position: 'absolute', fontSize: '24px', fontWeight: 'bold' }}>Video Ad Playing...</div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ color: 'var(--text-secondary)' }}>Reward in {adCountdown}s</span>
+              <button 
+                className="btn-secondary" 
+                disabled={adCountdown > 0}
+                onClick={() => {
+                  setHintUnlocked(true);
+                  setShowSimulatedAd(false);
+                  setAdCountdown(5);
+                }}
+                style={{ padding: '8px 24px', opacity: adCountdown > 0 ? 0.5 : 1 }}
+              >
+                {adCountdown > 0 ? 'Wait...' : 'Skip & Get Reward'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Gamification Modal */}
       {earnedBadge && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
