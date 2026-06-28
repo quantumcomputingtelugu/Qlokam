@@ -15,15 +15,20 @@ export type TutorialModule = {
   lessonContent: React.ReactNode;
   practiceGoal: string;
   quizzes?: QuizQuestion[];
+  isFinalTest?: boolean;
+  badgeAward?: string;
+  pointsAward?: number;
 };
 
 export type TutorialSession = {
+  id: string; // e.g. "course-basics"
   sessionName: string;
   modules: TutorialModule[];
 };
 
 export const tutorialSessions: TutorialSession[] = [
   {
+    id: "course-basics",
     sessionName: "Quantum Fundamentals",
     modules: [
       {
@@ -105,14 +110,48 @@ export const tutorialSessions: TutorialSession[] = [
         ),
         practiceGoal: 'Create a Bell State! Place an H gate on q0, and a CX gate with control on q0 and target on q1.',
         quizzes: []
+      },
+      {
+        id: 4,
+        title: 'Final Test: Quantum Basics',
+        description: 'Prove your knowledge of quantum fundamentals to earn your badge!',
+        difficulty: 'Hard',
+        isFinalTest: true,
+        badgeAward: '🎓 Quantum Basics Graduate',
+        pointsAward: 50,
+        lessonContent: (
+          <>
+            <p style={{ marginBottom: '16px' }}>
+              You have completed all the lessons in the Quantum Fundamentals course. Now it is time to prove your knowledge!
+            </p>
+            <p style={{ marginBottom: '16px' }}>
+              Complete the quiz below and successfully build the required circuit in Practice mode to earn your badge and bonus Arena rating.
+            </p>
+          </>
+        ),
+        practiceGoal: 'Create a Bell State, then apply a Pauli-Z gate to the second qubit.',
+        quizzes: [
+          {
+            question: "If you apply a Hadamard gate followed by a Pauli-Z gate to a qubit initially in |0>, what state is it in?",
+            options: [
+              "|+> state",
+              "|-> state",
+              "|1> state",
+              "|0> state"
+            ],
+            correctAnswerIndex: 1,
+            explanation: "H puts it in |+>. Z flips the phase of |1>, changing |+> to |->."
+          }
+        ]
       }
     ]
   },
   {
+    id: "course-error-correction",
     sessionName: "Error Correction & Hardware",
     modules: [
       {
-        id: 4,
+        id: 5,
         title: "Quantum Error Correction (Placeholder)",
         description: "Learn how we protect fragile quantum information from decoherence.",
         difficulty: "Advanced",

@@ -17,56 +17,22 @@ export default function TutorialsPage() {
   const [activeTutorialId, setActiveTutorialId] = useState(1);
   const [completedTutorials, setCompletedTutorials] = useState<number[]>([]);
   const [saving, setSaving] = useState(false);
-  
-  // Sidebar state
-  const [expandedSessions, setExpandedSessions] = useState<string[]>([]);
-  
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [activeCourseId, setActiveCourseId] = useState(tutorialSessions[0].id);
+
   // Quiz state
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [showQuizResults, setShowQuizResults] = useState(false);
 
+  const [rating, setRating] = useState(0);
+  const [badges, setBadges] = useState<string[]>([]);
+  const [earnedBadge, setEarnedBadge] = useState<string | null>(null);
+  const [earnedPoints, setEarnedPoints] = useState<number | null>(null);
+
+  const [adLoading, setAdLoading] = useState<'hint' | 'skip' | null>(null);
+  const [hintUnlocked, setHintUnlocked] = useState(false);
+
   const allTutorials = getAllTutorials();
-
-  useEffect(() => {
-    if (!auth) {
-      setLoadingUser(false);
-      return;
-    }
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
-        try {
-          if (!db) return;
-          const docRef = doc(db, 'users', currentUser.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists() && docSnap.data().completedTutorials) {
-            setCompletedTutorials(docSnap.data().completedTutorials);
-          }
-        } catch (e) {
-          console.error("Error fetching progress", e);
-        }
-      } else {
-        setCompletedTutorials([]); 
-      }
-      setLoadingUser(false);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleMarkComplete = async () => {
-    if (!user || !db || completedTutorials.includes(activeTutorialId)) return;
-    setSaving(true);
-    const newCompleted = [...completedTutorials, activeTutorialId];
-    try {
-      const docRef = doc(db, 'users', user.uid);
-      await setDoc(docRef, { completedTutorials: newCompleted }, { merge: true });
-      setCompletedTutorials(newCompleted);
-    } catch (e) {
-      console.error("Error saving progress", e);
-    }
-    setSaving(false);
-  };
-
   const activeTutorial = allTutorials.find(t => t.id === activeTutorialId) || allTutorials[0];
   const isCompleted = completedTutorials.includes(activeTutorial.id);
 
@@ -83,74 +49,187 @@ export default function TutorialsPage() {
     setShowQuizResults(true);
   };
 
+  const handleWatchAd = (type: 'hint' | 'skip') => {
+    setAdLoading(type);
+    // Simulate watching an ad (e.g. Google Publisher Tag Rewarded Ad)
+    setTimeout(async () => {
+      setAdLoading(null);
+      if (type === 'hint') {
+        setHintUnlocked(true);
+      } else if (type === 'skip') {
+        // Automatically submit all correct answers and proceed to practice
+        const correctAnswers: Record<number, number> = {};
+        activeTutorial.quizzes?.forEach((q, i) => {
+          correctAnswers[i] = q.correctAnswerIndex;
+        });
+        setSelectedAnswers(correctAnswers);
+        setShowQuizResults(true);
+      }
+    }, 2000); // 2 second simulated ad
+  };
+
+  useEffect(() => {
+    if (!auth) {
+      setLoadingUser(false);
+      return;
+    }
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        try {
+          if (!db) return;
+          const docRef = doc(db, 'users', currentUser.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data.completedTutorials) setCompletedTutorials(data.completedTutorials);
+            if (data.rating) setRating(data.rating);
+            if (data.badges) setBadges(data.badges);
+          }
+        } catch (e) {
+          console.error("Error fetching progress", e);
+        }
+      } else {
+        setCompletedTutorials([]); 
+        setRating(0);
+        setBadges([]);
+      }
+      setLoadingUser(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleMarkComplete = async () => {
+    if (!user || !db || completedTutorials.includes(activeTutorialId)) return;
+    setSaving(true);
+    const newCompleted = [...completedTutorials, activeTutorialId];
+    
+    let updatedRating = rating;
+    let updatedBadges = [...badges];
+    
+    if (activeTutorial.isFinalTest) {
+      if (activeTutorial.pointsAward) updatedRating += activeTutorial.pointsAward;
+      if (activeTutorial.badgeAward && !updatedBadges.includes(activeTutorial.badgeAward)) {
+        updatedBadges.push(activeTutorial.badgeAward);
+      }
+    }
+
+    try {
+      const docRef = doc(db, 'users', user.uid);
+      await setDoc(docRef, { 
+        completedTutorials: newCompleted,
+        ...(activeTutorial.isFinalTest && { rating: updatedRating, badges: updatedBadges })
+      }, { merge: true });
+      
+      setCompletedTutorials(newCompleted);
+      
+      if (activeTutorial.isFinalTest) {
+        setRating(updatedRating);
+        setBadges(updatedBadges);
+        setEarnedBadge(activeTutorial.badgeAward || null);
+        setEarnedPoints(activeTutorial.pointsAward || null);
+      }
+    } catch (e) {
+      console.error("Error saving progress", e);
+    }
+    setSaving(false);
+  };
+
+
   return (
     <div className="container responsive-flex" style={{ paddingTop: '24px', display: 'flex', gap: '24px', height: 'calc(100vh - 100px)', width: '100%' }}>
       {/* Left Panel: Tutorial List */}
-      <div className="glass-panel responsive-sidebar" style={{ width: '280px', flexShrink: 0, padding: '20px', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
-        <h2 style={{ marginBottom: '24px', fontSize: '20px', color: 'var(--accent-primary)' }}>Quantum Modules</h2>
+      <div 
+        className="glass-panel responsive-sidebar" 
+        style={{ 
+          width: isSidebarOpen ? '350px' : '60px', 
+          flexShrink: 0, 
+          padding: isSidebarOpen ? '20px' : '20px 10px', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          overflowY: 'auto',
+          transition: 'width 0.3s ease, padding 0.3s ease'
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          {isSidebarOpen && <h2 style={{ fontSize: '20px', color: 'var(--accent-primary)', margin: 0 }}>Quantum Modules</h2>}
+          <button 
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '20px', padding: 0 }}
+          >
+            {isSidebarOpen ? '◀' : '▶'}
+          </button>
+        </div>
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-          {tutorialSessions.map((session, sIndex) => {
-            const isExpanded = expandedSessions.includes(session.sessionName);
-            return (
-            <div key={sIndex}>
-              <h3 
-                onClick={() => {
-                  if (isExpanded) {
-                    setExpandedSessions(expandedSessions.filter(s => s !== session.sessionName));
-                  } else {
-                    setExpandedSessions([...expandedSessions, session.sessionName]);
-                  }
-                }}
-                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--text-secondary)', marginBottom: '16px', borderBottom: '1px solid var(--surface-border)', paddingBottom: '8px' }}
-              >
-                {session.sessionName}
-                <span style={{ fontSize: '12px', transition: 'transform 0.2s' }}>{isExpanded ? '▼' : '▶'}</span>
-              </h3>
-              {isExpanded && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                {session.modules.map((tutorial) => {
-                  const completed = completedTutorials.includes(tutorial.id);
-                  const isActive = activeTutorialId === tutorial.id;
-                  return (
-                    <div 
-                      key={tutorial.id} 
-                      onClick={() => { 
-                        setActiveTutorialId(tutorial.id); 
-                        setActiveTab('lesson'); 
-                        setSelectedAnswers({}); 
-                        setShowQuizResults(false); 
-                      }}
-                      style={{ 
-                        padding: '16px', 
-                        background: isActive ? 'rgba(69, 243, 255, 0.1)' : 'rgba(255,255,255,0.03)', 
-                        border: `1px solid ${isActive ? 'var(--accent-primary)' : 'var(--surface-border)'}`, 
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s'
-                      }}
-                      className="tutorial-card"
-                    >
-                      <div className="flex-between">
-                        <h4 style={{ fontSize: '15px', margin: 0, color: 'var(--text-primary)' }}>{tutorial.id}. {tutorial.title}</h4>
-                        {completed && (
-                          <span style={{ fontSize: '12px', color: 'var(--success)' }}>
-                            ✔
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              )}
+        {isSidebarOpen && (
+          <>
+            {/* Horizontal Scroll for Courses */}
+            <div style={{ display: 'flex', overflowX: 'auto', gap: '8px', paddingBottom: '12px', marginBottom: '16px', borderBottom: '1px solid var(--surface-border)' }}>
+              {tutorialSessions.map(session => (
+                <button
+                  key={session.id}
+                  onClick={() => { setActiveCourseId(session.id); }}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '20px',
+                    whiteSpace: 'nowrap',
+                    background: activeCourseId === session.id ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
+                    color: activeCourseId === session.id ? '#000' : 'var(--text-secondary)',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontWeight: activeCourseId === session.id ? 'bold' : 'normal',
+                    fontSize: '14px',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {session.sessionName}
+                </button>
+              ))}
             </div>
-          )})}
-        </div>
-        
-        <div style={{ marginTop: 'auto', paddingTop: '24px' }}>
-          <AdBanner dataAdSlot="tutorials_sidebar" />
-        </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {tutorialSessions.find(s => s.id === activeCourseId)?.modules.map((tutorial) => {
+                const completed = completedTutorials.includes(tutorial.id);
+                const isActive = activeTutorialId === tutorial.id;
+                return (
+                  <div 
+                    key={tutorial.id} 
+                    onClick={() => { 
+                      setActiveTutorialId(tutorial.id); 
+                      setActiveTab('lesson'); 
+                      setSelectedAnswers({}); 
+                      setShowQuizResults(false); 
+                    }}
+                    style={{ 
+                      padding: '16px', 
+                      background: isActive ? 'rgba(69, 243, 255, 0.1)' : 'rgba(255,255,255,0.03)', 
+                      border: `1px solid ${isActive ? 'var(--accent-primary)' : 'var(--surface-border)'}`, 
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                    className="tutorial-card"
+                  >
+                    <div className="flex-between">
+                      <h4 style={{ fontSize: '15px', margin: 0, color: tutorial.isFinalTest ? '#d29922' : 'var(--text-primary)' }}>
+                        {tutorial.isFinalTest ? '🏆 ' : `${tutorial.id}. `}{tutorial.title}
+                      </h4>
+                      {completed && (
+                        <span style={{ fontSize: '12px', color: 'var(--success)' }}>
+                          ✔
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            <div style={{ marginTop: 'auto', paddingTop: '24px' }}>
+              <AdBanner dataAdSlot="tutorials_sidebar" />
+            </div>
+          </>
+        )}
       </div>
 
       {/* Right Panel: Content Area */}
@@ -255,14 +334,48 @@ export default function TutorialsPage() {
                     </div>
                   ))}
                   {!showQuizResults ? (
-                    <button 
-                      className="btn-primary" 
-                      onClick={handleQuizSubmit} 
-                      disabled={Object.keys(selectedAnswers).length < activeTutorial.quizzes.length}
-                      style={{ alignSelf: 'flex-start', padding: '12px 32px' }}
-                    >
-                      Submit Answers
-                    </button>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      <button 
+                        className="btn-primary" 
+                        onClick={handleQuizSubmit} 
+                        disabled={Object.keys(selectedAnswers).length < activeTutorial.quizzes.length}
+                        style={{ alignSelf: 'flex-start', padding: '12px 32px' }}
+                      >
+                        Submit Answers
+                      </button>
+                      
+                      {/* Rewarded Ads Integration */}
+                      <div style={{ display: 'flex', gap: '16px', marginTop: '16px', padding: '16px', background: 'rgba(210, 153, 34, 0.05)', borderRadius: '8px', border: '1px dashed rgba(210, 153, 34, 0.3)' }}>
+                        <div style={{ flex: 1 }}>
+                          <h4 style={{ margin: '0 0 8px 0', color: '#d29922' }}>Stuck on this quiz?</h4>
+                          <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '14px' }}>Watch a short sponsored message to unlock a hint, or skip this quiz entirely.</p>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <button 
+                            className="btn-secondary" 
+                            onClick={() => handleWatchAd('hint')}
+                            disabled={adLoading !== null || hintUnlocked}
+                            style={{ padding: '8px 16px', fontSize: '14px' }}
+                          >
+                            {adLoading === 'hint' ? 'Loading Ad...' : hintUnlocked ? 'Hint Unlocked!' : '🎥 Watch Ad for Hint'}
+                          </button>
+                          <button 
+                            className="btn-secondary" 
+                            onClick={() => handleWatchAd('skip')}
+                            disabled={adLoading !== null}
+                            style={{ padding: '8px 16px', fontSize: '14px' }}
+                          >
+                            {adLoading === 'skip' ? 'Loading Ad...' : '⏭️ Watch Ad to Skip'}
+                          </button>
+                        </div>
+                      </div>
+                      
+                      {hintUnlocked && (
+                        <div style={{ padding: '16px', background: 'rgba(69, 243, 255, 0.05)', borderRadius: '8px', border: '1px solid var(--accent-primary)', color: 'var(--text-primary)' }}>
+                          <strong>Hint:</strong> Look closely at how the states change before and after applying the quantum gates. If you are ever stuck, try testing it out in the Playground!
+                        </div>
+                      )}
+                    </div>
                   ) : (
                     <div style={{ display: 'flex', gap: '16px' }}>
                       <button className="btn-secondary" onClick={() => { setShowQuizResults(false); setSelectedAnswers({}); }} style={{ padding: '8px 16px' }}>Retry Quiz</button>
@@ -328,6 +441,23 @@ export default function TutorialsPage() {
           )}
         </div>
       </div>
+      
+      {/* Gamification Modal */}
+      {earnedBadge && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div className="glass-panel" style={{ padding: '48px', textAlign: 'center', maxWidth: '500px', animation: 'scaleIn 0.3s ease-out' }}>
+            <h2 style={{ fontSize: '32px', color: '#d29922', marginBottom: '16px' }}>Course Completed!</h2>
+            <div style={{ fontSize: '64px', margin: '24px 0' }}>{earnedBadge.split(' ')[0]}</div>
+            <h3 style={{ fontSize: '24px', color: 'var(--text-primary)', marginBottom: '8px' }}>{earnedBadge.substring(earnedBadge.indexOf(' ') + 1)}</h3>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>
+              You earned <strong style={{ color: '#d29922' }}>+{earnedPoints} Arena Points</strong>! Keep up the great work!
+            </p>
+            <button className="btn-primary" onClick={() => { setEarnedBadge(null); setEarnedPoints(null); }} style={{ padding: '12px 32px' }}>
+              Awesome!
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
