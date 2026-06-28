@@ -18,7 +18,7 @@ export default function TutorialsPage() {
   const [saving, setSaving] = useState(false);
   
   // Sidebar state
-  const [expandedSessions, setExpandedSessions] = useState<string[]>(tutorialSessions.map(s => s.sessionName));
+  const [expandedSessions, setExpandedSessions] = useState<string[]>([]);
   
   // Quiz state
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});

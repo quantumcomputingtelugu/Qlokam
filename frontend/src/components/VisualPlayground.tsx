@@ -81,6 +81,40 @@ export default function VisualPlayground({
     const gate = e.dataTransfer.getData('gate');
     if (!gate) return;
 
+    if (gate === 'DEL') {
+      const controlQubits: number[] = [];
+      for (let i = 0; i < numQubits; i++) {
+        const c = grid[i][sIdx];
+        if (c && c.startsWith('CX|')) {
+           const target = parseInt(c.split('|')[1], 10);
+           if (target === qIdx) {
+             controlQubits.push(i);
+           }
+        }
+      }
+      
+      if (controlQubits.length > 0) {
+        setIsTyping(false);
+        setGrid(prevGrid => {
+          const newGrid = [...prevGrid];
+          controlQubits.forEach(c => {
+             newGrid[c] = [...newGrid[c]];
+             newGrid[c][sIdx] = '';
+          });
+          return newGrid;
+        });
+      } else if (grid[qIdx][sIdx]) {
+        setIsTyping(false);
+        setGrid(prevGrid => {
+          const newGrid = [...prevGrid];
+          newGrid[qIdx] = [...newGrid[qIdx]];
+          newGrid[qIdx][sIdx] = '';
+          return newGrid;
+        });
+      }
+      return;
+    }
+
     let finalGate = gate;
 
     if (gate === 'CX') {
@@ -475,6 +509,24 @@ except Exception as e:
                         return (
                           <div 
                             key={sIdx}
+                            draggable={isOccupied}
+                            onDragStart={(e) => {
+                              if (isCXTarget || isCXPending) {
+                                e.dataTransfer.setData('gate', 'CX');
+                              } else {
+                                e.dataTransfer.setData('gate', cell);
+                              }
+                            }}
+                            onDragEnd={(e) => {
+                              if (e.dataTransfer.dropEffect === 'none') {
+                                if (isCXTarget || isCX) {
+                                  controlQubits.forEach(c => removeGate(c, sIdx));
+                                  if (isCX) removeGate(qIdx, sIdx);
+                                } else if (cell) {
+                                  removeGate(qIdx, sIdx);
+                                }
+                              }
+                            }}
                             onDrop={(e) => {
                               if (!isCXTarget && !pendingCX) handleDrop(e, qIdx, sIdx);
                             }}
