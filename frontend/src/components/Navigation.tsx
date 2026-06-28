@@ -84,7 +84,17 @@ export default function Navigation() {
         
         {!loading && (
           user ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+              <div 
+                style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                onClick={() => alert("Notifications coming soon!")}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'stroke 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.stroke = 'var(--text-primary)'} onMouseLeave={(e) => e.currentTarget.style.stroke = 'var(--text-secondary)'}>
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span style={{ position: 'absolute', top: '-2px', right: '0px', width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', border: '2px solid var(--background-elevated)' }}></span>
+              </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 12px', borderRadius: '20px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <img 
                   src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`} 
