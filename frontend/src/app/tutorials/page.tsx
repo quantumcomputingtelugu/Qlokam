@@ -6,6 +6,7 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import VisualPlayground from '@/components/VisualPlayground';
 import { tutorialSessions, getAllTutorials } from '@/data/tutorials';
+import AdBanner from '@/components/AdBanner';
 
 export default function TutorialsPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -144,6 +145,10 @@ export default function TutorialsPage() {
               )}
             </div>
           )})}
+        </div>
+        
+        <div style={{ marginTop: 'auto', paddingTop: '24px' }}>
+          <AdBanner dataAdSlot="tutorials_sidebar" />
         </div>
       </div>
 

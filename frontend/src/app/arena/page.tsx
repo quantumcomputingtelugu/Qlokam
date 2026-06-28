@@ -6,6 +6,7 @@ import { arenaProblems, ArenaProblem } from '@/data/arena';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import AdBanner from '@/components/AdBanner';
 
 export default function ArenaPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -133,6 +134,8 @@ export default function ArenaPage() {
             <h3 style={{ fontSize: '18px', marginBottom: '16px', color: 'var(--text-primary)' }}>Progress</h3>
             <p style={{ color: 'var(--text-secondary)' }}>Solved: <strong style={{color: 'var(--success)'}}>{solvedProblems.length}</strong> / {arenaProblems.length}</p>
           </div>
+          
+          <AdBanner dataAdSlot="arena_sidebar_1" />
         </div>
 
         {/* Right Panel: Problem List or Contests */}
@@ -280,6 +283,10 @@ export default function ArenaPage() {
           ) : (
             <div style={{ color: 'var(--text-secondary)' }}>● Unsolved</div>
           )}
+        </div>
+        
+        <div style={{ marginTop: '24px' }}>
+          <AdBanner dataAdSlot="arena_solver_sidebar" />
         </div>
       </div>
 
