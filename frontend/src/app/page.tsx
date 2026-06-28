@@ -18,8 +18,8 @@ export default function Home() {
         </p>
         
         <div style={{ display: 'flex', gap: '16px', marginTop: '16px' }}>
-          <Link href="/arena" className="btn-primary" style={{ display: 'inline-block', fontSize: '18px', padding: '14px 32px' }}>
-            Enter The Arena
+          <Link href="/tutorials" className="btn-primary" style={{ display: 'inline-block', fontSize: '18px', padding: '14px 32px' }}>
+            Start Learning
           </Link>
           <Link href="/playground" className="btn-secondary" style={{ display: 'inline-block', fontSize: '18px', padding: '14px 32px' }}>
             Open Playground
