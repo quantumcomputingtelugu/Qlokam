@@ -284,7 +284,7 @@ export default function ArenaPage() {
       </div>
 
       {/* Right Panel: Visual Builder */}
-      <div className="glass-panel" style={{ flex: 2, padding: '24px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+      <div className="glass-panel" style={{ flex: 2, padding: '24px', display: 'flex', flexDirection: 'column', position: 'relative', minWidth: 0 }}>
         {!user && (
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '8px', background: 'rgba(210, 153, 34, 0.9)', color: '#000', textAlign: 'center', zIndex: 10, fontSize: '14px', fontWeight: 'bold', borderTopLeftRadius: '12px', borderTopRightRadius: '12px' }}>
             Sign in to submit your solution and gain rating points!

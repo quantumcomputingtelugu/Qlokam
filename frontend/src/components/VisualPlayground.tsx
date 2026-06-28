@@ -16,7 +16,7 @@ import { Bar } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const NUM_STEPS = 20;
-const GATES = ['H', 'X', 'Y', 'Z', 'CX'];
+const GATES = ['H', 'X', 'Y', 'Z', 'CX', 'M'];
 
 interface VisualPlaygroundProps {
   arenaMode?: boolean;
@@ -74,16 +74,24 @@ export default function VisualPlayground({
     const gate = e.dataTransfer.getData('gate');
     if (!gate) return;
 
-    if (gate === 'CX' && qIdx >= numQubits - 1) {
-      alert("Cannot place CNOT control on the last qubit (needs a target below it).");
-      return;
+    let finalGate = gate;
+
+    if (gate === 'CX') {
+      const targetStr = prompt(`Enter target qubit for CNOT (0 to ${numQubits - 1}, not ${qIdx}):`);
+      if (targetStr === null) return; // cancelled
+      const targetNum = parseInt(targetStr, 10);
+      if (isNaN(targetNum) || targetNum < 0 || targetNum >= numQubits || targetNum === qIdx) {
+        alert("Invalid target qubit.");
+        return;
+      }
+      finalGate = `CX|${targetNum}`;
     }
     
     setIsTyping(false);
     setGrid(prevGrid => {
       const newGrid = [...prevGrid];
       newGrid[qIdx] = [...newGrid[qIdx]];
-      newGrid[qIdx][sIdx] = gate;
+      newGrid[qIdx][sIdx] = finalGate;
       return newGrid;
     });
   };
@@ -106,7 +114,7 @@ export default function VisualPlayground({
 
     let displayCode = '';
     if (language === 'qiskit') {
-      displayCode = `from qiskit import QuantumCircuit\n\nqc = QuantumCircuit(${numQubits})\n`;
+      displayCode = `from qiskit import QuantumCircuit\n\nqc = QuantumCircuit(${numQubits}, ${numQubits})\n`;
       for (let sIdx = 0; sIdx < NUM_STEPS; sIdx++) {
         for (let qIdx = 0; qIdx < numQubits; qIdx++) {
           const gate = grid[qIdx][sIdx];
@@ -114,7 +122,11 @@ export default function VisualPlayground({
           else if (gate === 'X') displayCode += `qc.x(${qIdx})\n`;
           else if (gate === 'Y') displayCode += `qc.y(${qIdx})\n`;
           else if (gate === 'Z') displayCode += `qc.z(${qIdx})\n`;
-          else if (gate === 'CX') displayCode += `qc.cx(${qIdx}, ${qIdx + 1})\n`;
+          else if (gate === 'M') displayCode += `qc.measure(${qIdx}, ${qIdx})\n`;
+          else if (gate.startsWith('CX|')) {
+             const target = gate.split('|')[1];
+             displayCode += `qc.cx(${qIdx}, ${target})\n`;
+          }
         }
       }
     } else if (language === 'cirq') {
@@ -126,7 +138,11 @@ export default function VisualPlayground({
           else if (gate === 'X') displayCode += `circuit.append(cirq.X(qubits[${qIdx}]))\n`;
           else if (gate === 'Y') displayCode += `circuit.append(cirq.Y(qubits[${qIdx}]))\n`;
           else if (gate === 'Z') displayCode += `circuit.append(cirq.Z(qubits[${qIdx}]))\n`;
-          else if (gate === 'CX') displayCode += `circuit.append(cirq.CNOT(qubits[${qIdx}], qubits[${qIdx + 1}]))\n`;
+          else if (gate === 'M') displayCode += `circuit.append(cirq.measure(qubits[${qIdx}]))\n`;
+          else if (gate.startsWith('CX|')) {
+             const target = gate.split('|')[1];
+             displayCode += `circuit.append(cirq.CNOT(qubits[${qIdx}], qubits[${target}]))\n`;
+          }
         }
       }
     }
@@ -149,10 +165,12 @@ export default function VisualPlayground({
        for (const line of lines) {
          const l = line.trim();
          if (language === 'qiskit') {
-            const qcMatch = l.match(/qc\s*=\s*QuantumCircuit\((\d+)\)/);
+            const qcMatch = l.match(/qc\s*=\s*QuantumCircuit\((\d+)/);
             if (qcMatch) newNumQ = parseInt(qcMatch[1], 10);
             const singleGateMatch = l.match(/qc\.(h|x|y|z)\s*\(\s*(\d+)\s*\)/);
             if (singleGateMatch) operations.push({ gate: singleGateMatch[1].toUpperCase(), q: parseInt(singleGateMatch[2], 10) });
+            const mMatch = l.match(/qc\.measure\(\s*(\d+)\s*,\s*\d+\s*\)/);
+            if (mMatch) operations.push({ gate: 'M', q: parseInt(mMatch[1], 10) });
             const cxMatch = l.match(/qc\.cx\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)/);
             if (cxMatch) operations.push({ gate: 'CX', c: parseInt(cxMatch[1], 10), t: parseInt(cxMatch[2], 10) });
          } else {
@@ -160,6 +178,8 @@ export default function VisualPlayground({
             if (qMatch) newNumQ = parseInt(qMatch[1], 10);
             const singleGateMatch = l.match(/cirq\.(H|X|Y|Z)\(qubits\[(\d+)\]\)/);
             if (singleGateMatch) operations.push({ gate: singleGateMatch[1].toUpperCase(), q: parseInt(singleGateMatch[2], 10) });
+            const mMatch = l.match(/cirq\.measure\(qubits\[(\d+)\]\)/);
+            if (mMatch) operations.push({ gate: 'M', q: parseInt(mMatch[1], 10) });
             const cxMatch = l.match(/cirq\.CNOT\(qubits\[(\d+)\],\s*qubits\[(\d+)\]\)/);
             if (cxMatch) operations.push({ gate: 'CX', c: parseInt(cxMatch[1], 10), t: parseInt(cxMatch[2], 10) });
          }
@@ -182,10 +202,10 @@ export default function VisualPlayground({
          } else if (op.gate === 'CX' && op.c !== undefined && op.t !== undefined) {
            const c = op.c;
            const t = op.t;
-           if (c >= newNumQ || t >= newNumQ || t !== c + 1) continue;
+           if (c >= newNumQ || t >= newNumQ || t === c) continue;
            const step = Math.max(nextFreeStep[c], nextFreeStep[t]);
            if (step < NUM_STEPS) {
-             newGrid[c][step] = 'CX';
+             newGrid[c][step] = `CX|${t}`;
              nextFreeStep[c] = step + 1;
              nextFreeStep[t] = step + 1;
            }
@@ -199,36 +219,70 @@ export default function VisualPlayground({
     setIsExecuting(true);
     setErrorMsg('');
     
-    let pythonCode = code + '\n';
-    let expectedBitsFormat = `0${numQubits}b`;
+    // Extract measured qubits from the generated code
+    const qiskitMMatch = [...code.matchAll(/qc\.measure\(\s*(\d+)/g)];
+    const cirqMMatch = [...code.matchAll(/cirq\.measure\(qubits\[(\d+)\]\)/g)];
+    const measuredSet = new Set([...qiskitMMatch, ...cirqMMatch].map(m => parseInt(m[1], 10)));
+    const measuredQubits = Array.from(measuredSet).sort((a,b) => a-b);
+    const hasMeasurements = measuredQubits.length > 0;
+
+    // Strip measurements before sending to execution so that statevector does not collapse
+    let safeCode = code;
+    safeCode = safeCode.replace(/qc\.measure\([^)]*\)\n/g, '');
+    safeCode = safeCode.replace(/circuit\.append\(cirq\.measure\([^)]*\)\)\n/g, '');
+
+    let pythonCode = safeCode + '\n';
 
     if (language === 'qiskit') {
-      pythonCode = `from qiskit.quantum_info import Statevector\nimport json\n` + code + `\n
+      pythonCode = `from qiskit.quantum_info import Statevector\nimport json\n` + pythonCode + `\n
 try:
     sv = Statevector(qc)
     probs = sv.probabilities_dict()
-    filtered_probs = {k: v for k, v in probs.items() if v > 1e-5}
-    # Pad to correct length just in case
-    padded_probs = {k.zfill(${numQubits}): v for k,v in filtered_probs.items()}
+    measured_indices = [${measuredQubits.join(', ')}]
+    
+    filtered_probs = {}
+    for k, v in probs.items():
+        if v > 1e-5:
+            if measured_indices:
+                # k has length numQubits, Qiskit prints q0 on the far right (index numQubits - 1).
+                # To extract q_i, we look at k[numQubits - 1 - i]
+                measured_bits = "".join([k[${numQubits} - 1 - idx] for idx in measured_indices])
+                # Restore to Qiskit format where lowest measured index is on the right
+                measured_bits = measured_bits[::-1]
+                filtered_probs[measured_bits] = filtered_probs.get(measured_bits, 0) + float(v)
+            else:
+                filtered_probs[k] = float(v)
+
     print("##JSON_START##")
-    print(json.dumps(padded_probs))
+    print(json.dumps(filtered_probs))
     print("##JSON_END##")
 except Exception as e:
     print("ERROR:", str(e))
 `;
     } else if (language === 'cirq') {
-      pythonCode = `import numpy as np\nimport json\n` + code + `\n
+      pythonCode = `import numpy as np\nimport json\n` + pythonCode + `\n
 try:
     simulator = cirq.Simulator()
     result = simulator.simulate(circuit)
     state_vector = result.final_state_vector
     probs = np.abs(state_vector)**2
     
+    measured_indices = [${measuredQubits.join(', ')}]
     filtered_probs = {}
+    
     for i, p in enumerate(probs):
         if p > 1e-5:
-            bin_str = format(i, '${expectedBitsFormat}')
-            filtered_probs[bin_str] = float(p)
+            bin_str = format(i, f'0{${numQubits}}b')
+            if measured_indices:
+                # Cirq format has q0 on the far left (index 0)
+                measured_bits = "".join([bin_str[idx] for idx in measured_indices])
+                # To match Qiskit format (q0 on the far right), we reverse it
+                measured_bits = measured_bits[::-1]
+                filtered_probs[measured_bits] = filtered_probs.get(measured_bits, 0) + float(p)
+            else:
+                # Default reverse to match Qiskit
+                rev_bin_str = bin_str[::-1]
+                filtered_probs[rev_bin_str] = float(p)
             
     print("##JSON_START##")
     print(json.dumps(filtered_probs))
@@ -311,7 +365,7 @@ except Exception as e:
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%', minWidth: 0 }}>
       <div className="flex-between">
         <select 
           value={language} 
@@ -337,10 +391,10 @@ except Exception as e:
         )}
       </div>
       
-      <div style={{ display: 'flex', gap: '24px', flexDirection: 'column', flex: 1 }}>
+      <div style={{ display: 'flex', gap: '24px', flexDirection: 'column', flex: 1, minWidth: 0 }}>
         
         {/* Top Panel: Palette and Circuit Grid */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 }}>
           {/* Gate Palette */}
           <div className="glass-panel" style={{ padding: '12px' }}>
             <h3 style={{ fontSize: '12px', marginBottom: '8px', color: 'var(--text-secondary)' }}>Drag Gates:</h3>
@@ -358,7 +412,7 @@ except Exception as e:
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     cursor: 'grab',
                     fontWeight: 'bold', fontSize: '14px',
-                    color: gate === 'CX' ? 'var(--accent-secondary)' : 'var(--accent-primary)'
+                    color: gate === 'CX' ? 'var(--accent-secondary)' : gate === 'M' ? '#ff7b72' : 'var(--accent-primary)'
                   }}
                 >
                   {gate}
@@ -368,16 +422,38 @@ except Exception as e:
           </div>
 
           {/* Circuit Grid */}
-          <div className="glass-panel" style={{ padding: '16px', overflow: 'auto', maxHeight: '600px', position: 'relative' }}>
-             <div style={{ display: 'inline-flex', flexDirection: 'column', gap: '4px' }}>
+          <div className="glass-panel" style={{ padding: '16px', overflowX: 'auto', maxHeight: '600px', position: 'relative' }}>
+             <div style={{ display: 'inline-flex', flexDirection: 'column', gap: '4px', minWidth: 'max-content' }}>
                 {grid.map((row, qIdx) => (
                   <div key={qIdx} style={{ display: 'flex', alignItems: 'center' }}>
                     <div style={{ width: '32px', fontWeight: 'bold', fontSize: '12px', color: 'var(--text-secondary)' }}>|q{qIdx}⟩</div>
                     <div style={{ display: 'flex', position: 'relative' }}>
                       <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.1)', zIndex: 0 }} />
                       {row.map((cell, sIdx) => {
-                        const isCXTarget = qIdx > 0 && grid[qIdx - 1][sIdx] === 'CX';
+                        // Check if this cell is a target of any CX in the same step
+                        const controlQubits: number[] = [];
+                        for (let i = 0; i < numQubits; i++) {
+                          const c = grid[i][sIdx];
+                          if (c && c.startsWith('CX|')) {
+                             const target = parseInt(c.split('|')[1], 10);
+                             if (target === qIdx) {
+                               controlQubits.push(i);
+                             }
+                          }
+                        }
+                        const isCXTarget = controlQubits.length > 0;
                         const isOccupied = cell !== '' || isCXTarget;
+                        const isCX = cell.startsWith('CX|');
+                        
+                        let cxDist = 0;
+                        let cxLineHeight = 0;
+                        let cxLineTop = '50%';
+                        if (isCX) {
+                           const target = parseInt(cell.split('|')[1], 10);
+                           cxDist = target - qIdx;
+                           cxLineHeight = Math.abs(cxDist) * 36; // 32px height + 4px gap
+                           cxLineTop = cxDist > 0 ? '50%' : \`calc(50% - \${cxLineHeight}px)\`;
+                        }
 
                         return (
                           <div 
@@ -387,26 +463,29 @@ except Exception as e:
                             }}
                             onDragOver={handleDragOver}
                             onClick={() => {
-                              if (isCXTarget) removeGate(qIdx - 1, sIdx);
-                              else if (cell) removeGate(qIdx, sIdx);
+                              if (isCXTarget) {
+                                controlQubits.forEach(c => removeGate(c, sIdx));
+                              } else if (cell) {
+                                removeGate(qIdx, sIdx);
+                              }
                             }}
                             style={{
                               width: '32px', height: '32px',
                               margin: '0 2px',
-                              background: (cell && cell !== 'CX') ? 'var(--surface-color)' : 'transparent',
-                              border: (cell && cell !== 'CX') ? '1px solid var(--accent-primary)' : 'none',
+                              background: (cell && !isCX) ? 'var(--surface-color)' : 'transparent',
+                              border: (cell && !isCX) ? (cell === 'M' ? '1px solid #ff7b72' : '1px solid var(--accent-primary)') : 'none',
                               borderRadius: '4px',
                               zIndex: 1,
                               display: 'flex', alignItems: 'center', justifyContent: 'center',
                               cursor: isOccupied ? 'pointer' : 'default',
                               fontWeight: 'bold', fontSize: '12px',
-                              color: 'var(--accent-primary)',
+                              color: cell === 'M' ? '#ff7b72' : 'var(--accent-primary)',
                               position: 'relative'
                             }}
                           >
-                            {cell && cell !== 'CX' && cell}
-                            {cell === 'CX' && <div style={{ width: '10px', height: '10px', background: 'var(--accent-secondary)', borderRadius: '50%', zIndex: 2 }} />}
-                            {cell === 'CX' && <div style={{ position: 'absolute', top: '50%', left: '15px', width: '2px', height: '36px', background: 'var(--accent-secondary)', zIndex: -1 }} />}
+                            {cell && !isCX && cell}
+                            {isCX && <div style={{ width: '10px', height: '10px', background: 'var(--accent-secondary)', borderRadius: '50%', zIndex: 2 }} />}
+                            {isCX && <div style={{ position: 'absolute', top: cxLineTop, left: '15px', width: '2px', height: \`\${cxLineHeight}px\`, background: 'var(--accent-secondary)', zIndex: -1 }} />}
                             {isCXTarget && (
                               <div style={{ width: '20px', height: '20px', border: '2px solid var(--accent-secondary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-color)', zIndex: 2 }}>
                                 <div style={{ position: 'absolute', width: '16px', height: '2px', background: 'var(--accent-secondary)' }} />
@@ -434,9 +513,9 @@ except Exception as e:
         </div>
 
         {/* Bottom Panel: Visualization and Code */}
-        <div style={{ display: 'flex', gap: '16px', minHeight: '300px' }}>
+        <div style={{ display: 'flex', gap: '16px', minHeight: '300px', minWidth: 0 }}>
           
-          <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column' }}>
+          <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
             <h3 style={{ fontSize: '12px', marginBottom: '8px', color: 'var(--accent-primary)' }}>Python Code (Editable)</h3>
             <div style={{ flex: 1, overflow: 'hidden', borderRadius: '8px' }}>
               <Editor
@@ -455,13 +534,13 @@ except Exception as e:
             </div>
           </div>
 
-          <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column' }}>
+          <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
             {errorMsg && (
               <div style={{ padding: '8px', background: 'rgba(248, 81, 73, 0.1)', border: '1px solid var(--error)', borderRadius: '8px', color: 'var(--error)', fontSize: '12px', marginBottom: '8px', whiteSpace: 'pre-wrap' }}>
                 {errorMsg}
               </div>
             )}
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, position: 'relative' }}>
                 <Bar data={chartData} options={chartOptions} />
             </div>
           </div>
