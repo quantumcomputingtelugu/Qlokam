@@ -18,7 +18,7 @@ export default function ArenaPage() {
   const [solvedProblems, setSolvedProblems] = useState<string[]>([]);
 
   const [activeProblemId, setActiveProblemId] = useState<string | null>(null);
-  const [listTab, setListTab] = useState<'practice' | 'contests' | 'leaderboard'>('practice');
+  const [listTab, setListTab] = useState<'problems' | 'contests' | 'leaderboard'>('problems');
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'verifying' | 'success' | 'failed'>('idle');
@@ -186,15 +186,15 @@ export default function ArenaPage() {
           {/* Header Tabs */}
           <div style={{ display: 'flex', borderBottom: '1px solid var(--surface-border)', padding: '0 24px' }}>
             <button 
-              onClick={() => setListTab('practice')}
+              onClick={() => setListTab('problems')}
               style={{ 
                 padding: '16px 24px', background: 'none', border: 'none', cursor: 'pointer',
-                color: listTab === 'practice' ? 'var(--accent-primary)' : 'var(--text-secondary)',
-                borderBottom: listTab === 'practice' ? '2px solid var(--accent-primary)' : '2px solid transparent',
-                fontWeight: listTab === 'practice' ? 600 : 400, fontSize: '16px'
+                color: listTab === 'problems' ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                borderBottom: listTab === 'problems' ? '2px solid var(--accent-primary)' : '2px solid transparent',
+                fontWeight: listTab === 'problems' ? 600 : 400, fontSize: '16px'
               }}
             >
-              Practice Problems
+              Problems
             </button>
             <button 
               onClick={() => setListTab('contests')}
@@ -221,7 +221,7 @@ export default function ArenaPage() {
           </div>
 
           <div style={{ padding: '24px', flex: 1, overflowY: 'auto' }}>
-            {listTab === 'practice' ? (
+            {listTab === 'problems' ? (
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid var(--surface-border)', color: 'var(--text-secondary)', fontSize: '14px' }}>
