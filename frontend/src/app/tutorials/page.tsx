@@ -408,6 +408,10 @@ export default function TutorialsPage() {
                             <div 
                               key={subModule.id} 
                               onClick={() => { 
+                                if (subModule.prerequisiteId && !completedTutorials.includes(subModule.prerequisiteId)) {
+                                  alert("🔒 Locked: Please achieve a perfect score (5/5) on the prerequisite quiz to unlock this module.");
+                                  return;
+                                }
                                 setActiveTutorialId(subModule.id); 
                                 setActiveTab('lesson'); 
                                 setSelectedAnswers({}); 
@@ -427,7 +431,14 @@ export default function TutorialsPage() {
                               className="tutorial-card"
                             >
                               <div className="flex-between">
-                                <h4 style={{ fontSize: '14px', margin: 0, color: 'var(--text-secondary)' }}>
+                                <h4 style={{ 
+                                  fontSize: '14px', 
+                                  margin: 0, 
+                                  color: (subModule.prerequisiteId && !completedTutorials.includes(subModule.prerequisiteId)) 
+                                    ? 'var(--text-disabled, #666)' 
+                                    : 'var(--text-secondary)'
+                                }}>
+                                  {(subModule.prerequisiteId && !completedTutorials.includes(subModule.prerequisiteId)) && '🔒 '}
                                   {index + 1}. {subModule.title}
                                 </h4>
                                 {subCompleted && (

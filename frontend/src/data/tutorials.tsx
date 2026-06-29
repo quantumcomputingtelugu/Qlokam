@@ -542,7 +542,6 @@ export const tutorialSessions: TutorialSession[] = [
       {
         id: 6,
         title: 'Qubits and its properties',
-        prerequisiteId: 5,
         description: 'Introduction to Qubits and their fundamental properties.',
         difficulty: 'Beginner',
         lessonContent: (
