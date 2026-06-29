@@ -29,11 +29,11 @@ export type TutorialSession = {
 export const tutorialSessions: TutorialSession[] = [
   {
     id: "course-basics",
-    sessionName: "Quantum Fundamentals",
+    sessionName: "Quantum Computing Basics",
     modules: [
       {
         id: 1,
-        title: 'Introduction to Qubits',
+        title: 'Introduction to Quantum Computing',
         description: 'Learn the fundamentals of quantum bits, superposition, and how they differ from classical bits.',
         difficulty: 'Beginner',
         lessonContent: (
@@ -65,103 +65,6 @@ export const tutorialSessions: TutorialSession[] = [
             explanation: "Unlike classical bits, qubits leverage quantum mechanics to exist in a state of superposition."
           }
         ]
-      },
-      {
-        id: 2,
-        title: 'Quantum Gates: Pauli-X, Y, and Z',
-        description: 'Understand single-qubit rotations and how to manipulate quantum states.',
-        difficulty: 'Beginner',
-        lessonContent: (
-          <>
-            <p style={{ marginBottom: '16px' }}>
-              The Pauli gates act as rotations on the Bloch sphere. They are fundamental single-qubit operations.
-            </p>
-            <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-              <li style={{ marginBottom: '8px' }}><strong>Pauli-X:</strong> Often called the quantum NOT gate. It flips |0⟩ to |1⟩ and vice versa.</li>
-              <li style={{ marginBottom: '8px' }}><strong>Pauli-Y:</strong> A rotation around the Y axis of the Bloch sphere.</li>
-              <li style={{ marginBottom: '8px' }}><strong>Pauli-Z:</strong> Leaves |0⟩ unchanged, but flips the phase of |1⟩ to -|1⟩.</li>
-            </ul>
-          </>
-        ),
-        practiceGoal: 'Apply a Pauli-X gate to flip a qubit from |0> to |1>.',
-        quizzes: [
-          {
-            question: "Which Pauli gate acts as the quantum equivalent of the classical NOT gate?",
-            options: ["Pauli-X", "Pauli-Y", "Pauli-Z", "Hadamard"],
-            correctAnswerIndex: 0,
-            explanation: "The Pauli-X gate flips the state of a qubit from |0> to |1>, or |1> to |0>."
-          }
-        ]
-      },
-      {
-        id: 3,
-        title: 'Entanglement and CNOT',
-        description: 'Dive into two-qubit gates and the spooky action at a distance: Quantum Entanglement.',
-        difficulty: 'Intermediate',
-        lessonContent: (
-          <>
-            <p style={{ marginBottom: '16px' }}>
-              Entanglement is a unique quantum phenomenon where two qubits become inextricably linked.
-            </p>
-            <p style={{ marginBottom: '16px' }}>
-              The <strong>CNOT (Controlled-NOT)</strong> gate flips the state of a target qubit ONLY if the control qubit is in the |1⟩ state.
-            </p>
-          </>
-        ),
-        practiceGoal: 'Create a Bell State! Place an H gate on q0, and a CX gate with control on q0 and target on q1.',
-        quizzes: []
-      },
-      {
-        id: 4,
-        title: 'Final Test: Quantum Basics',
-        description: 'Prove your knowledge of quantum fundamentals to earn your badge!',
-        difficulty: 'Hard',
-        isFinalTest: true,
-        badgeAward: '🎓 Quantum Basics Graduate',
-        pointsAward: 50,
-        lessonContent: (
-          <>
-            <p style={{ marginBottom: '16px' }}>
-              You have completed all the lessons in the Quantum Fundamentals course. Now it is time to prove your knowledge!
-            </p>
-            <p style={{ marginBottom: '16px' }}>
-              Complete the quiz below and successfully build the required circuit in Practice mode to earn your badge and bonus Arena rating.
-            </p>
-          </>
-        ),
-        practiceGoal: 'Create a Bell State, then apply a Pauli-Z gate to the second qubit.',
-        quizzes: [
-          {
-            question: "If you apply a Hadamard gate followed by a Pauli-Z gate to a qubit initially in |0>, what state is it in?",
-            options: [
-              "|+> state",
-              "|-> state",
-              "|1> state",
-              "|0> state"
-            ],
-            correctAnswerIndex: 1,
-            explanation: "H puts it in |+>. Z flips the phase of |1>, changing |+> to |->."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: "course-error-correction",
-    sessionName: "Error Correction & Hardware",
-    modules: [
-      {
-        id: 5,
-        title: "Quantum Error Correction (Placeholder)",
-        description: "Learn how we protect fragile quantum information from decoherence.",
-        difficulty: "Advanced",
-        lessonContent: (
-          <>
-            <p>This is a placeholder for your future Error Correction lesson!</p>
-          </>
-        ),
-        practiceGoal: "Explore the 3-qubit bit-flip code.",
-        quizzes: []
       }
     ]
   }
