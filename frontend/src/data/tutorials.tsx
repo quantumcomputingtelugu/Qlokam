@@ -149,16 +149,77 @@ export const tutorialSessions: TutorialSession[] = [
             difficulty: 'Beginner',
             lessonContent: (
               <>
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>1. Drug Discovery and Chemistry</h3>
                 <p style={{ marginBottom: '16px' }}>
-                  While quantum computers are still in their infancy, they hold immense potential for solving problems that are currently intractable for classical computers. 
+                  A drug molecule might interact with millions of atoms inside the human body. Simulating all these interactions on classical computers can take enormous time.
                 </p>
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Drug Discovery & Materials Science</h3>
                 <p style={{ marginBottom: '16px' }}>
-                  Simulating molecular interactions is incredibly complex because the number of quantum states grows exponentially. Quantum computers are naturally suited to simulate quantum mechanics, which could revolutionize how we discover new medicines and design new materials (like better batteries).
+                  A quantum computer can model molecules using the rules of quantum mechanics themselves.
                 </p>
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Optimization & Logistics</h3>
+                <p style={{ marginBottom: '16px' }}><strong>Example</strong></p>
+                <p style={{ marginBottom: '16px' }}>Suppose scientists want to develop a new drug for cancer. Instead of:</p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '8px' }}>Synthesizing thousands of chemicals in a laboratory,</li>
+                  <li style={{ marginBottom: '8px' }}>Testing them one by one,</li>
+                </ul>
                 <p style={{ marginBottom: '16px' }}>
-                  Finding the most efficient route for thousands of delivery trucks, or optimizing financial portfolios, are tasks that could eventually be dramatically accelerated by quantum algorithms.
+                  they could first simulate molecular behavior on a quantum computer and identify the most promising candidates.
+                </p>
+
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>2. Optimization: Finding the Best Answer Among Millions</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  Optimization means finding the best solution among countless possibilities. Imagine a delivery company such as Swiggy or Zomato.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Suppose 500 delivery partners must deliver 20,000 orders across a city. Questions include:
+                </p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '8px' }}>Which rider should deliver which order?</li>
+                  <li style={{ marginBottom: '8px' }}>What route minimizes fuel consumption?</li>
+                  <li style={{ marginBottom: '8px' }}>How can deliveries be completed fastest?</li>
+                </ul>
+                <p style={{ marginBottom: '16px' }}>
+                  A classical computer can solve this, but the problem becomes increasingly difficult as the city grows. Quantum algorithms may eventually explore many possible routes simultaneously and identify better solutions.
+                </p>
+
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>3. Finance: Managing Money Smarter</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  Suppose an investor has ₹10,00,000 and wants to invest in:
+                </p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '8px' }}>stocks,</li>
+                  <li style={{ marginBottom: '8px' }}>bonds,</li>
+                  <li style={{ marginBottom: '8px' }}>commodities,</li>
+                  <li style={{ marginBottom: '8px' }}>mutual funds.</li>
+                </ul>
+                <p style={{ marginBottom: '16px' }}>
+                  The challenge is to maximize profit while minimizing risk. A quantum computer could potentially evaluate a vast number of investment combinations more efficiently.
+                </p>
+
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>4. Cryptography: The Security Challenge</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  Most internet security today relies on mathematical problems that are extremely difficult for classical computers. Examples include:
+                </p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '8px' }}>online banking,</li>
+                  <li style={{ marginBottom: '8px' }}>secure messaging,</li>
+                  <li style={{ marginBottom: '8px' }}>digital signatures.</li>
+                </ul>
+                <p style={{ marginBottom: '16px' }}>
+                  A sufficiently powerful quantum computer running Shor&apos;s Algorithm could solve some of these problems much faster.
+                </p>
+
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>5. Artificial Intelligence and Machine Learning</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  Machine learning often requires solving enormous optimization problems. Suppose we want to train an AI model to recognize diseases from medical images. Training may involve:
+                </p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '8px' }}>millions or billions of parameters,</li>
+                  <li style={{ marginBottom: '8px' }}>enormous datasets,</li>
+                  <li style={{ marginBottom: '8px' }}>extensive computation.</li>
+                </ul>
+                <p style={{ marginBottom: '16px' }}>
+                  Researchers in Quantum Machine Learning are investigating whether quantum systems can accelerate certain machine-learning tasks.
                 </p>
               </>
             ),
