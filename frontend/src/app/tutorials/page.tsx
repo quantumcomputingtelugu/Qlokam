@@ -345,6 +345,11 @@ export default function TutorialsPage() {
                   <div key={tutorial.id} style={{ display: 'flex', flexDirection: 'column' }}>
                     <div 
                       onClick={() => { 
+                        if (tutorial.prerequisiteId && !completedTutorials.includes(tutorial.prerequisiteId)) {
+                          alert("🔒 Locked: Please achieve a perfect score (5/5) on the prerequisite quiz to unlock this module.");
+                          return;
+                        }
+                        
                         if (tutorial.subModules && tutorial.subModules.length > 0) {
                           setActiveTutorialId(tutorial.subModules[0].id);
                         } else {
@@ -376,7 +381,14 @@ export default function TutorialsPage() {
                       className="tutorial-card"
                     >
                       <div className="flex-between" style={{ flex: 1 }}>
-                        <h4 style={{ fontSize: '15px', margin: 0, color: tutorial.isFinalTest ? '#d29922' : 'var(--text-primary)' }}>
+                        <h4 style={{ 
+                          fontSize: '15px', 
+                          margin: 0, 
+                          color: (tutorial.prerequisiteId && !completedTutorials.includes(tutorial.prerequisiteId)) 
+                            ? 'var(--text-disabled, #666)' 
+                            : (tutorial.isFinalTest ? '#d29922' : 'var(--text-primary)') 
+                        }}>
+                          {(tutorial.prerequisiteId && !completedTutorials.includes(tutorial.prerequisiteId)) && '🔒 '}
                           {tutorial.isFinalTest ? '🏆 ' : `${moduleIndex + 1}. `}{tutorial.title}
                         </h4>
                         {completed && (
