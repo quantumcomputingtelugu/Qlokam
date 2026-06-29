@@ -405,7 +405,7 @@ except Exception as e:
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%', minWidth: 0 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0, paddingBottom: '16px' }}>
       <div className="flex-between">
         <select 
           value={language} 

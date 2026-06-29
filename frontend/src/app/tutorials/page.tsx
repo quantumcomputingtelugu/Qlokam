@@ -421,7 +421,7 @@ export default function TutorialsPage() {
                   </div>
                   
                   {/* The Interactive Editor */}
-                  <div style={{ flex: 1, minHeight: '500px', marginBottom: '24px', border: '1px solid var(--surface-border)', borderRadius: '8px', overflow: 'hidden' }}>
+                  <div style={{ flex: 1, minHeight: '500px', marginBottom: '24px', border: '1px solid var(--surface-border)', borderRadius: '8px', overflow: 'visible', padding: '16px' }}>
                     <VisualPlayground />
                   </div>
 
