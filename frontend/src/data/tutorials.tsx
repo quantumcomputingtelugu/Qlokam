@@ -652,69 +652,66 @@ export const tutorialSessions: TutorialSession[] = [
           {
             id: 7,
             title: 'What is Qubit',
-            description: 'Learn exactly what a qubit is and how it functions.',
+            description: 'Learn exactly what a qubit is, how it functions, and its physical realization.',
             difficulty: 'Beginner',
             lessonContent: (
               <>
-                <p style={{ marginBottom: '16px' }}>
-                  A qubit (short for quantum bit) is the basic unit of information in a quantum computer, just as a bit is the basic unit of information in a classical computer.
+                <p style={{ marginBottom: '16px', fontSize: '18px' }}>
+                  A <strong>qubit</strong> (short for quantum bit) is the basic unit of information in a quantum computer, just as a bit is the basic unit of information in a classical computer.
                 </p>
                 
                 <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '24px', marginBottom: '16px' }}>The Classical Bit</h3>
                 <p style={{ marginBottom: '16px' }}>
-                  A classical computer stores information using bits. A bit can be only one of two values: <strong>0 or 1</strong>. Everything in your laptop or smartphone is ultimately represented using billions of such bits.
+                  A classical computer stores information using bits. A bit can be only one of two values: <strong>0 or 1</strong>. Everything in your laptop, from the text you type to the videos you watch, is ultimately represented using billions of such bits.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Think of a classical bit like a light switch: it is either completely <strong>ON (1)</strong> or completely <strong>OFF (0)</strong>. There is no in-between state.
                 </p>
 
                 {/* Visual: Classical Bit */}
                 <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', justifyContent: 'center' }}>
                   <div style={{ width: '80px', height: '80px', borderRadius: '8px', background: '#333', border: '2px solid #555', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '32px', fontWeight: 'bold', color: '#888' }}>0</div>
                   <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-secondary)', fontWeight: 'bold' }}>OR</div>
-                  <div style={{ width: '80px', height: '80px', borderRadius: '8px', background: 'var(--accent-primary)', border: '2px solid var(--accent-secondary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '32px', fontWeight: 'bold', color: '#fff', boxShadow: '0 0 15px var(--accent-primary)' }}>1</div>
+                  <div style={{ width: '80px', height: '80px', borderRadius: '8px', background: 'var(--accent-primary)', border: '2px solid var(--accent-secondary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '32px', fontWeight: 'bold', color: '#000', boxShadow: '0 0 15px var(--accent-primary)' }}>1</div>
                 </div>
 
                 <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>The Quantum Bit</h3>
                 <p style={{ marginBottom: '16px' }}>
-                  A qubit can be:
+                  A qubit, however, is not bound by this binary restriction. A qubit can be:
                 </p>
                 <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  <li style={{ marginBottom: '8px' }}><strong>0</strong></li>
-                  <li style={{ marginBottom: '8px' }}><strong>1</strong></li>
-                  <li style={{ marginBottom: '8px' }}><strong>or a combination of both 0 and 1 simultaneously.</strong></li>
+                  <li style={{ marginBottom: '8px' }}>Exactly 0</li>
+                  <li style={{ marginBottom: '8px' }}>Exactly 1</li>
+                  <li style={{ marginBottom: '8px', color: 'var(--accent-primary)', fontWeight: 'bold' }}>A combination of both 0 and 1 simultaneously</li>
                 </ul>
                 <p style={{ marginBottom: '16px' }}>
-                  This phenomenon of being in multiple states at once is called <strong>Superposition</strong>. Because of this, as you add more qubits to a system, the amount of information it can process grows exponentially rather than linearly. 
+                  Physically, how do we make a qubit? Unlike a classical transistor, a qubit is made using microscopic quantum systems. For example:
                 </p>
-
-                {/* Visual: Superposition Bloch Sphere */}
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ position: 'relative', width: '120px', height: '120px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(69,243,255,0.2) 0%, rgba(139,92,246,0.2) 100%)', border: '2px dashed var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <div style={{ position: 'absolute', top: '-24px', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 'bold' }}>|0⟩</div>
-                    <div style={{ position: 'absolute', bottom: '-24px', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 'bold' }}>|1⟩</div>
-                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, #333 0%, var(--accent-primary) 100%)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '20px', fontWeight: 'bold', color: '#fff', boxShadow: '0 0 20px var(--accent-primary)' }}>
-                      0 & 1
-                    </div>
-                  </div>
-                </div>
+                <ul style={{ paddingLeft: '20px', marginBottom: '24px', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '8px' }}><strong>Superconducting circuits:</strong> Tiny loops of metal cooled to near absolute zero where electrons flow without resistance.</li>
+                  <li style={{ marginBottom: '8px' }}><strong>Trapped Ions:</strong> Individual atoms held in place by lasers and electromagnetic fields.</li>
+                  <li style={{ marginBottom: '8px' }}><strong>Photons:</strong> Individual particles of light whose polarization (horizontal or vertical) acts as the 0 or 1.</li>
+                </ul>
               </>
             ),
-            practiceGoal: 'Learn what a qubit is.'
+            practiceGoal: 'Understand the fundamental difference between a classical bit and a qubit.'
           },
           {
             id: 8,
             title: 'Superposition',
-            description: 'Learn about the quantum phenomenon of superposition.',
+            description: 'Dive deep into superposition and exponential scaling.',
             difficulty: 'Beginner',
             lessonContent: (
               <>
-                <p style={{ marginBottom: '16px', fontSize: '18px', color: 'var(--text-secondary)' }}>
-                  <strong>Superposition</strong> is one of the most fundamental and counter-intuitive properties of quantum mechanics. It allows a quantum system to exist in multiple states at the same time until it is measured.
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  The ability of a qubit to be in multiple states simultaneously is known as <strong>Superposition</strong>. This is one of the two core pillars of quantum mechanics (the other being Entanglement).
                 </p>
-                
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>The Coin Flip Analogy</h3>
-                <p style={{ marginBottom: '16px' }}>
-                  Imagine a coin. When it is lying on a table, it is either <strong>Heads (1)</strong> or <strong>Tails (0)</strong>. This is exactly how a classical bit works.
+
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>The Spinning Coin Analogy</h3>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  Imagine a classical coin resting on a table. It is either Heads (1) or Tails (0). This is exactly how a classical bit works.
                 </p>
-                <p style={{ marginBottom: '16px' }}>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
                   Now, imagine tossing the coin into the air. While it is spinning in the air, what state is it in? It is a blur of both Heads and Tails. It isn't just Heads, and it isn't just Tails—it's a <strong>superposition of both</strong>. 
                 </p>
 
@@ -724,7 +721,7 @@ export const tutorialSessions: TutorialSession[] = [
                     @keyframes spinCoin { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
                   `}</style>
                   <div style={{ width: '100px', height: '100px', borderRadius: '50%', background: 'linear-gradient(45deg, #FFD700 0%, #FFA500 100%)', boxShadow: '0 0 20px rgba(255,215,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', animation: 'spinCoin 1.5s linear infinite' }}>
-                    <span style={{ fontSize: '24px', fontWeight: 'bold', color: '#fff', textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>H / T</span>
+                    <span style={{ fontSize: '24px', fontWeight: 'bold', color: '#000' }}>H / T</span>
                   </div>
                 </div>
 
@@ -732,10 +729,13 @@ export const tutorialSessions: TutorialSession[] = [
                   Only when the coin lands (when we <strong>measure</strong> the qubit) does it collapse into a definite state of either Heads or Tails.
                 </p>
 
-                <div style={{ padding: '16px', background: 'rgba(69, 243, 255, 0.1)', borderLeft: '4px solid var(--accent-primary)', borderRadius: '0 8px 8px 0', marginTop: '24px' }}>
-                  <h4 style={{ color: 'var(--accent-primary)', margin: '0 0 8px 0' }}>Why is this important?</h4>
+                <div style={{ padding: '24px', background: 'rgba(69, 243, 255, 0.1)', borderLeft: '4px solid var(--accent-primary)', borderRadius: '0 8px 8px 0', marginTop: '32px' }}>
+                  <h4 style={{ color: 'var(--accent-primary)', margin: '0 0 12px 0' }}>The Exponential Power of Superposition</h4>
+                  <p style={{ margin: '0 0 12px 0', color: 'var(--text-secondary)' }}>
+                    Why is this important? Because a qubit can be in a superposition, two qubits can represent 4 states simultaneously, 3 qubits can represent 8 states, and <strong>n qubits can represent 2^n states</strong>.
+                  </p>
                   <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
-                    Because a qubit can be in a superposition, two qubits can represent 4 states simultaneously, 3 qubits can represent 8 states, and <strong>n qubits can represent 2^n states</strong>. This exponential growth gives quantum computers their immense parallel processing power.
+                    If you have just 300 qubits in a state of superposition, they can represent more states simultaneously than there are atoms in the observable universe! This exponential scaling allows quantum computers to analyze massive datasets and complex systems all at once, something a classical computer could never do.
                   </p>
                 </div>
               </>
@@ -750,80 +750,105 @@ export const tutorialSessions: TutorialSession[] = [
             lessonContent: (
               <>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  Unlike classical systems where you can look at a bit without changing it, <strong>measuring a qubit alters its state fundamentally</strong>.
+                  Unlike classical systems where you can look at a bit without changing it, <strong>measuring a qubit alters its state fundamentally</strong>. This is a core rule of quantum mechanics.
                 </p>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  When you measure a qubit that is in a superposition, it instantly "collapses" into one of the definite classical states—either exactly 0 or exactly 1.
+                  When you observe or "measure" a qubit that is in a superposition, you force it to make a decision. It instantly "collapses" into one of the definite classical states—either exactly 0 or exactly 1. You cannot measure a qubit and see the superposition itself.
+                </p>
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '24px', marginBottom: '16px' }}>Probabilities, Not Certainties</h3>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  Which state will it collapse into? You cannot know for sure. The outcome is fundamentally probabilistic. The qubit has a certain probability of collapsing to 0, and a certain probability of collapsing to 1. For example, a qubit could be in a state where it has a 90% chance of being 0 and a 10% chance of being 1.
                 </p>
                 <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(69,243,255,0.5), rgba(139,92,246,0.5))', boxShadow: '0 0 20px rgba(69,243,255,0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '24px', fontWeight: 'bold' }}>?</div>
+                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(69,243,255,0.5), rgba(139,92,246,0.5))', boxShadow: '0 0 20px rgba(69,243,255,0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '32px', fontWeight: 'bold', position: 'relative' }}>
+                      <span style={{ position: 'absolute', top: '-25px', fontSize: '14px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>Superposition</span>
+                      👁️
+                    </div>
                     <div style={{ fontSize: '32px', color: 'var(--accent-primary)' }}>➔</div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <div style={{ padding: '8px 24px', background: '#333', borderRadius: '8px', border: '2px solid #555', textAlign: 'center', fontWeight: 'bold' }}>0 (prob p)</div>
-                      <div style={{ padding: '8px 24px', background: 'var(--accent-primary)', borderRadius: '8px', border: '2px solid var(--accent-secondary)', textAlign: 'center', fontWeight: 'bold', color: '#000' }}>1 (prob 1-p)</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      <div style={{ padding: '8px 24px', background: '#333', borderRadius: '8px', border: '2px solid #555', textAlign: 'center', fontWeight: 'bold' }}>
+                        <div>0</div>
+                        <div style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>(prob p)</div>
+                      </div>
+                      <div style={{ padding: '8px 24px', background: 'var(--accent-primary)', borderRadius: '8px', border: '2px solid var(--accent-secondary)', textAlign: 'center', fontWeight: 'bold', color: '#000' }}>
+                        <div>1</div>
+                        <div style={{ fontSize: '12px', color: 'rgba(0,0,0,0.6)', marginTop: '4px' }}>(prob 1-p)</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </>
             ),
-            practiceGoal: 'Learn about quantum measurement.'
+            practiceGoal: 'Learn about quantum measurement and probabilities.'
           },
           {
             id: 11,
             title: 'Representation',
-            description: 'Learn how qubits are mathematically represented.',
+            description: 'Learn how qubits are mathematically modeled using Dirac notation.',
             difficulty: 'Intermediate',
             lessonContent: (
               <>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  To describe a qubit mathematically, we use a notation called <strong>Dirac notation</strong> (or bra-ket notation). 
+                  To describe a qubit mathematically, we use a notation called <strong>Dirac notation</strong> (or bra-ket notation), invented by physicist Paul Dirac. It is the standard language of quantum mechanics.
                 </p>
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--accent-primary)', letterSpacing: '2px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '32px 0', padding: '32px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ fontSize: '40px', fontWeight: 'bold', color: 'var(--accent-primary)', letterSpacing: '4px', textShadow: '0 0 15px rgba(69,243,255,0.3)' }}>
                     |ψ⟩ = α|0⟩ + β|1⟩
                   </div>
                 </div>
-                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  Here, <strong>|ψ⟩</strong> is the state of the qubit. <strong>|0⟩</strong> and <strong>|1⟩</strong> are the classical states.
-                  The numbers <strong>α</strong> and <strong>β</strong> are complex numbers known as probability amplitudes.
-                </p>
-                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  The probability of measuring 0 is |α|² and the probability of measuring 1 is |β|². They must add up to 1: |α|² + |β|² = 1.
-                </p>
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '24px', marginBottom: '16px' }}>Breaking it Down</h3>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '12px' }}><strong>|ψ⟩ (Ket Psi):</strong> This represents the overall quantum state of our qubit.</li>
+                  <li style={{ marginBottom: '12px' }}><strong>|0⟩ and |1⟩:</strong> These are the base classical states. Think of them as the X and Y axes on a graph.</li>
+                  <li style={{ marginBottom: '12px' }}><strong>α (Alpha) and β (Beta):</strong> These are called <em>Probability Amplitudes</em>. They are complex numbers (meaning they can involve imaginary numbers, like the square root of -1). They determine how much of state |0⟩ and state |1⟩ make up our superposition.</li>
+                </ul>
+                <div style={{ padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '4px solid #fff', marginTop: '24px' }}>
+                  <h4 style={{ margin: '0 0 8px 0', color: '#fff' }}>The Normalization Rule</h4>
+                  <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
+                    Because probabilities must add up to 100% (or 1.0), the amplitudes follow a strict mathematical rule: the absolute square of α plus the absolute square of β must equal 1. <br/><br/>
+                    <strong>|α|² + |β|² = 1</strong><br/><br/>
+                    |α|² is the probability of measuring 0, and |β|² is the probability of measuring 1.
+                  </p>
+                </div>
               </>
             ),
-            practiceGoal: 'Understand Dirac notation.'
+            practiceGoal: 'Understand Dirac notation and probability amplitudes.'
           },
           {
             id: 12,
             title: 'Interference',
-            description: 'Discover how quantum states can interfere with each other.',
+            description: 'Discover how quantum states can interfere with each other like waves.',
             difficulty: 'Intermediate',
             lessonContent: (
               <>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  Because qubits behave like waves (due to their probability amplitudes being complex numbers), they can exhibit <strong>interference</strong>.
+                  Because qubits are defined by probability amplitudes (which are complex numbers), they possess wavelike properties. Just like ripples in a pond, these probability waves can exhibit <strong>interference</strong>.
                 </p>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  Quantum algorithms use interference to amplify the probability of correct answers (constructive interference) and cancel out the probability of wrong answers (destructive interference).
+                  In a classical computer, probabilities are always positive numbers. In a quantum computer, probability amplitudes can be negative or imaginary. This means they can cancel each other out!
                 </p>
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '32px 0', padding: '32px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ display: 'flex', gap: '48px', alignItems: 'center' }}>
                     <div style={{ textAlign: 'center' }}>
-                      <div style={{ color: 'var(--success)', fontSize: '24px', fontWeight: 'bold' }}>+ + = ➕</div>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '8px' }}>Constructive</p>
+                      <div style={{ color: 'var(--success)', fontSize: '32px', fontWeight: 'bold' }}>🌊 + 🌊 = 🏄</div>
+                      <h4 style={{ color: 'var(--text-primary)', marginTop: '16px', marginBottom: '8px' }}>Constructive Interference</h4>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '14px', maxWidth: '200px', margin: '0 auto' }}>When the peaks of two waves align, they amplify each other, making the outcome more likely.</p>
                     </div>
-                    <div style={{ width: '1px', height: '60px', background: 'var(--surface-border)' }}></div>
+                    <div style={{ width: '1px', height: '100px', background: 'var(--surface-border)' }}></div>
                     <div style={{ textAlign: 'center' }}>
-                      <div style={{ color: 'var(--error)', fontSize: '24px', fontWeight: 'bold' }}>+ - = 0</div>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '8px' }}>Destructive</p>
+                      <div style={{ color: 'var(--error)', fontSize: '32px', fontWeight: 'bold' }}>🌊 + 📉 = ➖</div>
+                      <h4 style={{ color: 'var(--text-primary)', marginTop: '16px', marginBottom: '8px' }}>Destructive Interference</h4>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '14px', maxWidth: '200px', margin: '0 auto' }}>When a peak aligns with a trough, they cancel each other out, making the outcome impossible.</p>
                     </div>
                   </div>
                 </div>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <strong>How Quantum Algorithms Work:</strong> A quantum algorithm (like Grover's Algorithm) is essentially a carefully choreographed dance of interference. The algorithm is designed to create <em>destructive interference</em> for all the wrong answers, shrinking their probability to zero, while creating <em>constructive interference</em> for the right answer, boosting its probability to near 100%. When you finally measure the system, the correct answer is the only one left standing!
+                </p>
               </>
             ),
-            practiceGoal: 'Learn how quantum interference works.'
+            practiceGoal: 'Learn how quantum algorithms use interference to find answers.'
           },
           {
             id: 13,
@@ -833,53 +858,88 @@ export const tutorialSessions: TutorialSession[] = [
             lessonContent: (
               <>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  In classical computing, you can easily copy a file or a bit (e.g. CTRL+C, CTRL+V). 
+                  In classical computing, copying data is trivial. You can easily duplicate a file, backup a hard drive, or press CTRL+C and CTRL+V to clone bits. 
                 </p>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  However, the <strong>No Cloning Theorem</strong> states that it is impossible to create an identical copy of an arbitrary unknown quantum state.
+                  However, quantum mechanics forbids this. The <strong>No-Cloning Theorem</strong> states that it is fundamentally impossible to create an identical copy of an arbitrary unknown quantum state.
                 </p>
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '18px', fontWeight: 'bold', color: '#000' }}>|ψ⟩</div>
-                    <div style={{ fontSize: '32px', color: 'var(--error)' }}>➔ ❌ ➔</div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '18px', fontWeight: 'bold', color: '#000', opacity: 0.5 }}>|ψ⟩</div>
-                      <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '18px', fontWeight: 'bold', color: '#000', opacity: 0.5 }}>|ψ⟩</div>
+                
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '32px 0', padding: '32px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '18px', fontWeight: 'bold', color: '#000', boxShadow: '0 0 15px var(--accent-primary)' }}>|ψ⟩</div>
+                      <span style={{ marginTop: '8px', fontSize: '12px', color: 'var(--text-secondary)' }}>Original Qubit</span>
+                    </div>
+                    <div style={{ fontSize: '32px', color: 'var(--error)', fontWeight: 'bold' }}>➔ ❌ ➔</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '14px', fontWeight: 'bold', color: '#000', opacity: 0.3, border: '2px dashed #000' }}>|ψ⟩</div>
+                        <span style={{ fontSize: '12px', color: 'var(--error)' }}>Failed Copy</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '14px', fontWeight: 'bold', color: '#000', opacity: 0.3, border: '2px dashed #000' }}>|ψ⟩</div>
+                        <span style={{ fontSize: '12px', color: 'var(--error)' }}>Failed Copy</span>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '24px', marginBottom: '16px' }}>Why is this a big deal?</h3>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  This has huge implications for quantum cryptography, making quantum communication theoretically perfectly secure!
+                  This theorem creates major hurdles for quantum computer engineering, because you cannot simply backup a quantum calculation if something goes wrong.
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  However, it is a massive <em>advantage</em> for <strong>Quantum Cryptography</strong>. Because quantum states cannot be copied, an eavesdropper cannot intercept and copy a quantum message without destroying or altering the original state. If someone tries to spy on a quantum communication channel, the laws of physics guarantee that the sender and receiver will immediately know!
                 </p>
               </>
             ),
-            practiceGoal: 'Understand the No Cloning Theorem.'
+            practiceGoal: 'Understand the No-Cloning Theorem and its security implications.'
           },
           {
             id: 14,
             title: 'Coherence and Decoherence',
-            description: 'The fragility of quantum states.',
+            description: 'The extreme fragility of quantum information.',
             difficulty: 'Advanced',
             lessonContent: (
               <>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  <strong>Coherence</strong> refers to the state where qubits are undisturbed and maintain their superposition and entangled relationships.
+                  <strong>Coherence</strong> refers to the pristine state where qubits are undisturbed and maintain their delicate superposition and phase relationships. A quantum computer can only perform its calculations while it remains coherent.
                 </p>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  <strong>Decoherence</strong> is the loss of this quantum behavior. Qubits are extremely sensitive to their environment (heat, electromagnetic fields). When they interact with the environment, their quantum information leaks out, turning them back into classical bits.
+                  <strong>Decoherence</strong> is the enemy of quantum computing. It is the process by which a quantum system loses its quantum behavior and reverts back to classical physics due to interactions with the surrounding environment.
                 </p>
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ width: '100%', height: '8px', background: 'linear-gradient(90deg, var(--accent-primary) 0%, rgba(255,255,255,0.1) 100%)', borderRadius: '4px', position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: '-30px', left: '0', color: 'var(--accent-primary)', fontWeight: 'bold' }}>Coherent</div>
-                    <div style={{ position: 'absolute', top: '-30px', right: '0', color: 'var(--text-secondary)' }}>Decohered</div>
+                
+                <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', margin: '32px 0' }}>
+                  <h4 style={{ color: 'var(--text-primary)', marginTop: 0, marginBottom: '24px', textAlign: 'center' }}>The Journey to Decoherence</h4>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '50%', left: '40px', right: '40px', height: '4px', background: 'linear-gradient(90deg, var(--accent-primary) 0%, rgba(255,255,255,0.1) 100%)', zIndex: 0, transform: 'translateY(-50%)' }}></div>
+                    
+                    <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#111', padding: '10px' }}>
+                      <div style={{ fontSize: '32px', marginBottom: '8px' }}>💎</div>
+                      <span style={{ fontSize: '12px', color: 'var(--accent-primary)', fontWeight: 'bold' }}>Coherent Qubit</span>
+                    </div>
+                    
+                    <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#111', padding: '10px' }}>
+                      <div style={{ fontSize: '32px', marginBottom: '8px' }}>🌡️</div>
+                      <span style={{ fontSize: '12px', color: 'var(--warning)', fontWeight: 'bold' }}>Heat / Noise</span>
+                    </div>
+
+                    <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#111', padding: '10px' }}>
+                      <div style={{ fontSize: '32px', marginBottom: '8px', filter: 'grayscale(1)' }}>🪨</div>
+                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 'bold' }}>Classical Bit</span>
+                    </div>
                   </div>
                 </div>
+
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  This is why quantum computers must be cooled to near absolute zero!
+                  Qubits are incredibly sensitive. Even a stray photon, a tiny fluctuation in temperature, or weak electromagnetic radiation from nearby wires can cause decoherence.
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  This is why many quantum computers use <strong>Dilution Refrigerators</strong> to cool the quantum chip down to around 0.015 Kelvin (colder than interstellar space!). Researchers measure qubit quality using T1 (relaxation time) and T2 (dephasing time). Extending these coherence times is the biggest hardware challenge in building a large-scale quantum computer.
                 </p>
               </>
             ),
-            practiceGoal: 'Learn why quantum states are fragile.'
+            practiceGoal: 'Learn why quantum computers must be kept incredibly cold and isolated.'
           },
           {
             id: 15,
@@ -889,29 +949,42 @@ export const tutorialSessions: TutorialSession[] = [
             lessonContent: (
               <>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  The <strong>Bloch Sphere</strong> is a geometric representation of the pure state space of a two-level quantum mechanical system (a qubit).
+                  While a classical bit can only be represented as two points on a line (0 or 1), a qubit is vastly more complex. To visualize the pure state space of a qubit, physicists use a 3D geometric model known as the <strong>Bloch Sphere</strong>.
                 </p>
-                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  The North Pole represents the state |0⟩, and the South Pole represents the state |1⟩. Any point on the surface of the sphere represents a valid quantum state (superposition).
-                </p>
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ position: 'relative', width: '150px', height: '150px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    {/* Z axis */}
-                    <div style={{ position: 'absolute', width: '1px', height: '180px', background: 'rgba(255,255,255,0.5)' }}></div>
-                    <div style={{ position: 'absolute', top: '-20px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>|0⟩</div>
-                    <div style={{ position: 'absolute', bottom: '-20px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>|1⟩</div>
-                    
-                    {/* Equator */}
-                    <div style={{ position: 'absolute', width: '150px', height: '40px', borderRadius: '50%', border: '1px dashed rgba(255,255,255,0.3)' }}></div>
-                    
-                    {/* State vector */}
-                    <div style={{ position: 'absolute', bottom: '50%', left: '50%', width: '2px', height: '75px', background: 'var(--accent-primary)', transformOrigin: 'bottom center', transform: 'rotate(45deg)', zIndex: 1 }}></div>
-                    <div style={{ position: 'absolute', top: '10px', right: '10px', color: 'var(--accent-primary)', fontWeight: 'bold' }}>|ψ⟩</div>
+                
+                <div style={{ display: 'flex', gap: '32px', margin: '32px 0', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <div style={{ flex: '1', display: 'flex', justifyContent: 'center', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', minWidth: '300px' }}>
+                    <div style={{ position: 'relative', width: '200px', height: '200px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: 'inset 0 0 50px rgba(69,243,255,0.1)' }}>
+                      {/* Z axis */}
+                      <div style={{ position: 'absolute', width: '2px', height: '240px', background: 'rgba(255,255,255,0.3)' }}></div>
+                      <div style={{ position: 'absolute', top: '-25px', fontWeight: 'bold', color: '#fff', background: '#333', padding: '2px 8px', borderRadius: '4px' }}>|0⟩ (North Pole)</div>
+                      <div style={{ position: 'absolute', bottom: '-25px', fontWeight: 'bold', color: '#fff', background: '#333', padding: '2px 8px', borderRadius: '4px' }}>|1⟩ (South Pole)</div>
+                      
+                      {/* Equator */}
+                      <div style={{ position: 'absolute', width: '200px', height: '60px', borderRadius: '50%', border: '2px dashed rgba(255,255,255,0.2)' }}></div>
+                      
+                      {/* State vector */}
+                      <div style={{ position: 'absolute', bottom: '50%', left: '50%', width: '3px', height: '100px', background: 'var(--accent-primary)', transformOrigin: 'bottom center', transform: 'rotate(45deg)', zIndex: 1, boxShadow: '0 0 10px var(--accent-primary)' }}>
+                        {/* Arrow head */}
+                        <div style={{ position: 'absolute', top: '-2px', left: '-4px', width: '0', height: '0', borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderBottom: '10px solid var(--accent-primary)' }}></div>
+                      </div>
+                      <div style={{ position: 'absolute', top: '10px', right: '10px', color: 'var(--accent-primary)', fontWeight: 'bold', fontSize: '20px', textShadow: '0 0 5px var(--accent-primary)' }}>|ψ⟩</div>
+                    </div>
+                  </div>
+                  
+                  <div style={{ flex: '1', minWidth: '300px' }}>
+                    <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginBottom: '16px' }}>Navigating the Sphere</h3>
+                    <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                      <li style={{ marginBottom: '12px' }}><strong>The Poles:</strong> The absolute top of the sphere represents the classical state <strong>|0⟩</strong>. The absolute bottom represents the state <strong>|1⟩</strong>.</li>
+                      <li style={{ marginBottom: '12px' }}><strong>The Surface:</strong> Any point on the surface of the sphere represents a valid quantum state. The arrow pointing from the center to the surface is the state vector <strong>|ψ⟩</strong>.</li>
+                      <li style={{ marginBottom: '12px' }}><strong>The Equator:</strong> Points directly on the equator represent an exact 50/50 superposition of |0⟩ and |1⟩ (often denoted as |+⟩ and |-⟩). They are perfectly halfway between 0 and 1.</li>
+                    </ul>
+                    <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic', fontSize: '14px' }}>Note: Applying a quantum gate (like an X-gate or H-gate) simply rotates this arrow around the sphere!</p>
                   </div>
                 </div>
               </>
             ),
-            practiceGoal: 'Visualize the state space of a qubit.'
+            practiceGoal: 'Visualize the vast state space of a single qubit.'
           },
           {
             id: 9,
