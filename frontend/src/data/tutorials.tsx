@@ -402,8 +402,8 @@ export const tutorialSessions: TutorialSession[] = [
                   </div>
                 </div>
 
-                {/* MYTH 5 */}
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 5: "Current Quantum Computers Can Already Break All Encryption"</h3>
+                {/* MYTH 3 */}
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 3: "Current Quantum Computers Can Already Break All Encryption"</h3>
                 <p style={{ marginBottom: '16px' }}>
                   <strong>Reality:</strong> Today&apos;s quantum computers are too small and noisy to break modern encryption schemes.
                 </p>
@@ -452,12 +452,90 @@ export const tutorialSessions: TutorialSession[] = [
             practiceGoal: 'Pass the quiz!',
             quizzes: [
               {
-                question: "What is a qubit?",
-                options: [
-                  "A classical bit that can only be 0 or 1",
-                  "A quantum bit that can exist in a superposition of 0 and 1",
-                  "A very fast classical computer"
-                ],
+                question: "Quantum computing performs computations using the laws of:",
+                options: ["Thermodynamics", "Quantum Mechanics", "Relativity", "Electromagnetism"],
+                correctAnswerIndex: 1,
+                explanation: "Quantum computers leverage the principles of quantum mechanics, such as superposition and entanglement."
+              },
+              {
+                question: "A classical bit can have how many possible values?",
+                options: ["One", "Two", "Three", "Infinite"],
+                correctAnswerIndex: 1,
+                explanation: "A classical bit can only be 0 or 1, giving it exactly two possible values."
+              },
+              {
+                question: "A classical bit always exists in exactly:",
+                options: ["Two states simultaneously", "One state at a time", "Infinite states", "No definite state"],
+                correctAnswerIndex: 1,
+                explanation: "At any given moment, a classical bit is either exclusively 0 or exclusively 1."
+              },
+              {
+                question: "Quantum computers use ______ instead of classical bits.",
+                options: ["Bytes", "Transistors", "Qubits", "Registers"],
+                correctAnswerIndex: 2,
+                explanation: "Quantum bits, or qubits, are the fundamental unit of information in quantum computing."
+              },
+              {
+                question: "Which of the following is mentioned as a possible realization of a qubit?",
+                options: ["Electron spin", "Magnetic tape", "Hard disk sector", "Capacitor voltage"],
+                correctAnswerIndex: 0,
+                explanation: "Qubits can be realized using physical quantum properties like the spin of an electron."
+              },
+              {
+                question: "The ability of a qubit to exist in a complex combination of 0 and 1 is called:",
+                options: ["Entanglement", "Superposition", "Interference", "Polarization"],
+                correctAnswerIndex: 1,
+                explanation: "Superposition allows a quantum system to exist in a complex combination of multiple states at the same time."
+              },
+              {
+                question: "According to the passage, measuring a quantum system can:",
+                options: ["Leave the system unchanged", "Disturb the system being measured", "Increase its energy", "Convert it into a classical bit"],
+                correctAnswerIndex: 1,
+                explanation: "Because quantum systems are incredibly delicate, the very act of measuring them can disturb their state."
+              },
+              {
+                question: "In drug discovery, quantum computers can help scientists by:",
+                options: ["Replacing laboratories completely", "Modeling molecular behavior", "Manufacturing drugs automatically", "Eliminating chemical synthesis"],
+                correctAnswerIndex: 1,
+                explanation: "Quantum computers can simulate molecular behavior using the laws of quantum mechanics natively."
+              },
+              {
+                question: "In finance, a quantum computer could potentially evaluate:",
+                options: ["Only stock prices", "A vast number of investment combinations", "Only mutual funds", "Only commodity markets"],
+                correctAnswerIndex: 1,
+                explanation: "Quantum optimization algorithms can evaluate vast numbers of investment combinations simultaneously."
+              },
+              {
+                question: "According to the passage, today's internet security relies mainly on:",
+                options: ["Quantum algorithms", "Mathematical problems difficult for classical computers", "Artificial intelligence", "Cloud computing"],
+                correctAnswerIndex: 1,
+                explanation: "Modern cryptography (like RSA) relies on the fact that classical computers struggle to factor large prime numbers."
+              },
+              {
+                question: "Which algorithm is specifically mentioned as being capable of solving certain cryptographic problems faster?",
+                options: ["Grover's Algorithm", "Dijkstra's Algorithm", "Shor's Algorithm", "Bellman's Algorithm"],
+                correctAnswerIndex: 2,
+                explanation: "Shor's Algorithm is famous for its ability to find prime factors exponentially faster than classical algorithms."
+              },
+              {
+                question: "According to the passage, current quantum computers are too ______ to break modern RSA encryption.",
+                options: ["expensive and large", "small and noisy", "slow and heavy", "complex and unstable"],
+                correctAnswerIndex: 1,
+                explanation: "Today's 'NISQ' era quantum computers are too small and noisy to run Shor's Algorithm at scale."
+              },
+              {
+                question: "The myth that quantum computers try every possible answer simultaneously is incorrect because measuring a quantum system gives:",
+                options: ["All possible outcomes", "No outcome", "Only one outcome", "Infinite outcomes"],
+                correctAnswerIndex: 2,
+                explanation: "Although a system can represent many possibilities, measurement collapses it to only one outcome."
+              },
+              {
+                question: "The current era of quantum computing is referred to in the passage as the:",
+                options: ["AI Era", "Classical Era", "NISQ Era", "Silicon Era"],
+                correctAnswerIndex: 2,
+                explanation: "NISQ stands for Noisy Intermediate-Scale Quantum era, reflecting our current hardware limitations."
+              }
+            ],
                 correctAnswerIndex: 1,
                 explanation: "Unlike classical bits, qubits leverage quantum mechanics to exist in a state of superposition."
               },
