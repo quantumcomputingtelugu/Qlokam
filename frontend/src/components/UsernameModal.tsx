@@ -60,36 +60,77 @@ export default function UsernameModal({ user, onUsernameSet, mode = 'setup', rem
       zIndex: 1000,
       backdropFilter: 'blur(8px)'
     }}>
-      <div className="glass-panel" style={{ padding: '32px', maxWidth: '400px', width: '90%', position: 'relative' }}>
+      <div className="glass-panel" style={{ 
+        padding: '40px 32px', 
+        maxWidth: '420px', 
+        width: '90%', 
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center',
+        background: 'rgba(25, 25, 35, 0.95)',
+        boxShadow: '0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)'
+      }}>
         {mode === 'edit' && onClose && (
           <button 
             onClick={onClose}
-            style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '20px' }}
+            style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '24px', transition: 'color 0.2s' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
           >
             &times;
           </button>
         )}
-        <h2 style={{ marginTop: 0, marginBottom: '8px' }}>
-          {mode === 'edit' ? 'Change your Username' : 'Choose your Username'}
+
+        <div style={{
+          width: '64px',
+          height: '64px',
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '24px',
+          boxShadow: '0 8px 16px rgba(69, 243, 255, 0.2)'
+        }}>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+
+        <h2 style={{ marginTop: 0, marginBottom: '12px', fontSize: '24px', color: 'var(--text-primary)', fontWeight: 700 }}>
+          {mode === 'edit' ? 'Change Username' : 'Choose Username'}
         </h2>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', fontSize: '14px' }}>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '32px', fontSize: '15px', lineHeight: '1.6' }}>
           {mode === 'edit' 
             ? `Choose a new username. You have ${remainingChanges !== undefined ? remainingChanges : 'few'} changes left.` 
-            : 'Welcome to Qlokam! Please choose a unique username to appear on the Leaderboard and your profile.'}
+            : 'Welcome to Qlokam! Please choose a unique username to appear on the global Leaderboard and your profile.'}
         </p>
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '16px' }}>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+          <div style={{ marginBottom: '20px', position: 'relative' }}>
+            <span style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)', fontWeight: 600 }}>@</span>
             <input
               type="text"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="e.g. quantum_master"
+              onChange={(e) => setUsername(e.target.value.toLowerCase())}
+              placeholder="quantum_master"
               className="glass-input"
-              style={{ width: '100%', boxSizing: 'border-box' }}
+              style={{ 
+                width: '100%', 
+                boxSizing: 'border-box',
+                paddingLeft: '36px',
+                paddingRight: '16px',
+                paddingTop: '14px',
+                paddingBottom: '14px',
+                fontSize: '16px',
+                background: 'rgba(0,0,0,0.2)'
+              }}
               disabled={loading}
-              pattern="^[a-zA-Z0-9_]+$"
-              title="Only letters, numbers, and underscores are allowed"
+              pattern="^[a-z0-9_]+$"
+              title="Only lowercase letters, numbers, and underscores are allowed"
               minLength={3}
               maxLength={20}
               required
@@ -97,7 +138,15 @@ export default function UsernameModal({ user, onUsernameSet, mode = 'setup', rem
           </div>
 
           {error && (
-            <div style={{ color: '#ff4d4d', fontSize: '14px', marginBottom: '16px' }}>
+            <div style={{ 
+              color: '#ff4d4d', 
+              fontSize: '14px', 
+              marginBottom: '20px',
+              padding: '12px',
+              background: 'rgba(255, 77, 77, 0.1)',
+              borderRadius: '8px',
+              border: '1px solid rgba(255, 77, 77, 0.2)'
+            }}>
               {error}
             </div>
           )}
@@ -105,10 +154,17 @@ export default function UsernameModal({ user, onUsernameSet, mode = 'setup', rem
           <button 
             type="submit" 
             className="btn-primary" 
-            style={{ width: '100%', padding: '12px' }}
+            style={{ 
+              width: '100%', 
+              padding: '14px',
+              fontSize: '16px',
+              fontWeight: 600,
+              borderRadius: '8px',
+              letterSpacing: '0.5px'
+            }}
             disabled={loading || !username.trim()}
           >
-            {loading ? (mode === 'edit' ? 'Changing...' : 'Verifying...') : (mode === 'edit' ? 'Change Username' : 'Claim Username')}
+            {loading ? (mode === 'edit' ? 'Changing...' : 'Verifying...') : (mode === 'edit' ? 'Confirm Change' : 'Claim Username')}
           </button>
         </form>
       </div>
