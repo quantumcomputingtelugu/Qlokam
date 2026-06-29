@@ -148,7 +148,6 @@ export const tutorialSessions: TutorialSession[] = [
             description: 'Explore the real-world applications of quantum computers.',
             difficulty: 'Beginner',
             lessonContent: (
-            lessonContent: (
               <>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginTop: '16px' }}>
                   
