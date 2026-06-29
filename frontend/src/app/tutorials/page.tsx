@@ -19,6 +19,7 @@ export default function TutorialsPage() {
   const [saving, setSaving] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeCourseId, setActiveCourseId] = useState(tutorialSessions[0].id);
+  const [expandedModules, setExpandedModules] = useState<number[]>([1]);
 
   // Quiz state
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
@@ -204,7 +205,12 @@ export default function TutorialsPage() {
                         setActiveTab('lesson'); 
                         setSelectedAnswers({}); 
                         setShowQuizResults(false); 
-                        if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+                        
+                        setExpandedModules(prev => 
+                          prev.includes(tutorial.id) ? prev.filter(x => x !== tutorial.id) : [...prev, tutorial.id]
+                        );
+
+                        if (!tutorial.subModules?.length && typeof window !== 'undefined' && window.innerWidth <= 768) {
                           setIsSidebarOpen(false);
                         }
                       }}
@@ -214,11 +220,14 @@ export default function TutorialsPage() {
                         border: `1px solid ${isActive ? 'var(--accent-primary)' : 'var(--surface-border)'}`, 
                         borderRadius: '8px',
                         cursor: 'pointer',
-                        transition: 'all 0.2s'
+                        transition: 'all 0.2s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
                       }}
                       className="tutorial-card"
                     >
-                      <div className="flex-between">
+                      <div className="flex-between" style={{ flex: 1 }}>
                         <h4 style={{ fontSize: '15px', margin: 0, color: tutorial.isFinalTest ? '#d29922' : 'var(--text-primary)' }}>
                           {tutorial.isFinalTest ? '🏆 ' : `${tutorial.id}. `}{tutorial.title}
                         </h4>
@@ -228,9 +237,14 @@ export default function TutorialsPage() {
                           </span>
                         )}
                       </div>
+                      {tutorial.subModules && tutorial.subModules.length > 0 && (
+                        <span style={{ color: 'var(--text-secondary)', marginLeft: '8px', fontSize: '12px' }}>
+                          {expandedModules.includes(tutorial.id) ? '▼' : '▶'}
+                        </span>
+                      )}
                     </div>
                     
-                    {tutorial.subModules && tutorial.subModules.length > 0 && (
+                    {tutorial.subModules && tutorial.subModules.length > 0 && expandedModules.includes(tutorial.id) && (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '16px', borderLeft: '2px solid rgba(255,255,255,0.1)', marginLeft: '8px' }}>
                         {tutorial.subModules.map((subModule) => {
                           const subCompleted = completedTutorials.includes(subModule.id);

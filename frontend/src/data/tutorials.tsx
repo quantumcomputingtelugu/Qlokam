@@ -39,17 +39,29 @@ export const tutorialSessions: TutorialSession[] = [
         difficulty: 'Beginner',
         lessonContent: (
           <>
-            <p style={{ marginBottom: '16px' }}>
-              Welcome to the quantum world! In classical computing, information is processed in bits, which can be either a <strong>0</strong> or a <strong>1</strong>. 
-              However, quantum computing uses <strong>quantum bits</strong>, or <strong>qubits</strong>.
+            <p style={{ marginBottom: '16px', fontSize: '18px', color: 'var(--text-secondary)' }}>
+              Welcome to the first module in <strong>Quantum Computing Basics</strong>! In this module, we will explore what makes a quantum computer so fundamentally different from the classical computers we use every day.
             </p>
-            <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Superposition</h3>
-            <p style={{ marginBottom: '16px' }}>
-              Unlike classical bits, qubits can exist in a state that is a combination of both 0 and 1 simultaneously. This property is known as <strong>superposition</strong>.
-              Mathematically, a qubit&apos;s state $|\psi\rangle$ is represented as a linear combination of the computational basis states $|0\rangle$ and $|1\rangle$:
-            </p>
-            <div style={{ background: 'rgba(0,0,0,0.3)', padding: '16px', borderRadius: '8px', marginBottom: '16px', fontFamily: 'monospace', textAlign: 'center', fontSize: '18px', color: 'var(--accent-primary)' }}>
-              |\psi\rangle = \alpha|0\rangle + \beta|1\rangle
+            
+            <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>What&apos;s Inside This Module</h3>
+            
+            <ul style={{ paddingLeft: '20px', marginBottom: '32px', color: 'var(--text-secondary)' }}>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Introduction to Qubits:</strong> The fundamental unit of quantum information, capable of superposition.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Superposition:</strong> How a qubit can exist in a state that is a combination of both 0 and 1 simultaneously.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Myths about Quantum Computing:</strong> We separate the science fiction from the science fact in our subtopic lesson.
+              </li>
+            </ul>
+
+            <div style={{ background: 'rgba(255,255,255,0.05)', padding: '24px', borderRadius: '12px', borderLeft: '4px solid var(--accent-primary)' }}>
+              <h4 style={{ margin: '0 0 12px 0', fontSize: '18px', color: 'white' }}>How to navigate</h4>
+              <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                In the sidebar to your left, you will see a <strong>▼ button</strong> on this module. Clicking it will reveal additional subtopics, such as <em>Myths about Quantum Computing</em>. You can navigate freely between these subtopics to learn at your own pace!
+              </p>
             </div>
           </>
         ),
