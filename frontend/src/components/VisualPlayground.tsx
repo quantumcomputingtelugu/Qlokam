@@ -657,7 +657,7 @@ except Exception as e:
 
           <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '300px' }}>
             {errorMsg && (
-              <div style={{ padding: '8px', background: 'rgba(248, 81, 73, 0.1)', border: '1px solid var(--error)', borderRadius: '8px', color: 'var(--error)', fontSize: '12px', marginBottom: '8px', whiteSpace: 'pre-wrap' }}>
+              <div style={{ padding: '8px', background: 'rgba(248, 81, 73, 0.1)', border: '1px solid var(--error)', borderRadius: '8px', color: 'var(--error)', fontSize: '12px', marginBottom: '8px', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
                 {errorMsg}
               </div>
             )}
