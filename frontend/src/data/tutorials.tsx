@@ -18,6 +18,7 @@ export type TutorialModule = {
   isFinalTest?: boolean;
   badgeAward?: string;
   pointsAward?: number;
+  subModules?: TutorialModule[];
 };
 
 export type TutorialSession = {
@@ -64,39 +65,41 @@ export const tutorialSessions: TutorialSession[] = [
             correctAnswerIndex: 1,
             explanation: "Unlike classical bits, qubits leverage quantum mechanics to exist in a state of superposition."
           }
-        ]
-      },
-      {
-        id: 2,
-        title: 'Myths about Quantum Computing',
-        description: 'Debunk common misconceptions about quantum computers and how they actually work.',
-        difficulty: 'Beginner',
-        lessonContent: (
-          <>
-            <p style={{ marginBottom: '16px' }}>
-              Quantum computing sounds like science fiction, which naturally leads to many myths and misconceptions.
-            </p>
-            <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 1: Quantum computers will replace all classical computers</h3>
-            <p style={{ marginBottom: '16px' }}>
-              <strong>Reality:</strong> Quantum computers are highly specialized machines. They are exceptionally good at specific tasks (like factoring large numbers or simulating molecules), but they are actually <em>slower</em> than your laptop for everyday tasks like browsing the web or sending emails.
-            </p>
-            <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 2: They try all possibilities at once</h3>
-            <p style={{ marginBottom: '16px' }}>
-              <strong>Reality:</strong> While superposition allows qubits to represent many states simultaneously, a quantum computer does not simply "try all paths at once." Instead, quantum algorithms use <strong>interference</strong> to amplify the correct answer and cancel out the wrong ones—much like ripples on a pond.
-            </p>
-          </>
-        ),
-        practiceGoal: 'Review the myths and proceed to the quiz.',
-        quizzes: [
+        ],
+        subModules: [
           {
-            question: "Are quantum computers going to replace your personal laptop?",
-            options: [
-              "Yes, because they are faster at everything.",
-              "No, because they are specialized for specific types of complex problems.",
-              "Yes, they are just the next generation of processors."
-            ],
-            correctAnswerIndex: 1,
-            explanation: "Quantum computers excel at certain mathematical and simulation problems but are not designed for general-purpose computing."
+            id: 2,
+            title: 'Myths about Quantum Computing',
+            description: 'Debunk common misconceptions about quantum computers and how they actually work.',
+            difficulty: 'Beginner',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px' }}>
+                  Quantum computing sounds like science fiction, which naturally leads to many myths and misconceptions.
+                </p>
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 1: Quantum computers will replace all classical computers</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  <strong>Reality:</strong> Quantum computers are highly specialized machines. They are exceptionally good at specific tasks (like factoring large numbers or simulating molecules), but they are actually <em>slower</em> than your laptop for everyday tasks like browsing the web or sending emails.
+                </p>
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 2: They try all possibilities at once</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  <strong>Reality:</strong> While superposition allows qubits to represent many states simultaneously, a quantum computer does not simply "try all paths at once." Instead, quantum algorithms use <strong>interference</strong> to amplify the correct answer and cancel out the wrong ones—much like ripples on a pond.
+                </p>
+              </>
+            ),
+            practiceGoal: 'Review the myths and proceed to the quiz.',
+            quizzes: [
+              {
+                question: "Are quantum computers going to replace your personal laptop?",
+                options: [
+                  "Yes, because they are faster at everything.",
+                  "No, because they are specialized for specific types of complex problems.",
+                  "Yes, they are just the next generation of processors."
+                ],
+                correctAnswerIndex: 1,
+                explanation: "Quantum computers excel at certain mathematical and simulation problems but are not designed for general-purpose computing."
+              }
+            ]
           }
         ]
       }
@@ -104,6 +107,15 @@ export const tutorialSessions: TutorialSession[] = [
   }
 ];
 
-export const getAllTutorials = () => {
-  return tutorialSessions.flatMap(session => session.modules);
+export const getAllTutorials = (): TutorialModule[] => {
+  const flatten = (modules: TutorialModule[]): TutorialModule[] => {
+    return modules.reduce((acc: TutorialModule[], module: TutorialModule) => {
+      acc.push(module);
+      if (module.subModules) {
+        acc.push(...flatten(module.subModules));
+      }
+      return acc;
+    }, []);
+  };
+  return tutorialSessions.flatMap(session => flatten(session.modules));
 };

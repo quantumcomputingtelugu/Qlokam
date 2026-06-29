@@ -197,37 +197,81 @@ export default function TutorialsPage() {
                 const completed = completedTutorials.includes(tutorial.id);
                 const isActive = activeTutorialId === tutorial.id;
                 return (
-                  <div 
-                    key={tutorial.id} 
-                    onClick={() => { 
-                      setActiveTutorialId(tutorial.id); 
-                      setActiveTab('lesson'); 
-                      setSelectedAnswers({}); 
-                      setShowQuizResults(false); 
-                      if (typeof window !== 'undefined' && window.innerWidth <= 768) {
-                        setIsSidebarOpen(false);
-                      }
-                    }}
-                    style={{ 
-                      padding: '16px', 
-                      background: isActive ? 'rgba(69, 243, 255, 0.1)' : 'rgba(255,255,255,0.03)', 
-                      border: `1px solid ${isActive ? 'var(--accent-primary)' : 'var(--surface-border)'}`, 
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
-                    }}
-                    className="tutorial-card"
-                  >
-                    <div className="flex-between">
-                      <h4 style={{ fontSize: '15px', margin: 0, color: tutorial.isFinalTest ? '#d29922' : 'var(--text-primary)' }}>
-                        {tutorial.isFinalTest ? '🏆 ' : `${tutorial.id}. `}{tutorial.title}
-                      </h4>
-                      {completed && (
-                        <span style={{ fontSize: '12px', color: 'var(--success)' }}>
-                          ✔
-                        </span>
-                      )}
+                  <div key={tutorial.id} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div 
+                      onClick={() => { 
+                        setActiveTutorialId(tutorial.id); 
+                        setActiveTab('lesson'); 
+                        setSelectedAnswers({}); 
+                        setShowQuizResults(false); 
+                        if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+                          setIsSidebarOpen(false);
+                        }
+                      }}
+                      style={{ 
+                        padding: '16px', 
+                        background: isActive ? 'rgba(69, 243, 255, 0.1)' : 'rgba(255,255,255,0.03)', 
+                        border: `1px solid ${isActive ? 'var(--accent-primary)' : 'var(--surface-border)'}`, 
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                      className="tutorial-card"
+                    >
+                      <div className="flex-between">
+                        <h4 style={{ fontSize: '15px', margin: 0, color: tutorial.isFinalTest ? '#d29922' : 'var(--text-primary)' }}>
+                          {tutorial.isFinalTest ? '🏆 ' : `${tutorial.id}. `}{tutorial.title}
+                        </h4>
+                        {completed && (
+                          <span style={{ fontSize: '12px', color: 'var(--success)' }}>
+                            ✔
+                          </span>
+                        )}
+                      </div>
                     </div>
+                    
+                    {tutorial.subModules && tutorial.subModules.length > 0 && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '16px', borderLeft: '2px solid rgba(255,255,255,0.1)', marginLeft: '8px' }}>
+                        {tutorial.subModules.map((subModule) => {
+                          const subCompleted = completedTutorials.includes(subModule.id);
+                          const isSubActive = activeTutorialId === subModule.id;
+                          return (
+                            <div 
+                              key={subModule.id} 
+                              onClick={() => { 
+                                setActiveTutorialId(subModule.id); 
+                                setActiveTab('lesson'); 
+                                setSelectedAnswers({}); 
+                                setShowQuizResults(false); 
+                                if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+                                  setIsSidebarOpen(false);
+                                }
+                              }}
+                              style={{ 
+                                padding: '12px 16px', 
+                                background: isSubActive ? 'rgba(69, 243, 255, 0.1)' : 'rgba(255,255,255,0.02)', 
+                                border: `1px solid ${isSubActive ? 'var(--accent-primary)' : 'transparent'}`, 
+                                borderRadius: '8px',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                              }}
+                              className="tutorial-card"
+                            >
+                              <div className="flex-between">
+                                <h4 style={{ fontSize: '14px', margin: 0, color: 'var(--text-secondary)' }}>
+                                  {subModule.id}. {subModule.title}
+                                </h4>
+                                {subCompleted && (
+                                  <span style={{ fontSize: '12px', color: 'var(--success)' }}>
+                                    ✔
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 );
               })}
