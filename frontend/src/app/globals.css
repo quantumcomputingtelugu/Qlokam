@@ -134,7 +134,11 @@ a {
   .responsive-sidebar {
     width: 100% !important;
     max-width: none !important;
-    max-height: 300px !important;
+    max-height: 400px !important;
+  }
+  .responsive-content {
+    min-height: 800px !important;
+    overflow: visible !important;
   }
   .responsive-hide {
     display: none !important;

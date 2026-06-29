@@ -231,7 +231,7 @@ export default function TutorialsPage() {
       </div>
 
       {/* Right Panel: Content Area */}
-      <div className="glass-panel" style={{ flex: 2, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <div className="glass-panel responsive-content" style={{ flex: 2, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         
         {/* Header Tabs */}
         <div style={{ display: 'flex', borderBottom: '1px solid var(--surface-border)', padding: '0 24px' }}>
