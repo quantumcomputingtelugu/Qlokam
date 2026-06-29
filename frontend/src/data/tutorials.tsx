@@ -331,14 +331,104 @@ export const tutorialSessions: TutorialSession[] = [
                 <p style={{ marginBottom: '16px' }}>
                   Quantum computing sounds like science fiction, which naturally leads to many myths and misconceptions.
                 </p>
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 1: Quantum computers will replace all classical computers</h3>
+
+                {/* MYTH 1 */}
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 1: "Quantum Computers Will Replace Classical Computers"</h3>
                 <p style={{ marginBottom: '16px' }}>
-                  <strong>Reality:</strong> Quantum computers are highly specialized machines. They are exceptionally good at specific tasks, but they are actually <em>slower</em> than your laptop for everyday tasks like browsing the web or sending emails.
+                  <strong>Reality:</strong> Quantum computers are special-purpose machines. They are excellent for certain problems, such as simulating molecules, optimization, cryptography, and quantum physics simulations.
                 </p>
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 2: They try all possibilities at once</h3>
                 <p style={{ marginBottom: '16px' }}>
-                  <strong>Reality:</strong> While superposition allows qubits to represent many states simultaneously, a quantum computer does not simply "try all paths at once." Instead, quantum algorithms use <strong>interference</strong> to amplify the correct answer and cancel out the wrong ones—much like ripples on a pond.
+                  But for everyday tasks like browsing the web, watching videos, writing documents, and playing games, classical computers are much more efficient.
                 </p>
+
+                {/* Visual Info: General vs Specialized */}
+                <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', margin: '32px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ flex: '1', minWidth: '200px', textAlign: 'center' }}>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Classical Computers</h4>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px', height: '60px' }}>
+                      <div style={{ fontSize: '40px' }}>💻</div>
+                    </div>
+                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}><strong>General-purpose workers</strong>. Great for everyday tasks.</p>
+                  </div>
+                  <div style={{ width: '1px', background: 'var(--surface-border)' }}></div>
+                  <div style={{ flex: '1', minWidth: '200px', textAlign: 'center' }}>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Quantum Computers</h4>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px', height: '60px' }}>
+                      <div style={{ fontSize: '40px', textShadow: '0 0 15px var(--accent-primary)' }}>⚛️</div>
+                    </div>
+                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}><strong>Highly specialized experts</strong>. Like a surgeon—you wouldn&apos;t ask them to clean floors. Both will work together!</p>
+                  </div>
+                </div>
+
+                {/* MYTH 2 */}
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 2: "Quantum Computers Try Every Possible Answer Simultaneously"</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  <strong>Reality:</strong> Quantum computers use phenomena such as superposition and interference. While a quantum system can represent many possibilities simultaneously, measuring it gives only <em>one</em> outcome.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  The real challenge is designing algorithms that amplify correct answers and suppress wrong answers. This is why quantum algorithm design is difficult.
+                </p>
+
+                {/* Visual Info: Interference */}
+                <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', margin: '32px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ flex: '1', minWidth: '200px', textAlign: 'center' }}>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Random Noise</h4>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px', height: '60px' }}>
+                      <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '40px' }}>
+                        <div style={{ width: '6px', height: '10px', background: '#888', borderRadius: '3px' }}></div>
+                        <div style={{ width: '6px', height: '35px', background: '#888', borderRadius: '3px' }}></div>
+                        <div style={{ width: '6px', height: '15px', background: '#888', borderRadius: '3px' }}></div>
+                        <div style={{ width: '6px', height: '40px', background: '#888', borderRadius: '3px' }}></div>
+                        <div style={{ width: '6px', height: '20px', background: '#888', borderRadius: '3px' }}></div>
+                      </div>
+                    </div>
+                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>If every singer in a band sings randomly, the result is noise.</p>
+                  </div>
+                  <div style={{ width: '1px', background: 'var(--surface-border)' }}></div>
+                  <div style={{ flex: '1', minWidth: '200px', textAlign: 'center' }}>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Constructive Interference</h4>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px', height: '60px' }}>
+                      <div style={{ display: 'flex', gap: '4px', alignItems: 'center', height: '40px' }}>
+                        <div style={{ width: '6px', height: '10px', background: 'var(--accent-primary)', borderRadius: '3px', boxShadow: '0 0 5px var(--accent-primary)' }}></div>
+                        <div style={{ width: '6px', height: '25px', background: 'var(--accent-primary)', borderRadius: '3px', boxShadow: '0 0 5px var(--accent-primary)' }}></div>
+                        <div style={{ width: '6px', height: '40px', background: 'var(--accent-primary)', borderRadius: '3px', boxShadow: '0 0 8px var(--accent-primary)' }}></div>
+                        <div style={{ width: '6px', height: '25px', background: 'var(--accent-primary)', borderRadius: '3px', boxShadow: '0 0 5px var(--accent-primary)' }}></div>
+                        <div style={{ width: '6px', height: '10px', background: 'var(--accent-primary)', borderRadius: '3px', boxShadow: '0 0 5px var(--accent-primary)' }}></div>
+                      </div>
+                    </div>
+                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>If all singers coordinate, the desired melody becomes louder!</p>
+                  </div>
+                </div>
+
+                {/* MYTH 5 */}
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Myth 5: "Current Quantum Computers Can Already Break All Encryption"</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  <strong>Reality:</strong> Today&apos;s quantum computers are too small and noisy to break modern encryption schemes.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Breaking widely used encryption such as the RSA Cryptosystem would require large fault-tolerant quantum computers that do not yet exist. However, governments and researchers are preparing for the future by developing post-quantum cryptography.
+                </p>
+
+                {/* Visual Info: Cryptography Timeline */}
+                <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', margin: '32px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ flex: '1', minWidth: '200px', textAlign: 'center' }}>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Today (NISQ Era)</h4>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px', height: '60px' }}>
+                      <div style={{ fontSize: '30px', filter: 'grayscale(1) opacity(0.5)' }}>🤖</div>
+                      <div style={{ color: '#e74c3c', marginLeft: '12px', fontSize: '14px', fontWeight: 'bold' }}>Too small & noisy</div>
+                    </div>
+                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>Cannot break modern RSA encryption.</p>
+                  </div>
+                  <div style={{ width: '1px', background: 'var(--surface-border)' }}></div>
+                  <div style={{ flex: '1', minWidth: '200px', textAlign: 'center' }}>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Future</h4>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px', height: '60px' }}>
+                      <div style={{ fontSize: '30px', textShadow: '0 0 10px #3fb950' }}>🛡️</div>
+                      <div style={{ color: '#3fb950', marginLeft: '12px', fontSize: '14px', fontWeight: 'bold' }}>Post-Quantum Crypto</div>
+                    </div>
+                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>Preparing new encryptions before fault-tolerant QCs arrive.</p>
+                  </div>
+                </div>
               </>
             ),
             practiceGoal: 'Review the myths and continue to the quiz.'
