@@ -108,47 +108,34 @@ export default function Navigation() {
                   <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                   <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                 </svg>
-                {!username && (
-                  <span style={{ position: 'absolute', top: '-2px', right: '0px', width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', border: '2px solid var(--background-elevated)' }}></span>
-                )}
+                <span style={{ position: 'absolute', top: '-2px', right: '0px', width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', border: '2px solid var(--background-elevated)' }}></span>
 
                 {showNotifications && (
                   <div className="glass-panel notification-dropdown" onClick={(e) => e.stopPropagation()}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                       <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Notifications</h3>
-                      {!username && <span style={{ fontSize: '12px', background: 'var(--accent-color)', color: '#fff', padding: '2px 8px', borderRadius: '12px', fontWeight: 600 }}>1 New</span>}
                     </div>
                     
-                    {!username ? (
-                      <div 
+                    <div 
                         style={{ 
                           padding: '12px', 
                           borderRadius: '8px', 
                           background: 'rgba(255, 255, 255, 0.03)', 
                           border: '1px solid rgba(255, 255, 255, 0.1)',
-                          cursor: 'pointer',
+                          cursor: 'default',
                           transition: 'background 0.2s'
                         }}
                         onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'}
                         onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'}
-                        onClick={() => {
-                          setShowUsernameModal(true);
-                          setShowNotifications(false);
-                        }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                           <span style={{ width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%' }}></span>
-                          <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>Action Required</span>
+                          <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>New Season Started!</span>
                         </div>
                         <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)', paddingLeft: '16px' }}>
-                          Please set your username to appear on the global leaderboard. Click here to set it up!
+                          We have reset all ratings to 0 to prepare for the new season. Good luck!
                         </p>
                       </div>
-                    ) : (
-                      <div style={{ textAlign: 'center', padding: '24px 0', color: 'var(--text-secondary)', fontSize: '14px' }}>
-                        No new notifications
-                      </div>
-                    )}
                   </div>
                 )}
               </div>

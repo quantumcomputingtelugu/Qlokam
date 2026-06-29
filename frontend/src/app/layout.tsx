@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
-import AnnouncementBanner from "@/components/AnnouncementBanner";
 import AnnouncementModal from "@/components/AnnouncementModal";
 import { Analytics } from "@vercel/analytics/react";
 export const metadata: Metadata = {
@@ -25,7 +24,6 @@ export default function RootLayout({
         ></script>
       </head>
       <body>
-        <AnnouncementBanner />
         <Navigation />
         <AnnouncementModal />
         <main>
