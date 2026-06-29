@@ -8,6 +8,7 @@ import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import AdBanner from '@/components/AdBanner';
+import UsernameModal from '@/components/UsernameModal';
 
 export default function ArenaPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -337,6 +338,13 @@ export default function ArenaPage() {
             )}
           </div>
         </div>
+
+        {user && !username && listTab === 'leaderboard' && (
+          <UsernameModal 
+            user={user} 
+            onUsernameSet={(newUsername) => setUsername(newUsername)} 
+          />
+        )}
       </div>
     );
   }
@@ -408,7 +416,6 @@ export default function ArenaPage() {
            disableSubmit={!user}
         />
       </div>
-
     </div>
   );
 }

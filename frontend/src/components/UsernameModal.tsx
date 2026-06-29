@@ -7,9 +7,12 @@ import { User } from 'firebase/auth';
 interface UsernameModalProps {
   user: User;
   onUsernameSet: (username: string) => void;
+  mode?: 'setup' | 'edit';
+  remainingChanges?: number;
+  onClose?: () => void;
 }
 
-export default function UsernameModal({ user, onUsernameSet }: UsernameModalProps) {
+export default function UsernameModal({ user, onUsernameSet, mode = 'setup', remainingChanges, onClose }: UsernameModalProps) {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -58,9 +61,21 @@ export default function UsernameModal({ user, onUsernameSet }: UsernameModalProp
       backdropFilter: 'blur(8px)'
     }}>
       <div className="glass-panel" style={{ padding: '32px', maxWidth: '400px', width: '90%', position: 'relative' }}>
-        <h2 style={{ marginTop: 0, marginBottom: '8px' }}>Choose your Username</h2>
+        {mode === 'edit' && onClose && (
+          <button 
+            onClick={onClose}
+            style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '20px' }}
+          >
+            &times;
+          </button>
+        )}
+        <h2 style={{ marginTop: 0, marginBottom: '8px' }}>
+          {mode === 'edit' ? 'Change your Username' : 'Choose your Username'}
+        </h2>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', fontSize: '14px' }}>
-          Welcome to Qlokam! Please choose a unique username to appear on the Leaderboard and your profile.
+          {mode === 'edit' 
+            ? `Choose a new username. You have ${remainingChanges !== undefined ? remainingChanges : 'few'} changes left.` 
+            : 'Welcome to Qlokam! Please choose a unique username to appear on the Leaderboard and your profile.'}
         </p>
 
         <form onSubmit={handleSubmit}>
@@ -93,7 +108,7 @@ export default function UsernameModal({ user, onUsernameSet }: UsernameModalProp
             style={{ width: '100%', padding: '12px' }}
             disabled={loading || !username.trim()}
           >
-            {loading ? 'Verifying...' : 'Claim Username'}
+            {loading ? (mode === 'edit' ? 'Changing...' : 'Verifying...') : (mode === 'edit' ? 'Change Username' : 'Claim Username')}
           </button>
         </form>
       </div>

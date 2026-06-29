@@ -4,6 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { tutorialSessions } from '@/data/tutorials';
 import { arenaProblems } from '@/data/arena';
+import UsernameModal from './UsernameModal';
 
 interface ProfileModalProps {
   user: User;
@@ -18,13 +19,17 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
     badges: string[];
     completedTutorials: number[];
     solvedArenaProblems: string[];
+    usernameChanges: number;
   }>({
     username: null,
     rating: 0,
     badges: [],
     completedTutorials: [],
     solvedArenaProblems: [],
+    usernameChanges: 0,
   });
+  
+  const [showEditUsername, setShowEditUsername] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -40,6 +45,7 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
             badges: data.badges || [],
             completedTutorials: data.completedTutorials || [],
             solvedArenaProblems: data.solvedArenaProblems || [],
+            usernameChanges: data.usernameChanges || 0,
           });
         }
       } catch (error) {
@@ -105,8 +111,16 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
                 <h2 style={{ margin: '0 0 4px 0', fontSize: '24px', color: 'var(--text-primary)' }}>
                   {user.displayName}
                 </h2>
-                <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '8px' }}>
-                  {profileData.username ? `@${profileData.username}` : 'No username set'}
+                <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span>{profileData.username ? `@${profileData.username}` : 'No username set'}</span>
+                  {profileData.usernameChanges < 3 && (
+                    <button 
+                      onClick={() => setShowEditUsername(true)}
+                      style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid var(--surface-border)', color: 'var(--text-primary)', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', cursor: 'pointer' }}
+                    >
+                      Edit Username ({3 - profileData.usernameChanges} left)
+                    </button>
+                  )}
                 </div>
               </div>
               <div style={{ textAlign: 'center', background: 'rgba(210, 153, 34, 0.1)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(210, 153, 34, 0.3)' }}>
@@ -191,6 +205,23 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
           </div>
         )}
       </div>
+
+      {showEditUsername && (
+        <UsernameModal 
+          user={user} 
+          mode="edit"
+          remainingChanges={3 - profileData.usernameChanges}
+          onClose={() => setShowEditUsername(false)}
+          onUsernameSet={(newUsername) => {
+            setProfileData(prev => ({ 
+              ...prev, 
+              username: newUsername,
+              usernameChanges: prev.usernameChanges + 1
+            }));
+            setShowEditUsername(false);
+          }} 
+        />
+      )}
     </div>
   );
 }

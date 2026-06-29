@@ -37,21 +37,46 @@ export async function POST(req: Request) {
 
     // Run a transaction to ensure username uniqueness
     const result = await adminDb.runTransaction(async (transaction: any) => {
-      const usernameRef = adminDb.collection('usernames').doc(lowerUsername);
+      const newUsernameRef = adminDb.collection('usernames').doc(lowerUsername);
       const userRef = adminDb.collection('users').doc(uid);
 
-      const usernameDoc = await transaction.get(usernameRef as any);
-      if ((usernameDoc as any).exists) {
+      // Check if new username is taken
+      const newUsernameDoc = await transaction.get(newUsernameRef as any);
+      if ((newUsernameDoc as any).exists) {
         throw new Error('Username is already taken.');
       }
 
       const userDoc = await transaction.get(userRef as any);
-      if ((userDoc as any).exists && (userDoc as any).data()?.username) {
-         throw new Error('You already have a username.');
+      const userData = (userDoc as any).exists ? (userDoc as any).data() : {};
+      
+      const changes = userData.usernameChanges || 0;
+      const oldUsername = userData.username;
+
+      if (oldUsername) {
+        // User already has a username
+        if (changes >= 3) {
+          throw new Error('You have reached the maximum number of username changes (3).');
+        }
+        if (oldUsername === lowerUsername) {
+           throw new Error('This is already your username.');
+        }
+        // Delete old username document
+        const oldUsernameRef = adminDb.collection('usernames').doc(oldUsername);
+        transaction.delete(oldUsernameRef);
+        
+        transaction.set(userRef, { 
+          username: lowerUsername,
+          usernameChanges: changes + 1
+        }, { merge: true });
+      } else {
+        // First time setting username
+        transaction.set(userRef, { 
+          username: lowerUsername,
+          usernameChanges: 0 // setting it up for the first time does not count as a change
+        }, { merge: true });
       }
 
-      transaction.set(usernameRef, { uid, createdAt: new Date().toISOString() });
-      transaction.set(userRef, { username: lowerUsername }, { merge: true });
+      transaction.set(newUsernameRef, { uid, createdAt: new Date().toISOString() });
 
       return lowerUsername;
     });
