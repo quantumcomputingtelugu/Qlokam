@@ -305,7 +305,7 @@ export default function TutorialsPage() {
           >
             ☰
           </button>
-          {(['lesson', 'quiz', 'practice'] as const).map(tab => (
+          {(['lesson', 'practice'] as const).map(tab => (
             <button 
               key={tab}
               onClick={() => handleTabChange(tab)}
@@ -331,129 +331,114 @@ export default function TutorialsPage() {
           {activeTab === 'lesson' ? (
             <div style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: '16px' }}>
               {activeTutorial.lessonContent}
-              
+                {activeTutorial.quizzes && activeTutorial.quizzes.length > 0 && (
+                <div style={{ marginTop: '48px', paddingTop: '32px', borderTop: '1px solid var(--surface-border)' }}>
+                  <h3 style={{ fontSize: '24px', marginBottom: '24px', color: 'var(--text-primary)' }}>Knowledge Check</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                    {activeTutorial.quizzes.map((quiz, qIndex) => (
+                      <div key={qIndex} style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid var(--surface-border)' }}>
+                        <h4 style={{ fontSize: '18px', color: 'var(--text-primary)', marginBottom: '16px' }}>{quiz.question}</h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                          {quiz.options.map((opt, optIndex) => {
+                            const isSelected = selectedAnswers[qIndex] === optIndex;
+                            let btnBorder = '1px solid var(--surface-border)';
+                            let btnBg = isSelected ? 'rgba(69, 243, 255, 0.1)' : 'transparent';
+                            let btnColor = isSelected ? 'var(--accent-primary)' : 'var(--text-secondary)';
+
+                            if (showQuizResults) {
+                              if (optIndex === quiz.correctAnswerIndex) {
+                                btnBorder = '1px solid var(--success)';
+                                btnBg = 'rgba(63, 185, 80, 0.1)';
+                                btnColor = 'var(--success)';
+                              } else if (isSelected) {
+                                btnBorder = '1px solid var(--error)';
+                                btnBg = 'rgba(248, 81, 73, 0.1)';
+                                btnColor = 'var(--error)';
+                              }
+                            }
+
+                            return (
+                              <button
+                                key={optIndex}
+                                onClick={() => handleQuizOptionSelect(qIndex, optIndex)}
+                                style={{
+                                  padding: '16px',
+                                  textAlign: 'left',
+                                  background: btnBg,
+                                  border: btnBorder,
+                                  color: btnColor,
+                                  borderRadius: '8px',
+                                  cursor: showQuizResults ? 'default' : 'pointer',
+                                  transition: 'all 0.2s',
+                                  fontSize: '16px'
+                                }}
+                              >
+                                {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        {showQuizResults && quiz.explanation && (
+                          <div style={{ marginTop: '16px', padding: '16px', background: 'rgba(69, 243, 255, 0.05)', borderRadius: '8px', color: 'var(--text-secondary)' }}>
+                            <strong>Explanation:</strong> {quiz.explanation}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    {!showQuizResults ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        <button 
+                          className="btn-primary" 
+                          onClick={handleQuizSubmit} 
+                          disabled={Object.keys(selectedAnswers).length < activeTutorial.quizzes.length}
+                          style={{ alignSelf: 'flex-start', padding: '12px 32px' }}
+                        >
+                          Submit Answers
+                        </button>
+                        
+                        {/* Rewarded Ads Integration */}
+                        <div style={{ display: 'flex', gap: '16px', marginTop: '16px', padding: '16px', background: 'rgba(210, 153, 34, 0.05)', borderRadius: '8px', border: '1px dashed rgba(210, 153, 34, 0.3)' }}>
+                          <div style={{ flex: 1 }}>
+                            <h4 style={{ margin: '0 0 8px 0', color: '#d29922' }}>Stuck on this quiz?</h4>
+                            <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '14px' }}>Watch a short sponsored message to unlock a hint.</p>
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <button 
+                              className="btn-secondary" 
+                              onClick={handleWatchAd}
+                              disabled={adLoading !== null || hintUnlocked}
+                              style={{ padding: '8px 16px', fontSize: '14px' }}
+                            >
+                              {adLoading === 'hint' ? 'Loading Ad...' : hintUnlocked ? 'Hint Unlocked!' : '🎥 Watch Ad for Hint'}
+                            </button>
+                          </div>
+                        </div>
+                        
+                        {hintUnlocked && (
+                          <div style={{ padding: '16px', background: 'rgba(69, 243, 255, 0.05)', borderRadius: '8px', border: '1px solid var(--accent-primary)', color: 'var(--text-primary)' }}>
+                            <strong>Hint:</strong> Look closely at how the states change before and after applying the quantum gates. If you are ever stuck, try testing it out in the Playground!
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                        <button className="btn-secondary" onClick={() => { setShowQuizResults(false); setSelectedAnswers({}); }} style={{ padding: '8px 16px' }}>Retry Quiz</button>
+                        <button className="btn-primary" onClick={handleMarkComplete} disabled={saving || isCompleted} style={{ padding: '8px 16px' }}>
+                          {saving ? 'Saving...' : isCompleted ? 'Completed ✓' : 'Mark as Completed'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <div style={{ marginTop: '48px', padding: '24px', background: 'rgba(69, 243, 255, 0.05)', border: '1px solid rgba(69, 243, 255, 0.2)', borderRadius: '12px' }}>
                 <h4 style={{ margin: '0 0 16px 0', color: 'var(--accent-primary)' }}>Finished reading?</h4>
-                <p style={{ margin: '0 0 16px 0' }}>Test your knowledge with a quick quiz, or jump straight to practice!</p>
+                <p style={{ margin: '0 0 16px 0' }}>Jump straight to practice and try it out!</p>
                 <div style={{ display: 'flex', gap: '16px' }}>
-                  {activeTutorial.quizzes && activeTutorial.quizzes.length > 0 && (
-                    <button className="btn-secondary" onClick={() => handleTabChange('quiz')} style={{ padding: '8px 16px' }}>Take Quiz</button>
-                  )}
                   <button className="btn-primary" onClick={() => handleTabChange('practice')} style={{ padding: '8px 16px' }}>Go to Practice</button>
                 </div>
               </div>
-            </div>
-          ) : activeTab === 'quiz' ? (
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-              {!activeTutorial.quizzes || activeTutorial.quizzes.length === 0 ? (
-                <div style={{ textAlign: 'center', marginTop: '40px', color: 'var(--text-secondary)' }}>
-                  No quiz available for this module yet. Jump to Practice!
-                </div>
-              ) : activeTutorial.id > 1 && !completedTutorials.includes(activeTutorial.id - 1) ? (
-                <div style={{ textAlign: 'center', marginTop: '64px', padding: '40px', background: 'rgba(210, 153, 34, 0.05)', borderRadius: '12px', border: '1px dashed rgba(210, 153, 34, 0.3)' }}>
-                  <h3 style={{ fontSize: '24px', color: '#d29922', margin: '0 0 16px 0' }}>Quiz is Locked</h3>
-                  <p style={{ color: 'var(--text-secondary)', margin: '0 auto 24px', maxWidth: '400px' }}>
-                    You must complete <strong>Module {activeTutorial.id - 1}</strong> before you can unlock this quiz!
-                  </p>
-                  <button className="btn-primary" onClick={() => { setActiveTutorialId(activeTutorial.id - 1); setActiveTab('lesson'); }} style={{ padding: '8px 16px' }}>
-                    Go to Module {activeTutorial.id - 1}
-                  </button>
-                </div>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-                  {activeTutorial.quizzes.map((quiz, qIndex) => (
-                    <div key={qIndex} style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid var(--surface-border)' }}>
-                      <h4 style={{ fontSize: '18px', color: 'var(--text-primary)', marginBottom: '16px' }}>{quiz.question}</h4>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        {quiz.options.map((opt, optIndex) => {
-                          const isSelected = selectedAnswers[qIndex] === optIndex;
-                          let btnBorder = '1px solid var(--surface-border)';
-                          let btnBg = isSelected ? 'rgba(69, 243, 255, 0.1)' : 'transparent';
-                          let btnColor = isSelected ? 'var(--accent-primary)' : 'var(--text-secondary)';
-
-                          if (showQuizResults) {
-                            if (optIndex === quiz.correctAnswerIndex) {
-                              btnBorder = '1px solid var(--success)';
-                              btnBg = 'rgba(63, 185, 80, 0.1)';
-                              btnColor = 'var(--success)';
-                            } else if (isSelected) {
-                              btnBorder = '1px solid var(--error)';
-                              btnBg = 'rgba(248, 81, 73, 0.1)';
-                              btnColor = 'var(--error)';
-                            }
-                          }
-
-                          return (
-                            <button
-                              key={optIndex}
-                              onClick={() => handleQuizOptionSelect(qIndex, optIndex)}
-                              style={{
-                                padding: '16px',
-                                textAlign: 'left',
-                                background: btnBg,
-                                border: btnBorder,
-                                color: btnColor,
-                                borderRadius: '8px',
-                                cursor: showQuizResults ? 'default' : 'pointer',
-                                transition: 'all 0.2s',
-                                fontSize: '16px'
-                              }}
-                            >
-                              {opt}
-                            </button>
-                          );
-                        })}
-                      </div>
-                      {showQuizResults && quiz.explanation && (
-                        <div style={{ marginTop: '16px', padding: '16px', background: 'rgba(69, 243, 255, 0.05)', borderRadius: '8px', color: 'var(--text-secondary)' }}>
-                          <strong>Explanation:</strong> {quiz.explanation}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  {!showQuizResults ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                      <button 
-                        className="btn-primary" 
-                        onClick={handleQuizSubmit} 
-                        disabled={Object.keys(selectedAnswers).length < activeTutorial.quizzes.length}
-                        style={{ alignSelf: 'flex-start', padding: '12px 32px' }}
-                      >
-                        Submit Answers
-                      </button>
-                      
-                      {/* Rewarded Ads Integration */}
-                      <div style={{ display: 'flex', gap: '16px', marginTop: '16px', padding: '16px', background: 'rgba(210, 153, 34, 0.05)', borderRadius: '8px', border: '1px dashed rgba(210, 153, 34, 0.3)' }}>
-                        <div style={{ flex: 1 }}>
-                          <h4 style={{ margin: '0 0 8px 0', color: '#d29922' }}>Stuck on this quiz?</h4>
-                          <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '14px' }}>Watch a short sponsored message to unlock a hint.</p>
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                          <button 
-                            className="btn-secondary" 
-                            onClick={handleWatchAd}
-                            disabled={adLoading !== null || hintUnlocked}
-                            style={{ padding: '8px 16px', fontSize: '14px' }}
-                          >
-                            {adLoading === 'hint' ? 'Loading Ad...' : hintUnlocked ? 'Hint Unlocked!' : '🎥 Watch Ad for Hint'}
-                          </button>
-                        </div>
-                      </div>
-                      
-                      {hintUnlocked && (
-                        <div style={{ padding: '16px', background: 'rgba(69, 243, 255, 0.05)', borderRadius: '8px', border: '1px solid var(--accent-primary)', color: 'var(--text-primary)' }}>
-                          <strong>Hint:</strong> Look closely at how the states change before and after applying the quantum gates. If you are ever stuck, try testing it out in the Playground!
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <div style={{ display: 'flex', gap: '16px' }}>
-                      <button className="btn-secondary" onClick={() => { setShowQuizResults(false); setSelectedAnswers({}); }} style={{ padding: '8px 16px' }}>Retry Quiz</button>
-                      <button className="btn-primary" onClick={() => handleTabChange('practice')} style={{ padding: '8px 16px' }}>Continue to Practice</button>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           ) : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
