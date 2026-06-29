@@ -542,6 +542,7 @@ export const tutorialSessions: TutorialSession[] = [
       {
         id: 6,
         title: 'Qubits and its properties',
+        prerequisiteId: 5,
         description: 'Introduction to Qubits and their fundamental properties.',
         difficulty: 'Beginner',
         lessonContent: (
@@ -891,22 +892,82 @@ export const tutorialSessions: TutorialSession[] = [
                 
                 <div style={{ display: 'flex', gap: '32px', margin: '32px 0', alignItems: 'center', flexWrap: 'wrap' }}>
                   <div style={{ flex: '1', display: 'flex', justifyContent: 'center', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', minWidth: '300px' }}>
-                    <div style={{ position: 'relative', width: '200px', height: '200px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: 'inset 0 0 50px rgba(69,243,255,0.1)' }}>
-                      {/* Z axis */}
-                      <div style={{ position: 'absolute', width: '2px', height: '240px', background: 'rgba(255,255,255,0.3)' }}></div>
-                      <div style={{ position: 'absolute', top: '-25px', fontWeight: 'bold', color: '#fff', background: '#333', padding: '2px 8px', borderRadius: '4px' }}>|0⟩ (North Pole)</div>
-                      <div style={{ position: 'absolute', bottom: '-25px', fontWeight: 'bold', color: '#fff', background: '#333', padding: '2px 8px', borderRadius: '4px' }}>|1⟩ (South Pole)</div>
+                    <svg width="100%" height="100%" viewBox="0 0 300 300" style={{ maxWidth: '300px', width: '100%', filter: 'drop-shadow(0 0 20px rgba(69,243,255,0.1))' }}>
+                      <defs>
+                        <marker id="arrowhead-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                          <polygon points="0 0, 8 3, 0 6" fill="#4dabf7" />
+                        </marker>
+                        <marker id="arrowhead-axis" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                          <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.8)" />
+                        </marker>
+                        <marker id="arrowhead-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                          <polygon points="0 0, 8 3, 0 6" fill="#b026ff" />
+                        </marker>
+                      </defs>
                       
-                      {/* Equator */}
-                      <div style={{ position: 'absolute', width: '200px', height: '60px', borderRadius: '50%', border: '2px dashed rgba(255,255,255,0.2)' }}></div>
+                      {/* Back half of equator */}
+                      <path d="M 50 150 A 100 35 0 0 1 250 150" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" strokeDasharray="4 4" />
                       
-                      {/* State vector */}
-                      <div style={{ position: 'absolute', bottom: '50%', left: '50%', width: '3px', height: '100px', background: 'var(--accent-primary)', transformOrigin: 'bottom center', transform: 'rotate(45deg)', zIndex: 1, boxShadow: '0 0 10px var(--accent-primary)' }}>
-                        {/* Arrow head */}
-                        <div style={{ position: 'absolute', top: '-2px', left: '-4px', width: '0', height: '0', borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderBottom: '10px solid var(--accent-primary)' }}></div>
-                      </div>
-                      <div style={{ position: 'absolute', top: '10px', right: '10px', color: 'var(--accent-primary)', fontWeight: 'bold', fontSize: '20px', textShadow: '0 0 5px var(--accent-primary)' }}>|ψ⟩</div>
-                    </div>
+                      {/* Sphere outline */}
+                      <circle cx="150" cy="150" r="100" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="2" />
+                      
+                      {/* Front half of equator */}
+                      <path d="M 50 150 A 100 35 0 0 0 250 150" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" strokeDasharray="4 4" />
+                      
+                      {/* Axes */}
+                      {/* Z-axis */}
+                      <line x1="150" y1="260" x2="150" y2="30" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" markerEnd="url(#arrowhead-axis)" />
+                      
+                      {/* Y-axis */}
+                      <line x1="150" y1="150" x2="280" y2="150" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" markerEnd="url(#arrowhead-axis)" />
+                      
+                      {/* X-axis */}
+                      <line x1="150" y1="150" x2="45" y2="200" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" markerEnd="url(#arrowhead-axis)" />
+                    
+                      {/* Projections */}
+                      {/* Center to projection on equator */}
+                      <line x1="150" y1="150" x2="200" y2="175" stroke="rgba(255,255,255,0.5)" strokeWidth="1" strokeDasharray="3 3" />
+                      {/* Vector tip to projection */}
+                      <line x1="200" y1="80" x2="200" y2="175" stroke="rgba(255,255,255,0.5)" strokeWidth="1" strokeDasharray="3 3" />
+                      
+                      {/* Angles */}
+                      {/* Theta arc */}
+                      <path d="M 150 100 Q 165 100 175 115" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" />
+                      {/* Phi arc: from X-axis to projection */}
+                      <path d="M 85 180 Q 140 200 200 175" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" />
+                      
+                      {/* State Vector |ψ⟩ */}
+                      <line x1="150" y1="150" x2="200" y2="80" stroke="#b026ff" strokeWidth="3" markerEnd="url(#arrowhead-purple)" />
+                      
+                      {/* Pi/2 Pulse blue arrow */}
+                      <path d="M 135 55 Q 50 80 65 180" fill="none" stroke="#4dabf7" strokeWidth="3" markerEnd="url(#arrowhead-blue)" />
+                      
+                      {/* Labels */}
+                      <text x="160" y="45" fill="#4dabf7" fontSize="20" fontWeight="bold">|0⟩</text>
+                      <text x="160" y="275" fill="#ff6b6b" fontSize="20" fontWeight="bold">|1⟩</text>
+                      <text x="210" y="75" fill="#b026ff" fontSize="20" fontWeight="bold">|ψ⟩</text>
+                      
+                      <text x="160" y="90" fill="#fff" fontSize="20" fontStyle="italic" fontWeight="bold">θ</text>
+                      <text x="135" y="195" fill="#fff" fontSize="20" fontStyle="italic" fontWeight="bold">φ</text>
+                      
+                      {/* Blue arc text rotated */}
+                      <text x="60" y="140" fill="#4dabf7" fontSize="14" transform="rotate(-70 70 140)" fontStyle="italic">π/2 - pulse</text>
+                    
+                      <text x="5" y="225" fill="#fff" fontSize="14">|0⟩ + |1⟩</text>
+                      <line x1="5" y1="230" x2="65" y2="230" stroke="#fff" strokeWidth="1" />
+                      <text x="25" y="245" fill="#fff" fontSize="14">√2</text>
+                      
+                      <text x="225" y="125" fill="#fff" fontSize="14">|0⟩ + i|1⟩</text>
+                      <line x1="225" y1="130" x2="295" y2="130" stroke="#fff" strokeWidth="1" />
+                      <text x="250" y="145" fill="#fff" fontSize="14">√2</text>
+                    
+                      {/* Dots */}
+                      <circle cx="150" cy="50" r="5" fill="#4dabf7" />
+                      <circle cx="150" cy="250" r="5" fill="#ff6b6b" />
+                      <circle cx="200" cy="80" r="4" fill="#b026ff" />
+                      <circle cx="70" cy="188" r="5" fill="#fff" />
+                      <circle cx="250" cy="150" r="5" fill="#fff" />
+                    </svg>
                   </div>
                   
                   <div style={{ flex: '1', minWidth: '300px' }}>
