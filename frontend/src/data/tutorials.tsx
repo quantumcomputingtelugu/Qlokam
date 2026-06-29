@@ -631,13 +631,45 @@ export const tutorialSessions: TutorialSession[] = [
             difficulty: 'Beginner',
             lessonContent: (
               <>
-                <h3 style={{ fontSize: '24px', color: 'var(--text-primary)', marginBottom: '16px' }}>The Quantum Bit</h3>
-                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  A qubit (short for quantum bit) is the basic unit of information in quantum computing. While a classical bit can only be a 0 or a 1, a qubit can exist in a superposition of both states simultaneously.
+                <p style={{ marginBottom: '16px' }}>
+                  A qubit (short for quantum bit) is the basic unit of information in a quantum computer, just as a bit is the basic unit of information in a classical computer.
                 </p>
-                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  This unique property allows quantum computers to process a vast number of possibilities at once, giving them incredible power for specific types of problems.
+                
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '24px', marginBottom: '16px' }}>The Classical Bit</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  A classical computer stores information using bits. A bit can be only one of two values: <strong>0 or 1</strong>. Everything in your laptop or smartphone is ultimately represented using billions of such bits.
                 </p>
+
+                {/* Visual: Classical Bit */}
+                <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', justifyContent: 'center' }}>
+                  <div style={{ width: '80px', height: '80px', borderRadius: '8px', background: '#333', border: '2px solid #555', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '32px', fontWeight: 'bold', color: '#888' }}>0</div>
+                  <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-secondary)', fontWeight: 'bold' }}>OR</div>
+                  <div style={{ width: '80px', height: '80px', borderRadius: '8px', background: 'var(--accent-primary)', border: '2px solid var(--accent-secondary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '32px', fontWeight: 'bold', color: '#fff', boxShadow: '0 0 15px var(--accent-primary)' }}>1</div>
+                </div>
+
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>The Quantum Bit</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  A qubit can be:
+                </p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '8px' }}><strong>0</strong></li>
+                  <li style={{ marginBottom: '8px' }}><strong>1</strong></li>
+                  <li style={{ marginBottom: '8px' }}><strong>or a combination of both 0 and 1 simultaneously.</strong></li>
+                </ul>
+                <p style={{ marginBottom: '16px' }}>
+                  This phenomenon of being in multiple states at once is called <strong>Superposition</strong>. Because of this, as you add more qubits to a system, the amount of information it can process grows exponentially rather than linearly. 
+                </p>
+
+                {/* Visual: Superposition Bloch Sphere */}
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ position: 'relative', width: '120px', height: '120px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(69,243,255,0.2) 0%, rgba(139,92,246,0.2) 100%)', border: '2px dashed var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <div style={{ position: 'absolute', top: '-24px', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 'bold' }}>|0⟩</div>
+                    <div style={{ position: 'absolute', bottom: '-24px', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 'bold' }}>|1⟩</div>
+                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, #333 0%, var(--accent-primary) 100%)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '20px', fontWeight: 'bold', color: '#fff', boxShadow: '0 0 20px var(--accent-primary)' }}>
+                      0 & 1
+                    </div>
+                  </div>
+                </div>
               </>
             ),
             practiceGoal: 'Learn what a qubit is.'
