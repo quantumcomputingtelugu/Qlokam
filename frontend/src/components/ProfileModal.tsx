@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
-import Link from 'next/link';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { tutorialSessions } from '@/data/tutorials';
@@ -21,6 +20,7 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
     completedTutorials: number[];
     solvedArenaProblems: string[];
     usernameChanges: number;
+    ratingHistory: { reason: string; points: number; timestamp: string }[];
   }>({
     username: null,
     rating: 0,
@@ -28,9 +28,11 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
     completedTutorials: [],
     solvedArenaProblems: [],
     usernameChanges: 0,
+    ratingHistory: [],
   });
   
   const [showEditUsername, setShowEditUsername] = useState(false);
+  const [view, setView] = useState<'profile' | 'history'>('profile');
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -47,6 +49,7 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
             completedTutorials: data.completedTutorials || [],
             solvedArenaProblems: data.solvedArenaProblems || [],
             usernameChanges: data.usernameChanges || 0,
+            ratingHistory: data.ratingHistory ? data.ratingHistory.sort((a: any, b: any) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()) : [],
           });
         }
       } catch (error) {
@@ -98,6 +101,49 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
 
         {loading ? (
           <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>Loading Profile...</div>
+        ) : view === 'history' ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <button onClick={() => setView('profile')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '20px' }}>&larr;</button>
+              <h2 style={{ margin: 0, fontSize: '24px', color: 'var(--text-primary)' }}>Rating History</h2>
+            </div>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px', background: 'rgba(210, 153, 34, 0.05)', borderRadius: '12px', border: '1px solid rgba(210, 153, 34, 0.2)' }}>
+              <div>
+                <div style={{ fontSize: '14px', color: '#d29922', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Current Rating</div>
+                <div style={{ fontSize: '48px', fontWeight: 'bold', color: '#d29922' }}>{profileData.rating}</div>
+              </div>
+              <img 
+                src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`} 
+                alt="Profile" 
+                style={{ width: '80px', height: '80px', borderRadius: '50%', border: '2px solid rgba(210, 153, 34, 0.5)' }}
+              />
+            </div>
+
+            <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', color: 'var(--text-secondary)' }}>Activity Log</h3>
+            
+            {profileData.ratingHistory.length === 0 ? (
+              <div style={{ padding: '40px', textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px dashed var(--surface-border)' }}>
+                <p style={{ color: 'var(--text-secondary)', margin: 0 }}>No rating history found. Solve problems in the Arena or complete quizzes to earn rating!</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {profileData.ratingHistory.map((item, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid var(--surface-border)' }}>
+                    <div>
+                      <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--text-primary)', marginBottom: '4px' }}>{item.reason}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                        {new Date(item.timestamp).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })}
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#3fb950', background: 'rgba(63, 185, 80, 0.1)', padding: '8px 16px', borderRadius: '20px' }}>
+                      +{item.points}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
             
@@ -128,9 +174,9 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
                 <div style={{ textAlign: 'center', background: 'rgba(210, 153, 34, 0.1)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(210, 153, 34, 0.3)' }}>
                   <div style={{ fontSize: '12px', color: '#d29922', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Arena Rating</div>
                   <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#d29922' }}>{profileData.rating}</div>
-                  <Link href="/rating-history" style={{ display: 'inline-block', marginTop: '12px', background: 'rgba(210, 153, 34, 0.2)', color: '#d29922', textDecoration: 'none', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold' }}>
+                  <button onClick={() => setView('history')} style={{ display: 'inline-block', marginTop: '12px', background: 'rgba(210, 153, 34, 0.2)', border: 'none', color: '#d29922', textDecoration: 'none', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer' }}>
                     View History &rarr;
-                  </Link>
+                  </button>
                 </div>
 
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
