@@ -62,6 +62,13 @@ export default function TutorialsPage() {
     return () => clearTimeout(timer);
   }, [showSimulatedAd, adCountdown]);
 
+  // Close sidebar on mobile by default
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      setIsSidebarOpen(false);
+    }
+  }, []);
+
   const handleWatchAd = () => {
     setShowSimulatedAd(true);
   };
@@ -138,7 +145,7 @@ export default function TutorialsPage() {
     <div className="container responsive-flex" style={{ paddingTop: '24px', display: 'flex', gap: '24px', height: 'calc(100vh - 100px)', width: '100%' }}>
       {/* Left Panel: Tutorial List */}
       <div 
-        className="glass-panel responsive-sidebar" 
+        className={`glass-panel responsive-sidebar ${isSidebarOpen ? 'open' : 'closed'}`}
         style={{ 
           width: isSidebarOpen ? '350px' : '60px', 
           flexShrink: 0, 
@@ -146,7 +153,7 @@ export default function TutorialsPage() {
           display: 'flex', 
           flexDirection: 'column', 
           overflowY: 'auto',
-          transition: 'width 0.3s ease, padding 0.3s ease'
+          transition: 'width 0.3s ease, padding 0.3s ease, transform 0.3s ease'
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -155,7 +162,7 @@ export default function TutorialsPage() {
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '20px', padding: 0 }}
           >
-            {isSidebarOpen ? '◀' : '▶'}
+            {isSidebarOpen ? '✖' : '▶'}
           </button>
         </div>
         
@@ -197,6 +204,9 @@ export default function TutorialsPage() {
                       setActiveTab('lesson'); 
                       setSelectedAnswers({}); 
                       setShowQuizResults(false); 
+                      if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+                        setIsSidebarOpen(false);
+                      }
                     }}
                     style={{ 
                       padding: '16px', 
@@ -234,7 +244,14 @@ export default function TutorialsPage() {
       <div className="glass-panel responsive-content" style={{ flex: 2, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         
         {/* Header Tabs */}
-        <div style={{ display: 'flex', borderBottom: '1px solid var(--surface-border)', padding: '0 24px' }}>
+        <div style={{ display: 'flex', borderBottom: '1px solid var(--surface-border)', padding: '0 24px', alignItems: 'center' }}>
+          <button 
+            className="mobile-sidebar-toggle"
+            onClick={() => setIsSidebarOpen(true)}
+            style={{ display: 'none', background: 'none', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', fontSize: '24px', marginRight: '16px' }}
+          >
+            ☰
+          </button>
           {(['lesson', 'quiz', 'practice'] as const).map(tab => (
             <button 
               key={tab}
