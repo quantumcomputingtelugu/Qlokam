@@ -19,7 +19,31 @@ import { Bar } from 'react-chartjs-2';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const NUM_STEPS = 20;
-const GATES = ['H', 'X', 'Y', 'Z', 'CX', 'M', 'DEL'];
+
+const GATE_CATEGORIES = {
+  "Pauli": [
+    { id: "X", label: "X", tooltip: "Pauli-X (NOT): Flips |0⟩ to |1⟩ and vice versa." },
+    { id: "Y", label: "Y", tooltip: "Pauli-Y: Rotates around Y-axis. Adds phase i." },
+    { id: "Z", label: "Z", tooltip: "Pauli-Z (Phase): Flips phase of |1⟩ to -|1⟩." }
+  ],
+  "Hadamard": [
+    { id: "H", label: "H", tooltip: "Hadamard: Creates an equal superposition." }
+  ],
+  "Phase": [
+    { id: "S", label: "S", tooltip: "S Gate: 90-degree Z-rotation." },
+    { id: "T", label: "T", tooltip: "T Gate: 45-degree Z-rotation." }
+  ],
+  "Rotation": [
+    { id: "RX", label: "Rx", tooltip: "Rx: Rotation around X-axis." },
+    { id: "RY", label: "Ry", tooltip: "Ry: Rotation around Y-axis." },
+    { id: "RZ", label: "Rz", tooltip: "Rz: Rotation around Z-axis." }
+  ],
+  "2-Qubit": [
+    { id: "CX", label: "CX", tooltip: "CNOT: Flips target if control is |1⟩." },
+    { id: "CZ", label: "CZ", tooltip: "CZ: Applies Z to target if control is |1⟩." },
+    { id: "SWAP", label: "SWAP", tooltip: "SWAP: Swaps the states of two qubits." }
+  ]
+};
 
 interface VisualPlaygroundProps {
   arenaMode?: boolean;
@@ -41,7 +65,8 @@ export default function VisualPlayground({
   const [grid, setGrid] = useState<string[][]>(Array(3).fill([]).map(() => Array(NUM_STEPS).fill('')));
   const [draggedGate, setDraggedGate] = useState<string | null>(null);
   const [selectedGate, setSelectedGate] = useState<string | null>(null);
-  const [pendingCX, setPendingCX] = useState<{qIdx: number, sIdx: number} | null>(null);
+  const [pendingTwoQubit, setPendingTwoQubit] = useState<{qIdx: number, sIdx: number, gate: string} | null>(null);
+  const [activeCategory, setActiveCategory] = useState<keyof typeof GATE_CATEGORIES>("Pauli");
   const [probabilities, setProbabilities] = useState<Record<string, number>>({});
   const [isExecuting, setIsExecuting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -58,7 +83,7 @@ export default function VisualPlayground({
       setProbabilities({});
       setErrorMsg('');
       setCode('');
-      setPendingCX(null);
+      setPendingTwoQubit(null);
     }
   }, [arenaProblemId, arenaMode]);
 
@@ -79,7 +104,7 @@ export default function VisualPlayground({
 
   const handleDrop = (e: React.DragEvent, qIdx: number, sIdx: number) => {
     e.preventDefault();
-    if (pendingCX) return; // Block drops while pending CX
+    if (pendingTwoQubit) return; // Block drops while pending 2-qubit
 
     const gate = e.dataTransfer.getData('gate');
     if (!gate) return;
@@ -88,7 +113,7 @@ export default function VisualPlayground({
       const controlQubits: number[] = [];
       for (let i = 0; i < numQubits; i++) {
         const c = grid[i][sIdx];
-        if (c && c.startsWith('CX|')) {
+        if (c && (c.startsWith('CX|') || c.startsWith('CZ|') || c.startsWith('SWAP|'))) {
            const target = parseInt(c.split('|')[1], 10);
            if (target === qIdx) {
              controlQubits.push(i);
@@ -120,9 +145,13 @@ export default function VisualPlayground({
 
     let finalGate = gate;
 
-    if (gate === 'CX') {
-      setPendingCX({ qIdx, sIdx });
-      finalGate = 'CX_PENDING';
+    if (gate === 'CX' || gate === 'CZ' || gate === 'SWAP') {
+      setPendingTwoQubit({ qIdx, sIdx, gate });
+      finalGate = `${gate}_PENDING`;
+    } else if (gate === 'RX' || gate === 'RY' || gate === 'RZ') {
+      const angle = window.prompt(`Enter rotation angle for ${gate} (e.g., pi/2, 1.57):`, 'pi/2');
+      if (!angle) return;
+      finalGate = `${gate}(${angle})`;
     }
     
     setIsTyping(false);
@@ -135,7 +164,7 @@ export default function VisualPlayground({
   };
 
   const handleDragOver = (e: React.DragEvent) => { 
-    if (!pendingCX) e.preventDefault(); 
+    if (!pendingTwoQubit) e.preventDefault(); 
   };
 
   const removeGate = (qIdx: number, sIdx: number) => {
@@ -162,11 +191,17 @@ export default function VisualPlayground({
           else if (gate === 'X') displayCode += `qc.x(${qIdx})\n`;
           else if (gate === 'Y') displayCode += `qc.y(${qIdx})\n`;
           else if (gate === 'Z') displayCode += `qc.z(${qIdx})\n`;
-          else if (gate === 'M') displayCode += `qc.measure(${qIdx}, ${qIdx})\n`;
-          else if (gate.startsWith('CX|')) {
-             const target = gate.split('|')[1];
-             displayCode += `qc.cx(${qIdx}, ${target})\n`;
+          else if (gate === 'S') displayCode += `qc.s(${qIdx})\n`;
+          else if (gate === 'T') displayCode += `qc.t(${qIdx})\n`;
+          else if (gate.startsWith('RX(') || gate.startsWith('RY(') || gate.startsWith('RZ(')) {
+             const type = gate.substring(0, 2).toLowerCase();
+             const angle = gate.substring(3, gate.length - 1);
+             displayCode += `qc.${type}(${angle}, ${qIdx})\n`;
           }
+          else if (gate === 'M') displayCode += `qc.measure(${qIdx}, ${qIdx})\n`;
+          else if (gate.startsWith('CX|')) displayCode += `qc.cx(${qIdx}, ${gate.split('|')[1]})\n`;
+          else if (gate.startsWith('CZ|')) displayCode += `qc.cz(${qIdx}, ${gate.split('|')[1]})\n`;
+          else if (gate.startsWith('SWAP|')) displayCode += `qc.swap(${qIdx}, ${gate.split('|')[1]})\n`;
         }
       }
     } else if (language === 'cirq') {
@@ -178,11 +213,17 @@ export default function VisualPlayground({
           else if (gate === 'X') displayCode += `circuit.append(cirq.X(qubits[${qIdx}]))\n`;
           else if (gate === 'Y') displayCode += `circuit.append(cirq.Y(qubits[${qIdx}]))\n`;
           else if (gate === 'Z') displayCode += `circuit.append(cirq.Z(qubits[${qIdx}]))\n`;
-          else if (gate === 'M') displayCode += `circuit.append(cirq.measure(qubits[${qIdx}]))\n`;
-          else if (gate.startsWith('CX|')) {
-             const target = gate.split('|')[1];
-             displayCode += `circuit.append(cirq.CNOT(qubits[${qIdx}], qubits[${target}]))\n`;
+          else if (gate === 'S') displayCode += `circuit.append(cirq.S(qubits[${qIdx}]))\n`;
+          else if (gate === 'T') displayCode += `circuit.append(cirq.T(qubits[${qIdx}]))\n`;
+          else if (gate.startsWith('RX(') || gate.startsWith('RY(') || gate.startsWith('RZ(')) {
+             const type = gate.substring(0, 2).toLowerCase();
+             const angle = gate.substring(3, gate.length - 1);
+             displayCode += `circuit.append(cirq.${type}(${angle})(qubits[${qIdx}]))\n`;
           }
+          else if (gate === 'M') displayCode += `circuit.append(cirq.measure(qubits[${qIdx}]))\n`;
+          else if (gate.startsWith('CX|')) displayCode += `circuit.append(cirq.CNOT(qubits[${qIdx}], qubits[${gate.split('|')[1]}]))\n`;
+          else if (gate.startsWith('CZ|')) displayCode += `circuit.append(cirq.CZ(qubits[${qIdx}], qubits[${gate.split('|')[1]}]))\n`;
+          else if (gate.startsWith('SWAP|')) displayCode += `circuit.append(cirq.SWAP(qubits[${qIdx}], qubits[${gate.split('|')[1]}]))\n`;
         }
       }
     }
@@ -207,21 +248,25 @@ export default function VisualPlayground({
          if (language === 'qiskit') {
             const qcMatch = l.match(/qc\s*=\s*QuantumCircuit\((\d+)/);
             if (qcMatch) newNumQ = parseInt(qcMatch[1], 10);
-            const singleGateMatch = l.match(/qc\.(h|x|y|z)\s*\(\s*(\d+)\s*\)/);
+            const singleGateMatch = l.match(/qc\.(h|x|y|z|s|t)\s*\(\s*(\d+)\s*\)/);
             if (singleGateMatch) operations.push({ gate: singleGateMatch[1].toUpperCase(), q: parseInt(singleGateMatch[2], 10) });
+            const rotGateMatch = l.match(/qc\.(rx|ry|rz)\s*\(\s*([^,]+)\s*,\s*(\d+)\s*\)/);
+            if (rotGateMatch) operations.push({ gate: `${rotGateMatch[1].toUpperCase()}(${rotGateMatch[2].trim()})`, q: parseInt(rotGateMatch[3], 10) });
             const mMatch = l.match(/qc\.measure\(\s*(\d+)\s*,\s*\d+\s*\)/);
             if (mMatch) operations.push({ gate: 'M', q: parseInt(mMatch[1], 10) });
-            const cxMatch = l.match(/qc\.cx\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)/);
-            if (cxMatch) operations.push({ gate: 'CX', c: parseInt(cxMatch[1], 10), t: parseInt(cxMatch[2], 10) });
+            const twoQubitMatch = l.match(/qc\.(cx|cz|swap)\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)/);
+            if (twoQubitMatch) operations.push({ gate: twoQubitMatch[1].toUpperCase(), c: parseInt(twoQubitMatch[2], 10), t: parseInt(twoQubitMatch[3], 10) });
          } else {
             const qMatch = l.match(/range\((\d+)\)/);
             if (qMatch) newNumQ = parseInt(qMatch[1], 10);
-            const singleGateMatch = l.match(/cirq\.(H|X|Y|Z)\(qubits\[(\d+)\]\)/);
+            const singleGateMatch = l.match(/cirq\.(H|X|Y|Z|S|T)\(qubits\[(\d+)\]\)/);
             if (singleGateMatch) operations.push({ gate: singleGateMatch[1].toUpperCase(), q: parseInt(singleGateMatch[2], 10) });
+            const rotGateMatch = l.match(/cirq\.(rx|ry|rz)\s*\(\s*([^)]+)\s*\)\(qubits\[(\d+)\]\)/);
+            if (rotGateMatch) operations.push({ gate: `${rotGateMatch[1].toUpperCase()}(${rotGateMatch[2].trim()})`, q: parseInt(rotGateMatch[3], 10) });
             const mMatch = l.match(/cirq\.measure\(qubits\[(\d+)\]\)/);
             if (mMatch) operations.push({ gate: 'M', q: parseInt(mMatch[1], 10) });
-            const cxMatch = l.match(/cirq\.CNOT\(qubits\[(\d+)\],\s*qubits\[(\d+)\]\)/);
-            if (cxMatch) operations.push({ gate: 'CX', c: parseInt(cxMatch[1], 10), t: parseInt(cxMatch[2], 10) });
+            const twoQubitMatch = l.match(/cirq\.(CNOT|CZ|SWAP)\(qubits\[(\d+)\],\s*qubits\[(\d+)\]\)/);
+            if (twoQubitMatch) operations.push({ gate: twoQubitMatch[1] === 'CNOT' ? 'CX' : twoQubitMatch[1], c: parseInt(twoQubitMatch[2], 10), t: parseInt(twoQubitMatch[3], 10) });
          }
        }
 
@@ -231,7 +276,7 @@ export default function VisualPlayground({
        const nextFreeStep = Array(newNumQ).fill(0);
        
        for (const op of operations) {
-         if (op.gate !== 'CX' && op.q !== undefined) {
+         if (!['CX', 'CZ', 'SWAP'].includes(op.gate) && op.q !== undefined) {
            const q = op.q;
            if (q >= newNumQ) continue;
            const step = nextFreeStep[q];
@@ -239,13 +284,13 @@ export default function VisualPlayground({
              newGrid[q][step] = op.gate;
              nextFreeStep[q]++;
            }
-         } else if (op.gate === 'CX' && op.c !== undefined && op.t !== undefined) {
+         } else if (['CX', 'CZ', 'SWAP'].includes(op.gate) && op.c !== undefined && op.t !== undefined) {
            const c = op.c;
            const t = op.t;
            if (c >= newNumQ || t >= newNumQ || t === c) continue;
            const step = Math.max(nextFreeStep[c], nextFreeStep[t]);
            if (step < NUM_STEPS) {
-             newGrid[c][step] = `CX|${t}`;
+             newGrid[c][step] = `${op.gate}|${t}`;
              nextFreeStep[c] = step + 1;
              nextFreeStep[t] = step + 1;
            }
@@ -437,28 +482,65 @@ except Exception as e:
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 }}>
           {/* Gate Palette */}
           <div className="glass-panel" style={{ padding: '12px' }}>
-            <h3 style={{ fontSize: '12px', marginBottom: '8px', color: 'var(--text-secondary)' }}>Drag Gates:</h3>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              {GATES.map(gate => (
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
+                {(Object.keys(GATE_CATEGORIES) as Array<keyof typeof GATE_CATEGORIES>).map(cat => (
+                  <button 
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    style={{ 
+                      padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', border: 'none', cursor: 'pointer',
+                      background: activeCategory === cat ? 'var(--accent-primary)' : 'rgba(255,255,255,0.05)',
+                      color: activeCategory === cat ? '#000' : 'var(--text-secondary)'
+                    }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {['M', 'DEL'].map(gate => (
+                  <div 
+                    key={gate}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, gate)}
+                    onClick={() => setSelectedGate(gate === selectedGate ? null : gate)}
+                    title={gate === 'M' ? 'Measurement' : 'Delete Gate'}
+                    style={{ 
+                      width: '36px', height: '36px', 
+                      background: selectedGate === gate ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)', 
+                      border: selectedGate === gate ? '2px solid var(--accent-primary)' : '1px solid var(--surface-border)', 
+                      boxShadow: selectedGate === gate ? '0 0 10px rgba(69, 243, 255, 0.4)' : 'none',
+                      borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', fontWeight: 'bold', fontSize: '14px',
+                      color: '#ff7b72', transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {gate === 'DEL' ? '🗑️' : gate}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '8px', minHeight: '40px' }}>
+              {GATE_CATEGORIES[activeCategory].map(gateObj => (
                 <div 
-                  key={gate}
+                  key={gateObj.id}
                   draggable
-                  onDragStart={(e) => handleDragStart(e, gate)}
-                  onClick={() => setSelectedGate(gate === selectedGate ? null : gate)}
+                  onDragStart={(e) => handleDragStart(e, gateObj.id)}
+                  onClick={() => setSelectedGate(gateObj.id === selectedGate ? null : gateObj.id)}
+                  title={gateObj.tooltip}
                   style={{ 
                     width: '36px', height: '36px', 
-                    background: selectedGate === gate ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)', 
-                    border: selectedGate === gate ? '2px solid var(--accent-primary)' : '1px solid var(--surface-border)', 
-                    boxShadow: selectedGate === gate ? '0 0 10px rgba(69, 243, 255, 0.4)' : 'none',
-                    borderRadius: '8px',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer',
-                    fontWeight: 'bold', fontSize: '14px',
-                    color: gate === 'DEL' ? '#ff7b72' : gate === 'CX' ? 'var(--accent-secondary)' : gate === 'M' ? '#ff7b72' : 'var(--accent-primary)',
+                    background: selectedGate === gateObj.id ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)', 
+                    border: selectedGate === gateObj.id ? '2px solid var(--accent-primary)' : '1px solid var(--surface-border)', 
+                    boxShadow: selectedGate === gateObj.id ? '0 0 10px rgba(69, 243, 255, 0.4)' : 'none',
+                    borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer', fontWeight: 'bold', fontSize: '14px',
+                    color: activeCategory === '2-Qubit' ? 'var(--accent-secondary)' : 'var(--accent-primary)',
                     transition: 'all 0.2s ease'
                   }}
                 >
-                  {gate === 'DEL' ? '🗑️' : gate}
+                  {gateObj.label}
                 </div>
               ))}
             </div>
@@ -467,7 +549,7 @@ except Exception as e:
           {/* Circuit Grid */}
           <div className="glass-panel" style={{ padding: '16px', overflowX: 'auto', maxHeight: '600px', position: 'relative' }}>
              
-             {pendingCX && (
+             {pendingTwoQubit && (
                 <div style={{ position: 'absolute', top: '8px', left: '50%', transform: 'translateX(-50%)', background: 'var(--accent-secondary)', color: '#000', padding: '4px 12px', borderRadius: '12px', fontSize: '12px', fontWeight: 'bold', zIndex: 10, animation: 'pulse 1.5s infinite' }}>
                    Select target qubit...
                 </div>
@@ -480,94 +562,99 @@ except Exception as e:
                     <div style={{ display: 'flex', position: 'relative' }}>
                       <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.1)', zIndex: 0 }} />
                       {row.map((cell, sIdx) => {
-                        // Check if this cell is a target of any CX in the same step
+                        // Check if this cell is a target of any 2-qubit gate in the same step
                         const controlQubits: number[] = [];
                         for (let i = 0; i < numQubits; i++) {
                           const c = grid[i][sIdx];
-                          if (c && c.startsWith('CX|')) {
+                          if (c && (c.startsWith('CX|') || c.startsWith('CZ|') || c.startsWith('SWAP|'))) {
                              const target = parseInt(c.split('|')[1], 10);
                              if (target === qIdx) {
                                controlQubits.push(i);
                              }
                           }
                         }
-                        const isCXTarget = controlQubits.length > 0;
-                        const isCXPending = cell === 'CX_PENDING';
-                        const isOccupied = cell !== '' || isCXTarget || isCXPending;
-                        const isCX = cell.startsWith('CX|');
+                        const isTwoQTarget = controlQubits.length > 0;
+                        const isTwoQPending = cell.endsWith('_PENDING');
+                        const isOccupied = cell !== '' || isTwoQTarget || isTwoQPending;
+                        const isTwoQ = cell.startsWith('CX|') || cell.startsWith('CZ|') || cell.startsWith('SWAP|');
+                        const isSWAP = cell.startsWith('SWAP');
                         
                         let cxDist = 0;
                         let cxLineHeight = 0;
                         let cxLineTop = '50%';
-                        if (isCX) {
+                        if (isTwoQ) {
                            const target = parseInt(cell.split('|')[1], 10);
                            cxDist = target - qIdx;
                            cxLineHeight = Math.abs(cxDist) * 36; // 32px height + 4px gap
                            cxLineTop = cxDist > 0 ? '50%' : `calc(50% - ${cxLineHeight}px)`;
                         }
 
-                        const isPendingCol = pendingCX?.sIdx === sIdx;
-                        const isPendingRow = pendingCX?.qIdx === qIdx;
+                        const isPendingCol = pendingTwoQubit?.sIdx === sIdx;
+                        const isPendingRow = pendingTwoQubit?.qIdx === qIdx;
 
                         return (
                           <div 
                             key={sIdx}
                             draggable={isOccupied}
                             onDragStart={(e) => {
-                              if (isCXTarget || isCXPending) {
-                                e.dataTransfer.setData('gate', 'CX');
+                              if (isTwoQTarget || isTwoQPending) {
+                                e.dataTransfer.setData('gate', cell.split('|')[0]);
                               } else {
                                 e.dataTransfer.setData('gate', cell);
                               }
                             }}
                             onDragEnd={(e) => {
                               if (e.dataTransfer.dropEffect === 'none') {
-                                if (isCXTarget || isCX) {
+                                if (isTwoQTarget || isTwoQ) {
                                   controlQubits.forEach(c => removeGate(c, sIdx));
-                                  if (isCX) removeGate(qIdx, sIdx);
+                                  if (isTwoQ) removeGate(qIdx, sIdx);
                                 } else if (cell) {
                                   removeGate(qIdx, sIdx);
                                 }
                               }
                             }}
                             onDrop={(e) => {
-                              if (!isCXTarget && !pendingCX) handleDrop(e, qIdx, sIdx);
+                              if (!isTwoQTarget && !pendingTwoQubit) handleDrop(e, qIdx, sIdx);
                             }}
                             onDragOver={handleDragOver}
                             onClick={() => {
-                              if (pendingCX) {
-                                 if (sIdx === pendingCX.sIdx) {
-                                    if (qIdx !== pendingCX.qIdx) {
+                              if (pendingTwoQubit) {
+                                 if (sIdx === pendingTwoQubit.sIdx) {
+                                    if (qIdx !== pendingTwoQubit.qIdx) {
                                        // Finalize target
                                        setIsTyping(false);
                                        setGrid(prev => {
                                           const newGrid = [...prev];
-                                          newGrid[pendingCX.qIdx] = [...newGrid[pendingCX.qIdx]];
-                                          newGrid[pendingCX.qIdx][sIdx] = `CX|${qIdx}`;
+                                          newGrid[pendingTwoQubit.qIdx] = [...newGrid[pendingTwoQubit.qIdx]];
+                                          newGrid[pendingTwoQubit.qIdx][sIdx] = `${pendingTwoQubit.gate}|${qIdx}`;
                                           return newGrid;
                                        });
                                     } else {
                                        // Cancel
                                        removeGate(qIdx, sIdx);
                                     }
-                                    setPendingCX(null);
+                                    setPendingTwoQubit(null);
                                  }
                                  return;
                               }
 
                               if (selectedGate) {
                                 if (selectedGate === 'DEL') {
-                                  if (isCXTarget) {
+                                  if (isTwoQTarget) {
                                     controlQubits.forEach(c => removeGate(c, sIdx));
                                   } else if (cell) {
                                     removeGate(qIdx, sIdx);
                                   }
-                                } else if (!isCXTarget) {
+                                } else if (!isTwoQTarget) {
                                   // Override existing gate or place new one
                                   let finalGate = selectedGate;
-                                  if (selectedGate === 'CX') {
-                                    setPendingCX({ qIdx, sIdx });
-                                    finalGate = 'CX_PENDING';
+                                  if (selectedGate === 'CX' || selectedGate === 'CZ' || selectedGate === 'SWAP') {
+                                    setPendingTwoQubit({ qIdx, sIdx, gate: selectedGate });
+                                    finalGate = `${selectedGate}_PENDING`;
+                                  } else if (selectedGate === 'RX' || selectedGate === 'RY' || selectedGate === 'RZ') {
+                                    const angle = window.prompt(`Enter rotation angle for ${selectedGate} (e.g., pi/2, 1.57):`, 'pi/2');
+                                    if (!angle) return;
+                                    finalGate = `${selectedGate}(${angle})`;
                                   }
                                   setIsTyping(false);
                                   setGrid(prev => {
@@ -580,7 +667,7 @@ except Exception as e:
                                 return;
                               }
 
-                              if (isCXTarget) {
+                              if (isTwoQTarget) {
                                 controlQubits.forEach(c => removeGate(c, sIdx));
                               } else if (cell) {
                                 removeGate(qIdx, sIdx);
@@ -589,8 +676,8 @@ except Exception as e:
                             style={{
                               width: '32px', height: '32px',
                               margin: '0 2px',
-                              background: (cell && !isCX && !isCXPending) ? 'var(--surface-color)' : (isPendingCol && !isOccupied ? 'rgba(69, 243, 255, 0.1)' : 'transparent'),
-                              border: (cell && !isCX && !isCXPending) ? (cell === 'M' ? '1px solid #ff7b72' : '1px solid var(--accent-primary)') : 'none',
+                              background: (cell && !isTwoQ && !isTwoQPending) ? 'var(--surface-color)' : (isPendingCol && !isOccupied ? 'rgba(69, 243, 255, 0.1)' : 'transparent'),
+                              border: (cell && !isTwoQ && !isTwoQPending) ? (cell === 'M' ? '1px solid #ff7b72' : '1px solid var(--accent-primary)') : 'none',
                               borderRadius: '4px',
                               zIndex: 1,
                               display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -600,14 +687,24 @@ except Exception as e:
                               position: 'relative'
                             }}
                           >
-                            {cell && !isCX && !isCXPending && cell}
-                            {(isCX || isCXPending) && <div style={{ width: '10px', height: '10px', background: isCXPending ? '#fff' : 'var(--accent-secondary)', borderRadius: '50%', zIndex: 2, boxShadow: isCXPending ? '0 0 10px #fff' : 'none' }} />}
-                            {isCX && <div style={{ position: 'absolute', top: cxLineTop, left: '15px', width: '2px', height: `${cxLineHeight}px`, background: 'var(--accent-secondary)', zIndex: -1 }} />}
-                            {isCXTarget && (
+                            {cell && !isTwoQ && !isTwoQPending && (cell.length > 2 && cell.includes('(') ? cell.split('(')[0] : cell)}
+                            {(isTwoQ || isTwoQPending) && !isSWAP && <div style={{ width: '10px', height: '10px', background: isTwoQPending ? '#fff' : 'var(--accent-secondary)', borderRadius: '50%', zIndex: 2, boxShadow: isTwoQPending ? '0 0 10px #fff' : 'none' }} />}
+                            {(isTwoQ || isTwoQPending) && isSWAP && <div style={{ fontSize: '14px', zIndex: 2, fontWeight: 'bold' }}>X</div>}
+                            {isTwoQ && <div style={{ position: 'absolute', top: cxLineTop, left: '15px', width: '2px', height: `${cxLineHeight}px`, background: 'var(--accent-secondary)', zIndex: -1 }} />}
+                            {isTwoQTarget && !isSWAP && (
                               <div style={{ width: '20px', height: '20px', border: '2px solid var(--accent-secondary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-color)', zIndex: 2 }}>
-                                <div style={{ position: 'absolute', width: '16px', height: '2px', background: 'var(--accent-secondary)' }} />
-                                <div style={{ position: 'absolute', width: '2px', height: '16px', background: 'var(--accent-secondary)' }} />
+                                {grid[controlQubits[0]][sIdx].startsWith('CZ|') ? (
+                                  <div style={{ width: '10px', height: '10px', background: 'var(--accent-secondary)', borderRadius: '50%' }} />
+                                ) : (
+                                  <>
+                                    <div style={{ position: 'absolute', width: '16px', height: '2px', background: 'var(--accent-secondary)' }} />
+                                    <div style={{ position: 'absolute', width: '2px', height: '16px', background: 'var(--accent-secondary)' }} />
+                                  </>
+                                )}
                               </div>
+                            )}
+                            {isTwoQTarget && isSWAP && (
+                              <div style={{ fontSize: '14px', zIndex: 2, color: 'var(--accent-secondary)', fontWeight: 'bold' }}>X</div>
                             )}
                             {(isPendingCol && !isOccupied && !isPendingRow) && (
                               <div style={{ width: '16px', height: '16px', border: '2px dashed rgba(69, 243, 255, 0.5)', borderRadius: '50%', zIndex: 2 }} />
