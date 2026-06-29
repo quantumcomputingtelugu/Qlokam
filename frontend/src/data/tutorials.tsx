@@ -606,23 +606,29 @@ export const tutorialSessions: TutorialSession[] = [
       },
       {
         id: 6,
-        title: 'Qubit',
+        title: 'Qubits and its properties',
         description: 'Introduction to Qubits and their fundamental properties.',
         difficulty: 'Beginner',
         lessonContent: (
           <>
             <p style={{ marginBottom: '16px', fontSize: '18px', color: 'var(--text-secondary)' }}>
-              Welcome to the <strong>Qubit</strong> topic! In this module, we will explore the fundamental building block of a quantum computer.
+              Welcome to the <strong>Qubits and its properties</strong> topic! In this module, we will explore the fundamental building blocks of a quantum computer.
             </p>
             <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>What&apos;s Inside This Module</h3>
             <ul style={{ paddingLeft: '20px', marginBottom: '32px', color: 'var(--text-secondary)' }}>
               <li style={{ marginBottom: '12px' }}>
                 <strong style={{ color: 'var(--accent-primary)' }}>What is Qubit:</strong> A deep dive into the quantum bit.
               </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Superposition:</strong> The ability to be in multiple states simultaneously.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Quiz:</strong> Test your knowledge on qubits and superposition!
+              </li>
             </ul>
           </>
         ),
-        practiceGoal: 'Understand the nature of a qubit.',
+        practiceGoal: 'Understand the nature of a qubit and superposition.',
         subModules: [
           {
             id: 7,
@@ -673,6 +679,133 @@ export const tutorialSessions: TutorialSession[] = [
               </>
             ),
             practiceGoal: 'Learn what a qubit is.'
+          },
+          {
+            id: 8,
+            title: 'Superposition',
+            description: 'Learn about the quantum phenomenon of superposition.',
+            difficulty: 'Beginner',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px', fontSize: '18px', color: 'var(--text-secondary)' }}>
+                  <strong>Superposition</strong> is one of the most fundamental and counter-intuitive properties of quantum mechanics. It allows a quantum system to exist in multiple states at the same time until it is measured.
+                </p>
+                
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>The Coin Flip Analogy</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  Imagine a coin. When it is lying on a table, it is either <strong>Heads (1)</strong> or <strong>Tails (0)</strong>. This is exactly how a classical bit works.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Now, imagine tossing the coin into the air. While it is spinning in the air, what state is it in? It is a blur of both Heads and Tails. It isn't just Heads, and it isn't just Tails—it's a <strong>superposition of both</strong>. 
+                </p>
+
+                {/* Visual: Spinning Coin */}
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <style>{`
+                    @keyframes spinCoin { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+                  `}</style>
+                  <div style={{ width: '100px', height: '100px', borderRadius: '50%', background: 'linear-gradient(45deg, #FFD700 0%, #FFA500 100%)', boxShadow: '0 0 20px rgba(255,215,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', animation: 'spinCoin 1.5s linear infinite' }}>
+                    <span style={{ fontSize: '24px', fontWeight: 'bold', color: '#fff', textShadow: '1px 1px 2px rgba(0,0,0,0.5)' }}>H / T</span>
+                  </div>
+                </div>
+
+                <p style={{ marginBottom: '16px' }}>
+                  Only when the coin lands (when we <strong>measure</strong> the qubit) does it collapse into a definite state of either Heads or Tails.
+                </p>
+
+                <div style={{ padding: '16px', background: 'rgba(69, 243, 255, 0.1)', borderLeft: '4px solid var(--accent-primary)', borderRadius: '0 8px 8px 0', marginTop: '24px' }}>
+                  <h4 style={{ color: 'var(--accent-primary)', margin: '0 0 8px 0' }}>Why is this important?</h4>
+                  <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
+                    Because a qubit can be in a superposition, two qubits can represent 4 states simultaneously, 3 qubits can represent 8 states, and <strong>n qubits can represent 2^n states</strong>. This exponential growth gives quantum computers their immense parallel processing power.
+                  </p>
+                </div>
+              </>
+            ),
+            practiceGoal: 'Understand the concept of quantum superposition.'
+          },
+          {
+            id: 9,
+            title: 'Quiz',
+            description: 'Test your knowledge on qubits and superposition.',
+            difficulty: 'Beginner',
+            isFinalTest: true,
+            pointsAward: 1,
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  You have learned about Qubits and Superposition. Now it's time to test your knowledge!
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  This quiz consists of 5 questions randomly selected from a pool of questions. You must answer all 5 correctly to earn <strong>1 point</strong>.
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--accent-primary)', fontWeight: 'bold' }}>
+                  Rules: You can attempt this quiz up to 3 times per day.
+                </p>
+              </>
+            ),
+            practiceGoal: 'Score a perfect 5/5 to earn a point!',
+            quizzes: [
+              {
+                question: "What does 'qubit' stand for?",
+                options: ["Quality Bit", "Quantum Bit", "Quantized Byte", "Quadratic Bit"],
+                correctAnswerIndex: 1,
+                explanation: "Qubit stands for Quantum Bit, the basic unit of quantum information."
+              },
+              {
+                question: "While a classical bit can be 0 or 1, a qubit can be in a state of 0, 1, or:",
+                options: ["Neither 0 nor 1", "A combination of both 0 and 1 simultaneously", "Only 2", "Negative 1"],
+                correctAnswerIndex: 1,
+                explanation: "A qubit can be in a superposition, which is a combination of both 0 and 1 simultaneously."
+              },
+              {
+                question: "What is the phenomenon called when a qubit exists in multiple states at once?",
+                options: ["Entanglement", "Interference", "Superposition", "Decoherence"],
+                correctAnswerIndex: 2,
+                explanation: "Superposition allows a quantum system to exist in multiple states simultaneously."
+              },
+              {
+                question: "What happens to a qubit in superposition when it is measured?",
+                options: ["It remains in superposition", "It disappears", "It collapses into a definite state (0 or 1)", "It turns into two qubits"],
+                correctAnswerIndex: 2,
+                explanation: "Measuring a qubit forces it to collapse into a definite classical state, either 0 or 1."
+              },
+              {
+                question: "In the coin toss analogy, what does the spinning coin represent?",
+                options: ["A classical bit", "A qubit in a definite state of 1", "A qubit in a state of superposition", "A measured qubit"],
+                correctAnswerIndex: 2,
+                explanation: "A spinning coin is a blur of heads and tails, representing a qubit in superposition before it is measured."
+              },
+              {
+                question: "If 1 qubit can represent 2 states simultaneously, how many states can 3 qubits represent?",
+                options: ["3 states", "6 states", "8 states", "9 states"],
+                correctAnswerIndex: 2,
+                explanation: "The number of states grows exponentially as 2^n. For 3 qubits, it's 2^3 = 8 states."
+              },
+              {
+                question: "Why is superposition useful for quantum computing?",
+                options: ["It makes computers smaller", "It prevents computers from overheating", "It allows quantum computers to process a vast number of possibilities at once", "It stores more files on a hard drive"],
+                correctAnswerIndex: 2,
+                explanation: "Superposition allows quantum computers to perform calculations on many possibilities simultaneously."
+              },
+              {
+                question: "True or False: A classical bit can be in a state of superposition.",
+                options: ["True", "False"],
+                correctAnswerIndex: 1,
+                explanation: "False. A classical bit can only be exactly 0 or exactly 1."
+              },
+              {
+                question: "When a coin is resting flat on a table (Heads or Tails), it is most like:",
+                options: ["A qubit in superposition", "A classical bit", "An entangled state", "A quantum algorithm"],
+                correctAnswerIndex: 1,
+                explanation: "A resting coin is in a definite state (Heads or Tails), just like a classical bit (1 or 0)."
+              },
+              {
+                question: "The power of a quantum computer grows ________ as you add more qubits.",
+                options: ["Linearly", "Exponentially", "Logarithmically", "It does not grow"],
+                correctAnswerIndex: 1,
+                explanation: "Because of superposition, adding a qubit doubles the number of simultaneous states, leading to exponential growth."
+              }
+            ]
           }
         ]
       }
