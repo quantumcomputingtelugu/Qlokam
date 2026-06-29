@@ -142,24 +142,7 @@ export const tutorialSessions: TutorialSession[] = [
             ),
             practiceGoal: 'Read through the foundational concepts of quantum computing.'
           },
-          {
-            id: 7,
-            title: 'What is Qubit',
-            description: 'Learn exactly what a qubit is and how it functions.',
-            difficulty: 'Beginner',
-            lessonContent: (
-              <>
-                <h3 style={{ fontSize: '24px', color: 'var(--text-primary)', marginBottom: '16px' }}>The Quantum Bit</h3>
-                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  A qubit (short for quantum bit) is the basic unit of information in quantum computing. While a classical bit can only be a 0 or a 1, a qubit can exist in a superposition of both states simultaneously.
-                </p>
-                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  This unique property allows quantum computers to process a vast number of possibilities at once, giving them incredible power for specific types of problems.
-                </p>
-              </>
-            ),
-            practiceGoal: 'Learn what a qubit is.'
-          },
+
           {
             id: 3,
             title: 'Use cases',
@@ -618,6 +601,46 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: "Optimization involves evaluating numerous configurations to find the most efficient one, like routing delivery trucks."
               }
             ]
+          }
+        ]
+      },
+      {
+        id: 6,
+        title: 'Qubit',
+        description: 'Introduction to Qubits and their fundamental properties.',
+        difficulty: 'Beginner',
+        lessonContent: (
+          <>
+            <p style={{ marginBottom: '16px', fontSize: '18px', color: 'var(--text-secondary)' }}>
+              Welcome to the <strong>Qubit</strong> topic! In this module, we will explore the fundamental building block of a quantum computer.
+            </p>
+            <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>What&apos;s Inside This Module</h3>
+            <ul style={{ paddingLeft: '20px', marginBottom: '32px', color: 'var(--text-secondary)' }}>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>What is Qubit:</strong> A deep dive into the quantum bit.
+              </li>
+            </ul>
+          </>
+        ),
+        practiceGoal: 'Understand the nature of a qubit.',
+        subModules: [
+          {
+            id: 7,
+            title: 'What is Qubit',
+            description: 'Learn exactly what a qubit is and how it functions.',
+            difficulty: 'Beginner',
+            lessonContent: (
+              <>
+                <h3 style={{ fontSize: '24px', color: 'var(--text-primary)', marginBottom: '16px' }}>The Quantum Bit</h3>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  A qubit (short for quantum bit) is the basic unit of information in quantum computing. While a classical bit can only be a 0 or a 1, a qubit can exist in a superposition of both states simultaneously.
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  This unique property allows quantum computers to process a vast number of possibilities at once, giving them incredible power for specific types of problems.
+                </p>
+              </>
+            ),
+            practiceGoal: 'Learn what a qubit is.'
           }
         ]
       }
