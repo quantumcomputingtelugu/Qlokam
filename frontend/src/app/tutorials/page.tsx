@@ -24,6 +24,11 @@ export default function TutorialsPage() {
   // Quiz state
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [showQuizResults, setShowQuizResults] = useState(false);
+  const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [quizScore, setQuizScore] = useState<number | null>(null);
+  const [activeQuizSubset, setActiveQuizSubset] = useState<number[]>([]);
+  const [quizAttemptsData, setQuizAttemptsData] = useState<Record<number, { count: number, date: string, seenQuestionIndices: number[] }>>({});
 
   const [rating, setRating] = useState(0);
   const [badges, setBadges] = useState<string[]>([]);
@@ -42,6 +47,11 @@ export default function TutorialsPage() {
 
   const handleTabChange = (tab: 'lesson' | 'quiz' | 'practice') => {
     setActiveTab(tab);
+    setQuizStarted(false);
+    setSelectedAnswers({});
+    setShowQuizResults(false);
+    setCurrentQuizIndex(0);
+    setQuizScore(null);
   };
 
   const handleQuizOptionSelect = (qIndex: number, optIndex: number) => {
@@ -49,8 +59,109 @@ export default function TutorialsPage() {
     setSelectedAnswers(prev => ({ ...prev, [qIndex]: optIndex }));
   };
 
-  const handleQuizSubmit = () => {
+  const handleStartQuiz = () => {
+    if (!activeTutorial.quizzes) return;
+    
+    const today = new Date().toISOString().split('T')[0];
+    const attemptData = quizAttemptsData[activeTutorial.id] || { count: 0, date: today, seenQuestionIndices: [] };
+    
+    let currentCount = attemptData.count;
+    let currentSeen = attemptData.seenQuestionIndices;
+    if (attemptData.date !== today) {
+      currentCount = 0;
+      currentSeen = [];
+    }
+    
+    if (currentCount >= 3) {
+      alert("You have reached the daily limit of 3 attempts for this quiz.");
+      return;
+    }
+
+    // Pick 5 random questions not in seenQuestionIndices
+    const availableIndices = activeTutorial.quizzes.map((_, i) => i).filter(i => !currentSeen.includes(i));
+    let subset: number[] = [];
+    
+    if (availableIndices.length >= 5) {
+      const shuffled = [...availableIndices].sort(() => 0.5 - Math.random());
+      subset = shuffled.slice(0, 5);
+    } else {
+      const allShuffled = activeTutorial.quizzes.map((_, i) => i).sort(() => 0.5 - Math.random());
+      subset = allShuffled.slice(0, 5);
+    }
+    
+    setActiveQuizSubset(subset);
+    setQuizStarted(true);
+    setCurrentQuizIndex(0);
+    setSelectedAnswers({});
+    setShowQuizResults(false);
+    setQuizScore(null);
+  };
+
+  const handleQuizSubmit = async () => {
+    if (!user || !db || !activeTutorial.quizzes) return;
+    
+    // Calculate score
+    let score = 0;
+    activeQuizSubset.forEach((qIndex) => {
+      if (selectedAnswers[qIndex] === activeTutorial.quizzes![qIndex].correctAnswerIndex) {
+        score++;
+      }
+    });
+    
+    setQuizScore(score);
     setShowQuizResults(true);
+    
+    // Update attempts
+    const today = new Date().toISOString().split('T')[0];
+    const attemptData = quizAttemptsData[activeTutorial.id] || { count: 0, date: today, seenQuestionIndices: [] };
+    
+    let currentCount = attemptData.date === today ? attemptData.count : 0;
+    let currentSeen = attemptData.date === today ? attemptData.seenQuestionIndices : [];
+    
+    const newAttemptsData = {
+      ...quizAttemptsData,
+      [activeTutorial.id]: {
+        count: currentCount + 1,
+        date: today,
+        seenQuestionIndices: [...currentSeen, ...activeQuizSubset]
+      }
+    };
+    
+    setQuizAttemptsData(newAttemptsData);
+    
+    let updatedRating = rating;
+    let earnedThisTime = 0;
+    
+    // Award point if perfect score
+    if (score === 5 && activeTutorial.pointsAward) {
+      updatedRating += activeTutorial.pointsAward;
+      earnedThisTime = activeTutorial.pointsAward;
+      setRating(updatedRating);
+      setEarnedPoints(earnedThisTime);
+    } else {
+      setEarnedPoints(0);
+    }
+
+    const newCompleted = !completedTutorials.includes(activeTutorialId) ? [...completedTutorials, activeTutorialId] : completedTutorials;
+    setCompletedTutorials(newCompleted);
+
+    try {
+      const docRef = doc(db, 'users', user.uid);
+      await setDoc(docRef, { 
+        quizAttemptsData: newAttemptsData,
+        completedTutorials: newCompleted,
+        ...(earnedThisTime > 0 && { 
+          rating: updatedRating,
+          ratingHistory: arrayUnion({
+            reason: `Perfect Score on ${activeTutorial.title}`,
+            points: earnedThisTime,
+            timestamp: new Date().toISOString()
+          })
+        })
+      }, { merge: true });
+    } catch (e) {
+      console.error("Error saving quiz attempt", e);
+    }
   };
 
   useEffect(() => {
@@ -91,6 +202,7 @@ export default function TutorialsPage() {
             if (data.completedTutorials) setCompletedTutorials(data.completedTutorials);
             if (data.rating) setRating(data.rating);
             if (data.badges) setBadges(data.badges);
+            if (data.quizAttemptsData) setQuizAttemptsData(data.quizAttemptsData);
           }
         } catch (e) {
           console.error("Error fetching progress", e);
@@ -99,6 +211,7 @@ export default function TutorialsPage() {
         setCompletedTutorials([]); 
         setRating(0);
         setBadges([]);
+        setQuizAttemptsData({});
       }
       setLoadingUser(false);
     });
@@ -365,27 +478,54 @@ export default function TutorialsPage() {
                 <div style={{ marginTop: '48px', paddingTop: '32px', borderTop: '1px solid var(--surface-border)' }}>
                   <h3 style={{ fontSize: '24px', marginBottom: '24px', color: 'var(--text-primary)' }}>Knowledge Check</h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-                    {activeTutorial.quizzes.map((quiz, qIndex) => (
-                      <div key={qIndex} style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid var(--surface-border)' }}>
-                        <h4 style={{ fontSize: '18px', color: 'var(--text-primary)', marginBottom: '16px' }}>{quiz.question}</h4>
+                    
+                    {!quizStarted && !showQuizResults && (
+                      <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid var(--surface-border)' }}>
+                        <h4 style={{ fontSize: '20px', color: 'var(--text-primary)', marginBottom: '16px' }}>Quiz Rules</h4>
+                        <ul style={{ color: 'var(--text-secondary)', marginBottom: '24px', paddingLeft: '20px', lineHeight: '1.6' }}>
+                          <li>You will be given 5 random questions.</li>
+                          <li>You must answer all 5 questions correctly to earn points.</li>
+                          <li>You can attempt this quiz up to 3 times per day.</li>
+                          <li>Correct answers will not be revealed at the end.</li>
+                        </ul>
+                        
+                        {(() => {
+                          const today = new Date().toISOString().split('T')[0];
+                          const attemptData = quizAttemptsData[activeTutorial.id];
+                          const currentCount = attemptData?.date === today ? attemptData.count : 0;
+                          
+                          if (currentCount >= 3) {
+                            return (
+                              <div style={{ padding: '16px', background: 'rgba(248, 81, 73, 0.1)', border: '1px solid var(--error)', borderRadius: '8px', color: 'var(--error)' }}>
+                                You have reached the daily limit of 3 attempts. Please come back tomorrow!
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <>
+                                <p style={{ color: 'var(--accent-primary)', marginBottom: '16px' }}>Remaining attempts today: {3 - currentCount}</p>
+                                <button className="btn-primary" onClick={handleStartQuiz} style={{ padding: '12px 32px' }}>
+                                  Start Quiz
+                                </button>
+                              </>
+                            );
+                          }
+                        })()}
+                      </div>
+                    )}
+
+                    {quizStarted && !showQuizResults && activeQuizSubset.length > 0 && (
+                      <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid var(--surface-border)' }}>
+                        <h4 style={{ fontSize: '18px', color: 'var(--text-primary)', marginBottom: '16px' }}>
+                          Question {currentQuizIndex + 1} of {activeQuizSubset.length}: {activeTutorial.quizzes[activeQuizSubset[currentQuizIndex]].question}
+                        </h4>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                          {quiz.options.map((opt, optIndex) => {
+                          {activeTutorial.quizzes[activeQuizSubset[currentQuizIndex]].options.map((opt, optIndex) => {
+                            const qIndex = activeQuizSubset[currentQuizIndex];
                             const isSelected = selectedAnswers[qIndex] === optIndex;
                             let btnBorder = '1px solid var(--surface-border)';
                             let btnBg = isSelected ? 'rgba(69, 243, 255, 0.1)' : 'transparent';
                             let btnColor = isSelected ? 'var(--accent-primary)' : 'var(--text-secondary)';
-
-                            if (showQuizResults) {
-                              if (optIndex === quiz.correctAnswerIndex) {
-                                btnBorder = '1px solid var(--success)';
-                                btnBg = 'rgba(63, 185, 80, 0.1)';
-                                btnColor = 'var(--success)';
-                              } else if (isSelected) {
-                                btnBorder = '1px solid var(--error)';
-                                btnBg = 'rgba(248, 81, 73, 0.1)';
-                                btnColor = 'var(--error)';
-                              }
-                            }
 
                             return (
                               <button
@@ -398,7 +538,7 @@ export default function TutorialsPage() {
                                   border: btnBorder,
                                   color: btnColor,
                                   borderRadius: '8px',
-                                  cursor: showQuizResults ? 'default' : 'pointer',
+                                  cursor: 'pointer',
                                   transition: 'all 0.2s',
                                   fontSize: '16px'
                                 }}
@@ -408,56 +548,55 @@ export default function TutorialsPage() {
                             );
                           })}
                         </div>
-                        {showQuizResults && quiz.explanation && (
-                          <div style={{ marginTop: '16px', padding: '16px', background: 'rgba(69, 243, 255, 0.05)', borderRadius: '8px', color: 'var(--text-secondary)' }}>
-                            <strong>Explanation:</strong> {quiz.explanation}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                    {!showQuizResults ? (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        <button 
-                          className="btn-primary" 
-                          onClick={handleQuizSubmit} 
-                          disabled={Object.keys(selectedAnswers).length < activeTutorial.quizzes.length}
-                          style={{ alignSelf: 'flex-start', padding: '12px 32px' }}
-                        >
-                          Submit Answers
-                        </button>
-                        
-                        {/* Rewarded Ads Integration */}
-                        <div style={{ display: 'flex', gap: '16px', marginTop: '16px', padding: '16px', background: 'rgba(210, 153, 34, 0.05)', borderRadius: '8px', border: '1px dashed rgba(210, 153, 34, 0.3)' }}>
-                          <div style={{ flex: 1 }}>
-                            <h4 style={{ margin: '0 0 8px 0', color: '#d29922' }}>Stuck on this quiz?</h4>
-                            <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '14px' }}>Watch a short sponsored message to unlock a hint.</p>
-                          </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px' }}>
+                          <button 
+                            className="btn-secondary" 
+                            disabled={currentQuizIndex === 0} 
+                            onClick={() => setCurrentQuizIndex(prev => prev - 1)}
+                            style={{ padding: '8px 16px' }}
+                          >
+                            Previous
+                          </button>
+                          {currentQuizIndex < activeQuizSubset.length - 1 ? (
                             <button 
-                              className="btn-secondary" 
-                              onClick={handleWatchAd}
-                              disabled={adLoading !== null || hintUnlocked}
-                              style={{ padding: '8px 16px', fontSize: '14px' }}
+                              className="btn-primary" 
+                              disabled={selectedAnswers[activeQuizSubset[currentQuizIndex]] === undefined}
+                              onClick={() => setCurrentQuizIndex(prev => prev + 1)}
+                              style={{ padding: '8px 16px' }}
                             >
-                              {adLoading === 'hint' ? 'Loading Ad...' : hintUnlocked ? 'Hint Unlocked!' : '🎥 Watch Ad for Hint'}
+                              Next
                             </button>
-                          </div>
+                          ) : (
+                            <button 
+                              className="btn-primary" 
+                              disabled={Object.keys(selectedAnswers).length < activeQuizSubset.length}
+                              onClick={handleQuizSubmit}
+                              style={{ padding: '8px 16px' }}
+                            >
+                              Submit Answers
+                            </button>
+                          )}
                         </div>
-                        
-                        {hintUnlocked && (
-                          <div style={{ padding: '16px', background: 'rgba(69, 243, 255, 0.05)', borderRadius: '8px', border: '1px solid var(--accent-primary)', color: 'var(--text-primary)' }}>
-                            <strong>Hint:</strong> Look closely at how the states change before and after applying the quantum gates. If you are ever stuck, try testing it out in the Playground!
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                        <button className="btn-secondary" onClick={() => { setShowQuizResults(false); setSelectedAnswers({}); }} style={{ padding: '8px 16px' }}>Retry Quiz</button>
-                        <button className="btn-primary" onClick={handleMarkComplete} disabled={saving || isCompleted} style={{ padding: '8px 16px' }}>
-                          {saving ? 'Saving...' : isCompleted ? 'Completed ✓' : 'Mark as Completed'}
-                        </button>
                       </div>
                     )}
+
+                    {showQuizResults && (
+                      <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid var(--surface-border)', textAlign: 'center' }}>
+                        <h3 style={{ fontSize: '24px', marginBottom: '16px', color: 'var(--text-primary)' }}>Quiz Complete!</h3>
+                        <div style={{ fontSize: '48px', color: quizScore === activeQuizSubset.length ? 'var(--success)' : 'var(--accent-primary)', marginBottom: '16px' }}>
+                          {quizScore} / {activeQuizSubset.length}
+                        </div>
+                        {quizScore === activeQuizSubset.length ? (
+                          <p style={{ color: 'var(--success)', marginBottom: '24px' }}>Perfect score! You earned points!</p>
+                        ) : (
+                          <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>Good try! You need a perfect score to earn points.</p>
+                        )}
+                        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+                          <button className="btn-secondary" onClick={() => { setQuizStarted(false); setShowQuizResults(false); }} style={{ padding: '8px 16px' }}>Return to Quiz Menu</button>
+                        </div>
+                      </div>
+                    )}
+
                   </div>
                 </div>
               )}
