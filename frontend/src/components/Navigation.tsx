@@ -19,7 +19,15 @@ export default function Navigation() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [hasSeenSeasonReset, setHasSeenSeasonReset] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const seen = localStorage.getItem('seenSeasonReset');
+      if (seen) setHasSeenSeasonReset(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (!auth) {
@@ -101,14 +109,21 @@ export default function Navigation() {
                 style={{ position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  setShowNotifications(!showNotifications);
+                  const willShow = !showNotifications;
+                  setShowNotifications(willShow);
+                  if (willShow && !hasSeenSeasonReset) {
+                    localStorage.setItem('seenSeasonReset', 'true');
+                    setHasSeenSeasonReset(true);
+                  }
                 }}
               >
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'stroke 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.stroke = 'var(--text-primary)'} onMouseLeave={(e) => e.currentTarget.style.stroke = 'var(--text-secondary)'}>
                   <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                   <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                 </svg>
-                <span style={{ position: 'absolute', top: '-2px', right: '0px', width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', border: '2px solid var(--background-elevated)' }}></span>
+                {!hasSeenSeasonReset && (
+                  <span style={{ position: 'absolute', top: '-2px', right: '0px', width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', border: '2px solid var(--background-elevated)' }}></span>
+                )}
 
                 {showNotifications && (
                   <div className="glass-panel notification-dropdown" onClick={(e) => e.stopPropagation()}>
@@ -129,7 +144,7 @@ export default function Navigation() {
                         onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                          <span style={{ width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%' }}></span>
+                          <span style={{ width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', opacity: hasSeenSeasonReset ? 0 : 1 }}></span>
                           <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>New Season Started!</span>
                         </div>
                         <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)', paddingLeft: '16px' }}>
