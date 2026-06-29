@@ -148,79 +148,106 @@ export const tutorialSessions: TutorialSession[] = [
             description: 'Explore the real-world applications of quantum computers.',
             difficulty: 'Beginner',
             lessonContent: (
+            lessonContent: (
               <>
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>1. Drug Discovery and Chemistry</h3>
-                <p style={{ marginBottom: '16px' }}>
-                  A drug molecule might interact with millions of atoms inside the human body. Simulating all these interactions on classical computers can take enormous time.
-                </p>
-                <p style={{ marginBottom: '16px' }}>
-                  A quantum computer can model molecules using the rules of quantum mechanics themselves.
-                </p>
-                <p style={{ marginBottom: '16px' }}><strong>Example</strong></p>
-                <p style={{ marginBottom: '16px' }}>Suppose scientists want to develop a new drug for cancer. Instead of:</p>
-                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  <li style={{ marginBottom: '8px' }}>Synthesizing thousands of chemicals in a laboratory,</li>
-                  <li style={{ marginBottom: '8px' }}>Testing them one by one,</li>
-                </ul>
-                <p style={{ marginBottom: '16px' }}>
-                  they could first simulate molecular behavior on a quantum computer and identify the most promising candidates.
-                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginTop: '16px' }}>
+                  
+                  {/* Card 1 */}
+                  <div className="glass-panel" style={{ padding: '24px', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '12px', borderTop: '4px solid #3fb950' }}>
+                    <div style={{ fontSize: '32px' }}>💊</div>
+                    <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', margin: 0 }}>1. Drug Discovery and Chemistry</h3>
+                    <p style={{ margin: 0 }}>
+                      A drug molecule might interact with millions of atoms inside the human body. Simulating all these interactions on classical computers can take enormous time. A quantum computer can model molecules using the rules of quantum mechanics themselves.
+                    </p>
+                    <div style={{ background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '8px' }}>
+                      <p style={{ marginBottom: '8px' }}><strong>Example</strong></p>
+                      <p style={{ marginBottom: '8px' }}>Suppose scientists want to develop a new drug for cancer. Instead of:</p>
+                      <ul style={{ paddingLeft: '20px', margin: 0, color: 'var(--text-secondary)' }}>
+                        <li style={{ marginBottom: '4px' }}>Synthesizing thousands of chemicals in a laboratory,</li>
+                        <li style={{ marginBottom: '4px' }}>Testing them one by one,</li>
+                      </ul>
+                      <p style={{ marginTop: '8px', margin: 0 }}>
+                        they could first simulate molecular behavior on a quantum computer and identify the most promising candidates.
+                      </p>
+                    </div>
+                  </div>
 
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>2. Optimization: Finding the Best Answer Among Millions</h3>
-                <p style={{ marginBottom: '16px' }}>
-                  Optimization means finding the best solution among countless possibilities. Imagine a delivery company such as Swiggy or Zomato.
-                </p>
-                <p style={{ marginBottom: '16px' }}>
-                  Suppose 500 delivery partners must deliver 20,000 orders across a city. Questions include:
-                </p>
-                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  <li style={{ marginBottom: '8px' }}>Which rider should deliver which order?</li>
-                  <li style={{ marginBottom: '8px' }}>What route minimizes fuel consumption?</li>
-                  <li style={{ marginBottom: '8px' }}>How can deliveries be completed fastest?</li>
-                </ul>
-                <p style={{ marginBottom: '16px' }}>
-                  A classical computer can solve this, but the problem becomes increasingly difficult as the city grows. Quantum algorithms may eventually explore many possible routes simultaneously and identify better solutions.
-                </p>
+                  {/* Card 2 */}
+                  <div className="glass-panel" style={{ padding: '24px', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '12px', borderTop: '4px solid #d29922' }}>
+                    <div style={{ fontSize: '32px' }}>🚚</div>
+                    <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', margin: 0 }}>2. Optimization: Finding the Best Answer Among Millions</h3>
+                    <p style={{ margin: 0 }}>
+                      Optimization means finding the best solution among countless possibilities. Imagine a delivery company such as Swiggy or Zomato.
+                    </p>
+                    <div style={{ background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '8px' }}>
+                      <p style={{ marginBottom: '8px' }}>Suppose 500 delivery partners must deliver 20,000 orders across a city. Questions include:</p>
+                      <ul style={{ paddingLeft: '20px', margin: 0, color: 'var(--text-secondary)' }}>
+                        <li style={{ marginBottom: '4px' }}>Which rider should deliver which order?</li>
+                        <li style={{ marginBottom: '4px' }}>What route minimizes fuel consumption?</li>
+                        <li style={{ marginBottom: '4px' }}>How can deliveries be completed fastest?</li>
+                      </ul>
+                    </div>
+                    <p style={{ margin: 0 }}>
+                      A classical computer can solve this, but the problem becomes increasingly difficult as the city grows. Quantum algorithms may eventually explore many possible routes simultaneously and identify better solutions.
+                    </p>
+                  </div>
 
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>3. Finance: Managing Money Smarter</h3>
-                <p style={{ marginBottom: '16px' }}>
-                  Suppose an investor has ₹10,00,000 and wants to invest in:
-                </p>
-                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  <li style={{ marginBottom: '8px' }}>stocks,</li>
-                  <li style={{ marginBottom: '8px' }}>bonds,</li>
-                  <li style={{ marginBottom: '8px' }}>commodities,</li>
-                  <li style={{ marginBottom: '8px' }}>mutual funds.</li>
-                </ul>
-                <p style={{ marginBottom: '16px' }}>
-                  The challenge is to maximize profit while minimizing risk. A quantum computer could potentially evaluate a vast number of investment combinations more efficiently.
-                </p>
+                  {/* Card 3 */}
+                  <div className="glass-panel" style={{ padding: '24px', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '12px', borderTop: '4px solid #58a6ff' }}>
+                    <div style={{ fontSize: '32px' }}>📈</div>
+                    <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', margin: 0 }}>3. Finance: Managing Money Smarter</h3>
+                    <div style={{ background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '8px' }}>
+                      <p style={{ marginBottom: '8px' }}>Suppose an investor has ₹10,00,000 and wants to invest in:</p>
+                      <ul style={{ paddingLeft: '20px', margin: 0, color: 'var(--text-secondary)' }}>
+                        <li style={{ marginBottom: '4px' }}>stocks,</li>
+                        <li style={{ marginBottom: '4px' }}>bonds,</li>
+                        <li style={{ marginBottom: '4px' }}>commodities,</li>
+                        <li style={{ marginBottom: '4px' }}>mutual funds.</li>
+                      </ul>
+                    </div>
+                    <p style={{ margin: 0 }}>
+                      The challenge is to maximize profit while minimizing risk. A quantum computer could potentially evaluate a vast number of investment combinations more efficiently.
+                    </p>
+                  </div>
 
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>4. Cryptography: The Security Challenge</h3>
-                <p style={{ marginBottom: '16px' }}>
-                  Most internet security today relies on mathematical problems that are extremely difficult for classical computers. Examples include:
-                </p>
-                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  <li style={{ marginBottom: '8px' }}>online banking,</li>
-                  <li style={{ marginBottom: '8px' }}>secure messaging,</li>
-                  <li style={{ marginBottom: '8px' }}>digital signatures.</li>
-                </ul>
-                <p style={{ marginBottom: '16px' }}>
-                  A sufficiently powerful quantum computer running Shor&apos;s Algorithm could solve some of these problems much faster.
-                </p>
+                  {/* Card 4 */}
+                  <div className="glass-panel" style={{ padding: '24px', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '12px', borderTop: '4px solid #bc8cff' }}>
+                    <div style={{ fontSize: '32px' }}>🔒</div>
+                    <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', margin: 0 }}>4. Cryptography: The Security Challenge</h3>
+                    <p style={{ margin: 0 }}>
+                      Most internet security today relies on mathematical problems that are extremely difficult for classical computers. Examples include:
+                    </p>
+                    <ul style={{ paddingLeft: '20px', margin: 0, color: 'var(--text-secondary)' }}>
+                      <li style={{ marginBottom: '4px' }}>online banking,</li>
+                      <li style={{ marginBottom: '4px' }}>secure messaging,</li>
+                      <li style={{ marginBottom: '4px' }}>digital signatures.</li>
+                    </ul>
+                    <p style={{ margin: 0 }}>
+                      A sufficiently powerful quantum computer running Shor&apos;s Algorithm could solve some of these problems much faster.
+                    </p>
+                  </div>
 
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>5. Artificial Intelligence and Machine Learning</h3>
-                <p style={{ marginBottom: '16px' }}>
-                  Machine learning often requires solving enormous optimization problems. Suppose we want to train an AI model to recognize diseases from medical images. Training may involve:
-                </p>
-                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  <li style={{ marginBottom: '8px' }}>millions or billions of parameters,</li>
-                  <li style={{ marginBottom: '8px' }}>enormous datasets,</li>
-                  <li style={{ marginBottom: '8px' }}>extensive computation.</li>
-                </ul>
-                <p style={{ marginBottom: '16px' }}>
-                  Researchers in Quantum Machine Learning are investigating whether quantum systems can accelerate certain machine-learning tasks.
-                </p>
+                  {/* Card 5 */}
+                  <div className="glass-panel" style={{ padding: '24px', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '12px', borderTop: '4px solid #ff7b72' }}>
+                    <div style={{ fontSize: '32px' }}>🧠</div>
+                    <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', margin: 0 }}>5. Artificial Intelligence and Machine Learning</h3>
+                    <p style={{ margin: 0 }}>
+                      Machine learning often requires solving enormous optimization problems. Suppose we want to train an AI model to recognize diseases from medical images.
+                    </p>
+                    <div style={{ background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '8px' }}>
+                      <p style={{ marginBottom: '8px' }}>Training may involve:</p>
+                      <ul style={{ paddingLeft: '20px', margin: 0, color: 'var(--text-secondary)' }}>
+                        <li style={{ marginBottom: '4px' }}>millions or billions of parameters,</li>
+                        <li style={{ marginBottom: '4px' }}>enormous datasets,</li>
+                        <li style={{ marginBottom: '4px' }}>extensive computation.</li>
+                      </ul>
+                    </div>
+                    <p style={{ margin: 0 }}>
+                      Researchers in Quantum Machine Learning are investigating whether quantum systems can accelerate certain machine-learning tasks.
+                    </p>
+                  </div>
+
+                </div>
               </>
             ),
             practiceGoal: 'Review the use cases and continue to the next lesson.'
