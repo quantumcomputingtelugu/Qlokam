@@ -237,11 +237,6 @@ export default function TutorialsPage() {
                           </span>
                         )}
                       </div>
-                      {tutorial.subModules && tutorial.subModules.length > 0 && (
-                        <span style={{ color: 'var(--text-secondary)', marginLeft: '8px', fontSize: '12px' }}>
-                          {expandedModules.includes(tutorial.id) ? '▼' : '▶'}
-                        </span>
-                      )}
                     </div>
                     
                     {tutorial.subModules && tutorial.subModules.length > 0 && expandedModules.includes(tutorial.id) && (

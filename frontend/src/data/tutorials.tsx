@@ -60,7 +60,7 @@ export const tutorialSessions: TutorialSession[] = [
             <div style={{ background: 'rgba(255,255,255,0.05)', padding: '24px', borderRadius: '12px', borderLeft: '4px solid var(--accent-primary)' }}>
               <h4 style={{ margin: '0 0 12px 0', fontSize: '18px', color: 'white' }}>How to navigate</h4>
               <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                In the sidebar to your left, you will see a <strong>▼ button</strong> on this module. Clicking it will reveal additional subtopics, such as <em>Myths about Quantum Computing</em>. You can navigate freely between these subtopics to learn at your own pace!
+                In the sidebar to your left, simply click on this module to reveal additional subtopics, such as <em>Myths about Quantum Computing</em>. You can navigate freely between these subtopics to learn at your own pace!
               </p>
             </div>
           </>
