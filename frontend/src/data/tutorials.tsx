@@ -624,7 +624,25 @@ export const tutorialSessions: TutorialSession[] = [
                 <strong style={{ color: 'var(--accent-primary)' }}>Superposition:</strong> The ability to be in multiple states simultaneously.
               </li>
               <li style={{ marginBottom: '12px' }}>
-                <strong style={{ color: 'var(--accent-primary)' }}>Quiz:</strong> Test your knowledge on qubits and superposition!
+                <strong style={{ color: 'var(--accent-primary)' }}>Measurement Collapse:</strong> How observing a quantum system changes its state.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Representation:</strong> How qubits are mathematically modeled.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Interference:</strong> The wavelike property of quantum states.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>No Cloning Theorem:</strong> Why you can't perfectly copy a qubit.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Coherence and Decoherence:</strong> The fragility of quantum information.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Bloch Sphere:</strong> A geometric visualization of a qubit.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Quiz:</strong> Test your knowledge on all these properties!
               </li>
             </ul>
           </>
@@ -725,8 +743,180 @@ export const tutorialSessions: TutorialSession[] = [
             practiceGoal: 'Understand the concept of quantum superposition.'
           },
           {
+            id: 10,
+            title: 'Measurement Collapse',
+            description: 'Understand how measuring a qubit forces it into a definite state.',
+            difficulty: 'Beginner',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  Unlike classical systems where you can look at a bit without changing it, <strong>measuring a qubit alters its state fundamentally</strong>.
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  When you measure a qubit that is in a superposition, it instantly "collapses" into one of the definite classical states—either exactly 0 or exactly 1.
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, rgba(69,243,255,0.5), rgba(139,92,246,0.5))', boxShadow: '0 0 20px rgba(69,243,255,0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '24px', fontWeight: 'bold' }}>?</div>
+                    <div style={{ fontSize: '32px', color: 'var(--accent-primary)' }}>➔</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <div style={{ padding: '8px 24px', background: '#333', borderRadius: '8px', border: '2px solid #555', textAlign: 'center', fontWeight: 'bold' }}>0 (prob p)</div>
+                      <div style={{ padding: '8px 24px', background: 'var(--accent-primary)', borderRadius: '8px', border: '2px solid var(--accent-secondary)', textAlign: 'center', fontWeight: 'bold', color: '#000' }}>1 (prob 1-p)</div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ),
+            practiceGoal: 'Learn about quantum measurement.'
+          },
+          {
+            id: 11,
+            title: 'Representation',
+            description: 'Learn how qubits are mathematically represented.',
+            difficulty: 'Intermediate',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  To describe a qubit mathematically, we use a notation called <strong>Dirac notation</strong> (or bra-ket notation). 
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--accent-primary)', letterSpacing: '2px' }}>
+                    |ψ⟩ = α|0⟩ + β|1⟩
+                  </div>
+                </div>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  Here, <strong>|ψ⟩</strong> is the state of the qubit. <strong>|0⟩</strong> and <strong>|1⟩</strong> are the classical states.
+                  The numbers <strong>α</strong> and <strong>β</strong> are complex numbers known as probability amplitudes.
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  The probability of measuring 0 is |α|² and the probability of measuring 1 is |β|². They must add up to 1: |α|² + |β|² = 1.
+                </p>
+              </>
+            ),
+            practiceGoal: 'Understand Dirac notation.'
+          },
+          {
+            id: 12,
+            title: 'Interference',
+            description: 'Discover how quantum states can interfere with each other.',
+            difficulty: 'Intermediate',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  Because qubits behave like waves (due to their probability amplitudes being complex numbers), they can exhibit <strong>interference</strong>.
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  Quantum algorithms use interference to amplify the probability of correct answers (constructive interference) and cancel out the probability of wrong answers (destructive interference).
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{ color: 'var(--success)', fontSize: '24px', fontWeight: 'bold' }}>+ + = ➕</div>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '8px' }}>Constructive</p>
+                    </div>
+                    <div style={{ width: '1px', height: '60px', background: 'var(--surface-border)' }}></div>
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{ color: 'var(--error)', fontSize: '24px', fontWeight: 'bold' }}>+ - = 0</div>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '8px' }}>Destructive</p>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ),
+            practiceGoal: 'Learn how quantum interference works.'
+          },
+          {
+            id: 13,
+            title: 'No Cloning Theorem',
+            description: 'Why you cannot copy a quantum state.',
+            difficulty: 'Intermediate',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  In classical computing, you can easily copy a file or a bit (e.g. CTRL+C, CTRL+V). 
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  However, the <strong>No Cloning Theorem</strong> states that it is impossible to create an identical copy of an arbitrary unknown quantum state.
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '18px', fontWeight: 'bold', color: '#000' }}>|ψ⟩</div>
+                    <div style={{ fontSize: '32px', color: 'var(--error)' }}>➔ ❌ ➔</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '18px', fontWeight: 'bold', color: '#000', opacity: 0.5 }}>|ψ⟩</div>
+                      <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '18px', fontWeight: 'bold', color: '#000', opacity: 0.5 }}>|ψ⟩</div>
+                    </div>
+                  </div>
+                </div>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  This has huge implications for quantum cryptography, making quantum communication theoretically perfectly secure!
+                </p>
+              </>
+            ),
+            practiceGoal: 'Understand the No Cloning Theorem.'
+          },
+          {
+            id: 14,
+            title: 'Coherence and Decoherence',
+            description: 'The fragility of quantum states.',
+            difficulty: 'Advanced',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <strong>Coherence</strong> refers to the state where qubits are undisturbed and maintain their superposition and entangled relationships.
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <strong>Decoherence</strong> is the loss of this quantum behavior. Qubits are extremely sensitive to their environment (heat, electromagnetic fields). When they interact with the environment, their quantum information leaks out, turning them back into classical bits.
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ width: '100%', height: '8px', background: 'linear-gradient(90deg, var(--accent-primary) 0%, rgba(255,255,255,0.1) 100%)', borderRadius: '4px', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: '-30px', left: '0', color: 'var(--accent-primary)', fontWeight: 'bold' }}>Coherent</div>
+                    <div style={{ position: 'absolute', top: '-30px', right: '0', color: 'var(--text-secondary)' }}>Decohered</div>
+                  </div>
+                </div>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  This is why quantum computers must be cooled to near absolute zero!
+                </p>
+              </>
+            ),
+            practiceGoal: 'Learn why quantum states are fragile.'
+          },
+          {
+            id: 15,
+            title: 'Bloch Sphere',
+            description: 'Visualize a qubit in 3D space.',
+            difficulty: 'Advanced',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  The <strong>Bloch Sphere</strong> is a geometric representation of the pure state space of a two-level quantum mechanical system (a qubit).
+                </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  The North Pole represents the state |0⟩, and the South Pole represents the state |1⟩. Any point on the surface of the sphere represents a valid quantum state (superposition).
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ position: 'relative', width: '150px', height: '150px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    {/* Z axis */}
+                    <div style={{ position: 'absolute', width: '1px', height: '180px', background: 'rgba(255,255,255,0.5)' }}></div>
+                    <div style={{ position: 'absolute', top: '-20px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>|0⟩</div>
+                    <div style={{ position: 'absolute', bottom: '-20px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>|1⟩</div>
+                    
+                    {/* Equator */}
+                    <div style={{ position: 'absolute', width: '150px', height: '40px', borderRadius: '50%', border: '1px dashed rgba(255,255,255,0.3)' }}></div>
+                    
+                    {/* State vector */}
+                    <div style={{ position: 'absolute', bottom: '50%', left: '50%', width: '2px', height: '75px', background: 'var(--accent-primary)', transformOrigin: 'bottom center', transform: 'rotate(45deg)', zIndex: 1 }}></div>
+                    <div style={{ position: 'absolute', top: '10px', right: '10px', color: 'var(--accent-primary)', fontWeight: 'bold' }}>|ψ⟩</div>
+                  </div>
+                </div>
+              </>
+            ),
+            practiceGoal: 'Visualize the state space of a qubit.'
+          },
+          {
             id: 9,
             title: 'Quiz',
+            prerequisiteId: 5,
             description: 'Test your knowledge on qubits and superposition.',
             difficulty: 'Beginner',
             isFinalTest: true,
