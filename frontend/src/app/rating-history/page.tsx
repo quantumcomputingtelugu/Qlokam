@@ -23,6 +23,7 @@ export default function RatingHistoryPage() {
     const unsubscribe = onAuthStateChanged(auth, async (u) => {
       setUser(u);
       if (u) {
+        if (!db) return;
         try {
           const docRef = doc(db, 'users', u.uid);
           const docSnap = await getDoc(docRef);
