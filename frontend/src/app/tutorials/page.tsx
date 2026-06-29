@@ -483,10 +483,8 @@ export default function TutorialsPage() {
                       <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid var(--surface-border)' }}>
                         <h4 style={{ fontSize: '20px', color: 'var(--text-primary)', marginBottom: '16px' }}>Quiz Rules</h4>
                         <ul style={{ color: 'var(--text-secondary)', marginBottom: '24px', paddingLeft: '20px', lineHeight: '1.6' }}>
-                          <li>You will be given 5 random questions.</li>
                           <li>You must answer all 5 questions correctly to earn points.</li>
                           <li>You can attempt this quiz up to 3 times per day.</li>
-                          <li>Correct answers will not be revealed at the end.</li>
                         </ul>
                         
                         {(() => {
