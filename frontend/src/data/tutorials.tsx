@@ -18,6 +18,7 @@ export type TutorialModule = {
   isFinalTest?: boolean;
   badgeAward?: string;
   pointsAward?: number;
+  prerequisiteId?: number;
   subModules?: TutorialModule[];
 };
 
@@ -732,14 +733,8 @@ export const tutorialSessions: TutorialSession[] = [
             pointsAward: 1,
             lessonContent: (
               <>
-                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  You have learned about Qubits and Superposition. Now it's time to test your knowledge!
-                </p>
-                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  This quiz consists of 5 questions randomly selected from a pool of questions. You must answer all 5 correctly to earn <strong>1 point</strong>.
-                </p>
-                <p style={{ marginBottom: '16px', color: 'var(--accent-primary)', fontWeight: 'bold' }}>
-                  Rules: You can attempt this quiz up to 3 times per day.
+                <p style={{ marginBottom: '16px' }}>
+                  Ready to test what you&apos;ve learned? Answer the questions below to complete this module!
                 </p>
               </>
             ),

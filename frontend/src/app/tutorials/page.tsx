@@ -493,6 +493,13 @@ export default function TutorialsPage() {
                         </ul>
                         
                         {(() => {
+                          if (activeTutorial.prerequisiteId && !completedTutorials.includes(activeTutorial.prerequisiteId)) {
+                            return (
+                              <div style={{ padding: '16px', background: 'rgba(248, 175, 73, 0.1)', border: '1px solid var(--warning)', borderRadius: '8px', color: 'var(--warning)', marginTop: '16px' }}>
+                                🔒 You must complete the quiz for the previous topic before you can take this quiz.
+                              </div>
+                            );
+                          }
                           const today = new Date().toISOString().split('T')[0];
                           const attemptData = quizAttemptsData[activeTutorial.id];
                           const currentCount = attemptData?.date === today ? attemptData.count : 0;
