@@ -113,20 +113,7 @@ export default function Navigation() {
                 )}
 
                 {showNotifications && (
-                  <div className="glass-panel" style={{
-                    position: 'absolute',
-                    top: '100%',
-                    right: '-10px',
-                    marginTop: '16px',
-                    width: '320px',
-                    padding: '16px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '12px',
-                    zIndex: 1000,
-                    cursor: 'default',
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
-                  }} onClick={(e) => e.stopPropagation()}>
+                  <div className="glass-panel notification-dropdown" onClick={(e) => e.stopPropagation()}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                       <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Notifications</h3>
                       {!username && <span style={{ fontSize: '12px', background: 'var(--accent-color)', color: '#fff', padding: '2px 8px', borderRadius: '12px', fontWeight: 600 }}>1 New</span>}
