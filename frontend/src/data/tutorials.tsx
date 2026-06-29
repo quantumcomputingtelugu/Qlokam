@@ -871,6 +871,9 @@ export const tutorialSessions: TutorialSession[] = [
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
                   This is why many quantum computers use <strong>Dilution Refrigerators</strong> to cool the quantum chip down to around 0.015 Kelvin (colder than interstellar space!). Researchers measure qubit quality using T1 (relaxation time) and T2 (dephasing time). Extending these coherence times is the biggest hardware challenge in building a large-scale quantum computer.
                 </p>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  If engineers can discover a highly stable, room-temperature quantum building block—a &quot;quantum transistor&quot;—it would revolutionize the industry. While quantum computers will likely work alongside classical ones rather than replacing them entirely, such a breakthrough would make classical computers obsolete for a vast array of complex tasks.
+                </p>
               </>
             ),
             practiceGoal: 'Learn why quantum computers must be kept incredibly cold and isolated.'
@@ -913,7 +916,18 @@ export const tutorialSessions: TutorialSession[] = [
                       <li style={{ marginBottom: '12px' }}><strong>The Surface:</strong> Any point on the surface of the sphere represents a valid quantum state. The arrow pointing from the center to the surface is the state vector <strong>|ψ⟩</strong>.</li>
                       <li style={{ marginBottom: '12px' }}><strong>The Equator:</strong> Points directly on the equator represent an exact 50/50 superposition of |0⟩ and |1⟩ (often denoted as |+⟩ and |-⟩). They are perfectly halfway between 0 and 1.</li>
                     </ul>
-                    <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic', fontSize: '14px' }}>Note: Applying a quantum gate (like an X-gate or H-gate) simply rotates this arrow around the sphere!</p>
+                    <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginBottom: '16px', marginTop: '24px' }}>Angular Representation (θ and φ)</h3>
+                    <p style={{ marginBottom: '12px', color: 'var(--text-secondary)' }}>
+                      A quantum state can be mathematically defined using two angles on the sphere:
+                    </p>
+                    <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                      <li style={{ marginBottom: '12px' }}><strong>Theta (θ):</strong> The <em>polar angle</em> measured from the North Pole (Z-axis). It determines the probability of measuring 0 versus 1. Ranges from 0 to π.</li>
+                      <li style={{ marginBottom: '12px' }}><strong>Phi (φ):</strong> The <em>azimuthal angle</em> measured around the equator (X-Y plane). It represents the quantum phase. Ranges from 0 to 2π.</li>
+                    </ul>
+                    <div style={{ background: '#222', padding: '12px', borderRadius: '8px', border: '1px solid #444', fontFamily: 'monospace', color: 'var(--accent-primary)', textAlign: 'center', marginBottom: '16px' }}>
+                      |ψ⟩ = cos(θ/2)|0⟩ + e^(iφ)sin(θ/2)|1⟩
+                    </div>
+                    <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic', fontSize: '14px' }}>Note: Applying a quantum gate (like an X-gate or H-gate) mathematically alters θ and φ, effectively rotating this arrow around the sphere!</p>
                   </div>
                 </div>
               </>

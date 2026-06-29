@@ -142,7 +142,7 @@ export default function TutorialsPage() {
       setEarnedPoints(0);
     }
 
-    const newCompleted = !completedTutorials.includes(activeTutorialId) ? [...completedTutorials, activeTutorialId] : completedTutorials;
+    const newCompleted = (score === 5 && !completedTutorials.includes(activeTutorialId)) ? [...completedTutorials, activeTutorialId] : completedTutorials;
     setCompletedTutorials(newCompleted);
 
     try {
