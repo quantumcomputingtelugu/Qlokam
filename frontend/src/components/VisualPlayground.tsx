@@ -661,7 +661,7 @@ except Exception as e:
                 {errorMsg}
               </div>
             )}
-            <div style={{ height: '300px', flexShrink: 0, position: 'relative' }}>
+            <div style={{ flex: 1, minHeight: '300px', width: '100%', position: 'relative' }}>
                 <Bar data={chartData} options={chartOptions} />
             </div>
           </div>
