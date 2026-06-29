@@ -833,7 +833,7 @@ except Exception as e:
       {anglePrompt && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div className="glass-panel" style={{ padding: '24px', width: '300px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <h3 style={{ margin: 0, fontSize: '16px' }}>Set Angle for {anglePrompt.gate}</h3>
+            <h3 style={{ margin: 0, fontSize: '16px' }}>Set Angle (in radians) for {anglePrompt.gate}</h3>
             <input 
               type="text" 
               value={angleInputValue} 
