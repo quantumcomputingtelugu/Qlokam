@@ -241,7 +241,7 @@ export default function TutorialsPage() {
                     
                     {tutorial.subModules && tutorial.subModules.length > 0 && expandedModules.includes(tutorial.id) && (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '16px', borderLeft: '2px solid rgba(255,255,255,0.1)', marginLeft: '8px' }}>
-                        {tutorial.subModules.map((subModule) => {
+                        {tutorial.subModules.map((subModule, index) => {
                           const subCompleted = completedTutorials.includes(subModule.id);
                           const isSubActive = activeTutorialId === subModule.id;
                           return (
@@ -268,7 +268,7 @@ export default function TutorialsPage() {
                             >
                               <div className="flex-between">
                                 <h4 style={{ fontSize: '14px', margin: 0, color: 'var(--text-secondary)' }}>
-                                  {subModule.id}. {subModule.title}
+                                  {index + 1}. {subModule.title}
                                 </h4>
                                 {subCompleted && (
                                   <span style={{ fontSize: '12px', color: 'var(--success)' }}>
