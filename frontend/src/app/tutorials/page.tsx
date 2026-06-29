@@ -426,7 +426,7 @@ export default function TutorialsPage() {
                   </div>
 
                   {/* Completion Actions */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', flexWrap: 'wrap', gap: '16px' }}>
                     <span style={{ color: isCompleted ? 'var(--success)' : 'var(--text-secondary)' }}>
                       {isCompleted ? '🎉 You have completed this module!' : 'Complete the circuit above, then mark as complete.'}
                     </span>
