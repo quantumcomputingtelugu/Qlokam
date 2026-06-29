@@ -248,7 +248,7 @@ export default function TutorialsPage() {
           <button 
             className="mobile-sidebar-toggle"
             onClick={() => setIsSidebarOpen(true)}
-            style={{ display: 'none', background: 'none', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', fontSize: '24px', marginRight: '16px' }}
+            style={{ background: 'none', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', fontSize: '24px', marginRight: '16px' }}
           >
             ☰
           </button>
