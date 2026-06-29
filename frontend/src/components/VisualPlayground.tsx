@@ -875,16 +875,26 @@ except Exception as e:
           <div className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', position: 'relative' }} onClick={e => e.stopPropagation()}>
             <button onClick={() => setSelectedBlochQubit(null)} style={{ position: 'absolute', top: '12px', right: '12px', background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '18px' }}>✕</button>
             <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--text-primary)' }}>Bloch Sphere (Qubit {selectedBlochQubit})</h3>
-            {blochVectors[selectedBlochQubit.toString()] ? (
-              <BlochSphere 
-                x={blochVectors[selectedBlochQubit.toString()].x} 
-                y={blochVectors[selectedBlochQubit.toString()].y} 
-                z={blochVectors[selectedBlochQubit.toString()].z} 
-                size={250} 
-              />
-            ) : (
-              <div style={{ padding: '40px', color: 'var(--text-secondary)' }}>Could not compute Bloch vector. (Is the circuit executed?)</div>
-            )}
+            {(() => {
+              const vec = blochVectors[selectedBlochQubit.toString()];
+              if (!vec) return <div style={{ padding: '40px', color: 'var(--text-secondary)' }}>Could not compute Bloch vector. (Is the circuit executed?)</div>;
+              
+              const length = Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+              const isEntangled = length < 0.99;
+
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                  <BlochSphere x={vec.x} y={vec.y} z={vec.z} size={250} />
+                  {isEntangled && (
+                    <div style={{ background: 'rgba(255, 165, 0, 0.1)', color: 'orange', padding: '6px 12px', borderRadius: '4px', fontSize: '12px', textAlign: 'center', maxWidth: '250px', border: '1px solid rgba(255, 165, 0, 0.3)' }}>
+                      <strong>Mixed State</strong>
+                      <br/>
+                      The vector is inside the sphere (length = {length.toFixed(2)}) because this qubit is entangled with another.
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
             <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: 'var(--text-secondary)' }}>
               <span>X: {blochVectors[selectedBlochQubit.toString()]?.x.toFixed(3) || 'N/A'}</span>
               <span>Y: {blochVectors[selectedBlochQubit.toString()]?.y.toFixed(3) || 'N/A'}</span>
