@@ -126,7 +126,8 @@ export default function UsernameModal({ user, onUsernameSet, mode = 'setup', rem
                 paddingTop: '14px',
                 paddingBottom: '14px',
                 fontSize: '16px',
-                background: 'rgba(0,0,0,0.2)'
+                background: 'rgba(0,0,0,0.2)',
+                color: 'var(--text-primary)'
               }}
               disabled={loading}
               pattern="^[a-z0-9_]+$"
