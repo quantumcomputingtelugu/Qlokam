@@ -172,32 +172,30 @@ export default function ArenaPage() {
                   Global Rank: <strong style={{ color: userRankIndex !== -1 ? '#d29922' : 'inherit' }}>{userRankDisplay}</strong>
                 </p>
 
-                {badges.length > 0 && (
-                  <div style={{ marginTop: '16px', display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                    {['Easy', 'Medium', 'Hard', 'Very Hard', 'Master'].map((b) => {
-                      const count = badges.filter(badge => badge === b).length;
-                      if (count === 0) return null;
-                      
-                      let color = 'var(--text-secondary)';
-                      if (b === 'Easy') color = '#3fb950';
-                      if (b === 'Medium') color = '#d29922';
-                      if (b === 'Hard') color = '#f85149';
-                      if (b === 'Very Hard') color = '#a371f7';
-                      if (b === 'Master') color = '#58a6ff';
-                      
-                      return (
-                        <div key={b} style={{ 
-                          display: 'flex', alignItems: 'center', gap: '4px',
-                          background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: '4px', 
-                          border: `1px solid ${color}`
-                        }}>
-                          <span style={{ fontSize: '10px', fontWeight: 'bold', color, textTransform: 'uppercase' }}>{b}</span>
-                          <span style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--text-primary)' }}>{count}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
+                <div style={{ marginTop: '16px', display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                  {['Easy', 'Medium', 'Hard', 'Very Hard', 'Master'].map((b) => {
+                    const count = badges.filter(badge => badge === b).length;
+                    
+                    let color = 'var(--text-secondary)';
+                    if (b === 'Easy') color = '#3fb950';
+                    if (b === 'Medium') color = '#d29922';
+                    if (b === 'Hard') color = '#f85149';
+                    if (b === 'Very Hard') color = '#a371f7';
+                    if (b === 'Master') color = '#58a6ff';
+                    
+                    return (
+                      <div key={b} style={{ 
+                        display: 'flex', alignItems: 'center', gap: '4px',
+                        background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: '4px', 
+                        border: `1px solid ${count > 0 ? color : 'rgba(255,255,255,0.1)'}`,
+                        opacity: count > 0 ? 1 : 0.5
+                      }}>
+                        <span style={{ fontSize: '10px', fontWeight: 'bold', color: count > 0 ? color : 'var(--text-secondary)', textTransform: 'uppercase' }}>{b}</span>
+                        <span style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--text-primary)' }}>{count}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>

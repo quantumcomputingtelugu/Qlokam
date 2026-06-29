@@ -453,13 +453,15 @@ export default function TutorialsPage() {
                 </div>
               )}
 
-              <div style={{ marginTop: '48px', padding: '24px', background: 'rgba(69, 243, 255, 0.05)', border: '1px solid rgba(69, 243, 255, 0.2)', borderRadius: '12px' }}>
-                <h4 style={{ margin: '0 0 16px 0', color: 'var(--accent-primary)' }}>Finished reading?</h4>
-                <p style={{ margin: '0 0 16px 0' }}>Jump straight to practice and try it out!</p>
-                <div style={{ display: 'flex', gap: '16px' }}>
-                  <button className="btn-primary" onClick={() => handleTabChange('practice')} style={{ padding: '8px 16px' }}>Go to Practice</button>
+              {!activeTutorial.quizzes && (
+                <div style={{ marginTop: '48px', padding: '24px', background: 'rgba(69, 243, 255, 0.05)', border: '1px solid rgba(69, 243, 255, 0.2)', borderRadius: '12px' }}>
+                  <h4 style={{ margin: '0 0 16px 0', color: 'var(--accent-primary)' }}>Finished reading?</h4>
+                  <p style={{ margin: '0 0 16px 0' }}>Jump straight to practice and try it out!</p>
+                  <div style={{ display: 'flex', gap: '16px' }}>
+                    <button className="btn-primary" onClick={() => handleTabChange('practice')} style={{ padding: '8px 16px' }}>Go to Practice</button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           ) : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>

@@ -82,7 +82,7 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
       <div 
         className="glass-panel" 
         style={{ 
-          width: '100%', maxWidth: '600px', padding: '32px', 
+          width: '100%', maxWidth: '800px', padding: '32px', 
           borderRadius: '16px', maxHeight: '90vh', overflowY: 'auto',
           position: 'relative'
         }}
@@ -101,17 +101,17 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
             
             {/* Header: User Info & Rating */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
               <img 
                 src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`} 
                 alt="Profile" 
                 style={{ width: '80px', height: '80px', borderRadius: '50%', border: '2px solid var(--surface-border)' }}
               />
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: 1, minWidth: '200px' }}>
                 <h2 style={{ margin: '0 0 4px 0', fontSize: '24px', color: 'var(--text-primary)' }}>
                   {user.displayName}
                 </h2>
-                <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                   <span>{profileData.username ? `@${profileData.username}` : 'No username set'}</span>
                   {profileData.usernameChanges < 3 && (
                     <button 
@@ -123,7 +123,7 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
                   )}
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: '16px' }}>
+              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', width: '100%', justifyContent: 'flex-start' }}>
                 <div style={{ textAlign: 'center', background: 'rgba(210, 153, 34, 0.1)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(210, 153, 34, 0.3)' }}>
                   <div style={{ fontSize: '12px', color: '#d29922', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Arena Rating</div>
                   <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#d29922' }}>{profileData.rating}</div>
