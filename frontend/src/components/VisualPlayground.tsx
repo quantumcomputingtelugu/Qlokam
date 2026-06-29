@@ -15,6 +15,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import BlochSphere from './BlochSphere';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -70,6 +71,10 @@ export default function VisualPlayground({
   const [probabilities, setProbabilities] = useState<Record<string, number>>({});
   const [isExecuting, setIsExecuting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [blochVectors, setBlochVectors] = useState<Record<string, {x: number, y: number, z: number}>>({});
+  const [selectedBlochQubit, setSelectedBlochQubit] = useState<number | null>(null);
+  const [anglePrompt, setAnglePrompt] = useState<{gate: string, qIdx: number, sIdx: number} | null>(null);
+  const [angleInputValue, setAngleInputValue] = useState('pi/2');
   
   const [code, setCode] = useState('');
   const [isTyping, setIsTyping] = useState(false); // Source of truth flag
@@ -81,9 +86,11 @@ export default function VisualPlayground({
       setGrid(Array(3).fill([]).map(() => Array(NUM_STEPS).fill('')));
       setNumQubits(3);
       setProbabilities({});
+      setBlochVectors({});
       setErrorMsg('');
       setCode('');
       setPendingTwoQubit(null);
+      setAnglePrompt(null);
     }
   }, [arenaProblemId, arenaMode]);
 
@@ -149,9 +156,9 @@ export default function VisualPlayground({
       setPendingTwoQubit({ qIdx, sIdx, gate });
       finalGate = `${gate}_PENDING`;
     } else if (gate === 'RX' || gate === 'RY' || gate === 'RZ') {
-      const angle = window.prompt(`Enter rotation angle for ${gate} (e.g., pi/2, 1.57):`, 'pi/2');
-      if (!angle) return;
-      finalGate = `${gate}(${angle})`;
+      setAnglePrompt({ gate, qIdx, sIdx });
+      setAngleInputValue('pi/2');
+      return; // Do not place gate yet, wait for prompt
     }
     
     setIsTyping(false);
@@ -338,8 +345,22 @@ try:
             else:
                 filtered_probs[k] = float(v)
 
+    bloch_vectors = {}
+    try:
+        from qiskit.quantum_info import Pauli
+        for i in range(${numQubits}):
+            op_x = Pauli('I' * (${numQubits} - 1 - i) + 'X' + 'I' * i)
+            op_y = Pauli('I' * (${numQubits} - 1 - i) + 'Y' + 'I' * i)
+            op_z = Pauli('I' * (${numQubits} - 1 - i) + 'Z' + 'I' * i)
+            rx = sv.expectation_value(op_x).real
+            ry = sv.expectation_value(op_y).real
+            rz = sv.expectation_value(op_z).real
+            bloch_vectors[str(i)] = {"x": rx, "y": ry, "z": rz}
+    except Exception:
+        pass
+
     print("##JSON_START##")
-    print(json.dumps(filtered_probs))
+    print(json.dumps({"probs": filtered_probs, "bloch": bloch_vectors}))
     print("##JSON_END##")
 except Exception as e:
     print("ERROR:", str(e))
@@ -369,8 +390,20 @@ try:
                 rev_bin_str = bin_str[::-1]
                 filtered_probs[rev_bin_str] = float(p)
             
+    bloch_vectors = {}
+    try:
+        for i in range(${numQubits}):
+            q = qubits[i]
+            q_map = {q: idx for idx, q in enumerate(qubits)}
+            rx = cirq.PauliString(cirq.X(q)).expectation_from_state_vector(state_vector, qubit_map=q_map).real
+            ry = cirq.PauliString(cirq.Y(q)).expectation_from_state_vector(state_vector, qubit_map=q_map).real
+            rz = cirq.PauliString(cirq.Z(q)).expectation_from_state_vector(state_vector, qubit_map=q_map).real
+            bloch_vectors[str(i)] = {"x": rx, "y": ry, "z": rz}
+    except Exception as e:
+        pass
+        
     print("##JSON_START##")
-    print(json.dumps(filtered_probs))
+    print(json.dumps({"probs": filtered_probs, "bloch": bloch_vectors}))
     print("##JSON_END##")
 except Exception as e:
     print("ERROR:", str(e))
@@ -386,13 +419,22 @@ except Exception as e:
       });
       const data = await response.json();
       if (data.success && data.output) {
-        const match = (data.output as string).match(/##JSON_START##\s*([\s\S]*?)\s*##JSON_END##/);
+        const match = data.output.match(/##JSON_START##\n([\s\S]*?)\n##JSON_END##/);
         if (match && match[1]) {
-          const parsed = JSON.parse(match[1]);
-          setProbabilities(parsed);
-          if (isSubmit && onSubmit) {
-            onSubmit(parsed);
-          }
+           const parsed = JSON.parse(match[1]);
+           // Backward compatibility if backend doesn't return dict with probs
+           if (parsed.probs) {
+             setProbabilities(parsed.probs);
+             if (parsed.bloch && Object.keys(parsed.bloch).length > 0) {
+               // We will store bloch vectors in a state variable (we need to add this)
+               setBlochVectors(parsed.bloch);
+             }
+           } else {
+             setProbabilities(parsed);
+           }
+           if (isSubmit && onSubmit) {
+             onSubmit(parsed.probs || parsed);
+           }
         } else {
           setErrorMsg("Could not parse output.");
           if (isSubmit && onSubmit) onSubmit({});
@@ -652,9 +694,9 @@ except Exception as e:
                                     setPendingTwoQubit({ qIdx, sIdx, gate: selectedGate });
                                     finalGate = `${selectedGate}_PENDING`;
                                   } else if (selectedGate === 'RX' || selectedGate === 'RY' || selectedGate === 'RZ') {
-                                    const angle = window.prompt(`Enter rotation angle for ${selectedGate} (e.g., pi/2, 1.57):`, 'pi/2');
-                                    if (!angle) return;
-                                    finalGate = `${selectedGate}(${angle})`;
+                                    setAnglePrompt({ gate: selectedGate, qIdx, sIdx });
+                                    setAngleInputValue('pi/2');
+                                    return; // Do not place gate yet
                                   }
                                   setIsTyping(false);
                                   setGrid(prev => {
@@ -712,6 +754,26 @@ except Exception as e:
                           </div>
                         );
                       })}
+                      {/* Bloch Sphere Button at end of wire */}
+                      <div 
+                        onClick={() => {
+                          if (Object.keys(blochVectors).length === 0) {
+                            executeCircuit(false).then(() => setSelectedBlochQubit(qIdx));
+                          } else {
+                            setSelectedBlochQubit(qIdx);
+                          }
+                        }}
+                        title="View Bloch Sphere"
+                        style={{
+                          width: '24px', height: '24px', marginLeft: '12px', background: 'var(--surface-color)', border: '1px solid var(--surface-border)', borderRadius: '50%',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 1, position: 'relative'
+                        }}
+                      >
+                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.3)', position: 'relative' }}>
+                          <div style={{ position: 'absolute', top: '50%', left: '10%', right: '10%', height: '1px', background: 'rgba(255,255,255,0.3)' }} />
+                          <div style={{ position: 'absolute', top: '50%', left: '50%', width: '1px', height: '50%', background: 'var(--accent-primary)' }} />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -766,6 +828,71 @@ except Exception as e:
         </div>
 
       </div>
+
+      {/* Modals */}
+      {anglePrompt && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="glass-panel" style={{ padding: '24px', width: '300px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <h3 style={{ margin: 0, fontSize: '16px' }}>Set Angle for {anglePrompt.gate}</h3>
+            <input 
+              type="text" 
+              value={angleInputValue} 
+              onChange={(e) => setAngleInputValue(e.target.value)} 
+              style={{ padding: '8px', background: 'rgba(255,255,255,0.1)', border: '1px solid var(--surface-border)', color: '#fff', borderRadius: '4px' }}
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  setIsTyping(false);
+                  setGrid(prev => {
+                    const newGrid = [...prev];
+                    newGrid[anglePrompt.qIdx] = [...newGrid[anglePrompt.qIdx]];
+                    newGrid[anglePrompt.qIdx][anglePrompt.sIdx] = `${anglePrompt.gate}(${angleInputValue})`;
+                    return newGrid;
+                  });
+                  setAnglePrompt(null);
+                }
+              }}
+            />
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+              <button className="btn-secondary" onClick={() => setAnglePrompt(null)}>Cancel</button>
+              <button className="btn-primary" onClick={() => {
+                setIsTyping(false);
+                setGrid(prev => {
+                  const newGrid = [...prev];
+                  newGrid[anglePrompt.qIdx] = [...newGrid[anglePrompt.qIdx]];
+                  newGrid[anglePrompt.qIdx][anglePrompt.sIdx] = `${anglePrompt.gate}(${angleInputValue})`;
+                  return newGrid;
+                });
+                setAnglePrompt(null);
+              }}>Confirm</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {selectedBlochQubit !== null && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setSelectedBlochQubit(null)}>
+          <div className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', position: 'relative' }} onClick={e => e.stopPropagation()}>
+            <button onClick={() => setSelectedBlochQubit(null)} style={{ position: 'absolute', top: '12px', right: '12px', background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '18px' }}>✕</button>
+            <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--text-primary)' }}>Bloch Sphere (Qubit {selectedBlochQubit})</h3>
+            {blochVectors[selectedBlochQubit.toString()] ? (
+              <BlochSphere 
+                x={blochVectors[selectedBlochQubit.toString()].x} 
+                y={blochVectors[selectedBlochQubit.toString()].y} 
+                z={blochVectors[selectedBlochQubit.toString()].z} 
+                size={250} 
+              />
+            ) : (
+              <div style={{ padding: '40px', color: 'var(--text-secondary)' }}>Could not compute Bloch vector. (Is the circuit executed?)</div>
+            )}
+            <div style={{ display: 'flex', gap: '16px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <span>X: {blochVectors[selectedBlochQubit.toString()]?.x.toFixed(3) || 'N/A'}</span>
+              <span>Y: {blochVectors[selectedBlochQubit.toString()]?.y.toFixed(3) || 'N/A'}</span>
+              <span>Z: {blochVectors[selectedBlochQubit.toString()]?.z.toFixed(3) || 'N/A'}</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
