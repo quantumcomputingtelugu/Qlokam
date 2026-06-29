@@ -19,7 +19,7 @@ export default function RatingHistoryPage() {
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
-    if (!auth) return;
+    if (!auth || !db) return;
     const unsubscribe = onAuthStateChanged(auth, async (u) => {
       setUser(u);
       if (u) {
