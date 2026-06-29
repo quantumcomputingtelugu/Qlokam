@@ -182,7 +182,7 @@ export default function Navigation() {
       </div>
     </nav>
       
-    {user && !loading && showUsernameModal && !username && (
+    {user && !loading && !username && (
         <UsernameModal 
           user={user} 
           onUsernameSet={(newUsername) => {

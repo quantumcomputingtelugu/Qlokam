@@ -339,12 +339,6 @@ export default function ArenaPage() {
           </div>
         </div>
 
-        {user && !username && listTab === 'leaderboard' && (
-          <UsernameModal 
-            user={user} 
-            onUsernameSet={(newUsername) => setUsername(newUsername)} 
-          />
-        )}
       </div>
     );
   }
