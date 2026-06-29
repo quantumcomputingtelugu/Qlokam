@@ -112,27 +112,48 @@ export default function TutorialsPage() {
     
     let updatedRating = rating;
     let updatedBadges = [...badges];
+    let newlyEarnedBadge = null;
+
+    // Check if a course (session) was completed
+    const activeSession = tutorialSessions.find(s => s.id === activeCourseId);
+    if (activeSession && activeSession.badge) {
+      // flatten to get all modules in session
+      const flatten = (modules: any[]): any[] => {
+        return modules.reduce((acc, module) => {
+          acc.push(module);
+          if (module.subModules) acc.push(...flatten(module.subModules));
+          return acc;
+        }, []);
+      };
+      const sessionModules = flatten(activeSession.modules);
+      const allCompleted = sessionModules.every(m => newCompleted.includes(m.id));
+      
+      // Assume one badge per session completion
+      if (allCompleted) {
+        updatedBadges.push(activeSession.badge);
+        newlyEarnedBadge = activeSession.badge;
+      }
+    }
     
     if (activeTutorial.isFinalTest) {
       if (activeTutorial.pointsAward) updatedRating += activeTutorial.pointsAward;
-      if (activeTutorial.badgeAward && !updatedBadges.includes(activeTutorial.badgeAward)) {
-        updatedBadges.push(activeTutorial.badgeAward);
-      }
     }
 
     try {
       const docRef = doc(db, 'users', user.uid);
       await setDoc(docRef, { 
         completedTutorials: newCompleted,
-        ...(activeTutorial.isFinalTest && { rating: updatedRating, badges: updatedBadges })
+        ...(newlyEarnedBadge && { badges: updatedBadges }),
+        ...(activeTutorial.isFinalTest && { rating: updatedRating })
       }, { merge: true });
       
       setCompletedTutorials(newCompleted);
-      
+      if (newlyEarnedBadge) {
+        setBadges(updatedBadges);
+        setEarnedBadge(newlyEarnedBadge);
+      }
       if (activeTutorial.isFinalTest) {
         setRating(updatedRating);
-        setBadges(updatedBadges);
-        setEarnedBadge(activeTutorial.badgeAward || null);
         setEarnedPoints(activeTutorial.pointsAward || null);
       }
     } catch (e) {
@@ -158,7 +179,7 @@ export default function TutorialsPage() {
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          {isSidebarOpen && <h2 style={{ fontSize: '20px', color: 'var(--accent-primary)', margin: 0 }}>Quantum Modules</h2>}
+          {isSidebarOpen && <h2 style={{ fontSize: '20px', color: 'var(--accent-primary)', margin: 0 }}>Quantum Courses</h2>}
           <button 
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '20px', padding: 0 }}
@@ -461,26 +482,6 @@ export default function TutorialsPage() {
                   {/* The Interactive Editor */}
                   <div style={{ flex: 1, minHeight: '500px', marginBottom: '24px', border: '1px solid var(--surface-border)', borderRadius: '8px', overflow: 'visible', padding: '16px' }}>
                     <VisualPlayground />
-                  </div>
-
-                  {/* Completion Actions */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', flexWrap: 'wrap', gap: '16px' }}>
-                    <span style={{ color: isCompleted ? 'var(--success)' : 'var(--text-secondary)' }}>
-                      {isCompleted ? '🎉 You have completed this module!' : 'Complete the circuit above, then mark as complete.'}
-                    </span>
-                    <button 
-                      onClick={handleMarkComplete} 
-                      disabled={isCompleted || saving}
-                      style={{ 
-                        padding: '10px 24px', 
-                        background: isCompleted ? 'rgba(63, 185, 80, 0.2)' : 'var(--success)', 
-                        color: isCompleted ? 'var(--success)' : '#fff', 
-                        border: 'none', borderRadius: '8px', cursor: isCompleted ? 'default' : 'pointer',
-                        fontWeight: 'bold'
-                      }}
-                    >
-                      {saving ? 'Saving...' : isCompleted ? 'Completed' : 'Mark as Complete'}
-                    </button>
                   </div>
                 </div>
               )}

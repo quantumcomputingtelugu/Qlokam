@@ -21,9 +21,10 @@ export type TutorialModule = {
   subModules?: TutorialModule[];
 };
 
-export type TutorialSession = {
+export interface TutorialSession {
   id: string; // e.g. "course-basics"
   sessionName: string;
+  badge?: 'Easy' | 'Medium' | 'Hard' | 'Very Hard' | 'Master';
   modules: TutorialModule[];
 };
 
@@ -31,6 +32,7 @@ export const tutorialSessions: TutorialSession[] = [
   {
     id: "course-basics",
     sessionName: "Quantum Computing Basics",
+    badge: 'Easy',
     modules: [
       {
         id: 1,

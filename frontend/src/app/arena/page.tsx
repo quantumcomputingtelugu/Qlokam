@@ -16,6 +16,7 @@ export default function ArenaPage() {
   const [loadingUser, setLoadingUser] = useState(true);
   const [rating, setRating] = useState(0);
   const [solvedProblems, setSolvedProblems] = useState<string[]>([]);
+  const [badges, setBadges] = useState<string[]>([]);
 
   const [activeProblemId, setActiveProblemId] = useState<string | null>(null);
   const [listTab, setListTab] = useState<'problems' | 'contests' | 'leaderboard'>('problems');
@@ -70,6 +71,7 @@ export default function ArenaPage() {
             if (data.rating) setRating(data.rating);
             if (data.solvedArenaProblems) setSolvedProblems(data.solvedArenaProblems);
             if (data.username) setUsername(data.username);
+            if (data.badges) setBadges(data.badges);
           }
         } catch (e) {
           console.error("Error fetching user data", e);
@@ -78,6 +80,7 @@ export default function ArenaPage() {
         setRating(0);
         setSolvedProblems([]);
         setUsername(null);
+        setBadges([]);
       }
       setLoadingUser(false);
     });
@@ -168,6 +171,33 @@ export default function ArenaPage() {
                 <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '8px' }}>
                   Global Rank: <strong style={{ color: userRankIndex !== -1 ? '#d29922' : 'inherit' }}>{userRankDisplay}</strong>
                 </p>
+
+                {badges.length > 0 && (
+                  <div style={{ marginTop: '16px', display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    {['Easy', 'Medium', 'Hard', 'Very Hard', 'Master'].map((b) => {
+                      const count = badges.filter(badge => badge === b).length;
+                      if (count === 0) return null;
+                      
+                      let color = 'var(--text-secondary)';
+                      if (b === 'Easy') color = '#3fb950';
+                      if (b === 'Medium') color = '#d29922';
+                      if (b === 'Hard') color = '#f85149';
+                      if (b === 'Very Hard') color = '#a371f7';
+                      if (b === 'Master') color = '#58a6ff';
+                      
+                      return (
+                        <div key={b} style={{ 
+                          display: 'flex', alignItems: 'center', gap: '4px',
+                          background: 'rgba(255,255,255,0.05)', padding: '4px 8px', borderRadius: '4px', 
+                          border: `1px solid ${color}`
+                        }}>
+                          <span style={{ fontSize: '10px', fontWeight: 'bold', color, textTransform: 'uppercase' }}>{b}</span>
+                          <span style={{ fontSize: '12px', fontWeight: 'bold', color: 'var(--text-primary)' }}>{count}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
           </div>

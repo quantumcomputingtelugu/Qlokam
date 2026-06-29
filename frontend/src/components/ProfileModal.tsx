@@ -123,25 +123,37 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
                   )}
                 </div>
               </div>
-              <div style={{ textAlign: 'center', background: 'rgba(210, 153, 34, 0.1)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(210, 153, 34, 0.3)' }}>
-                <div style={{ fontSize: '12px', color: '#d29922', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Arena Rating</div>
-                <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#d29922' }}>{profileData.rating}</div>
-              </div>
-            </div>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <div style={{ textAlign: 'center', background: 'rgba(210, 153, 34, 0.1)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(210, 153, 34, 0.3)' }}>
+                  <div style={{ fontSize: '12px', color: '#d29922', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Arena Rating</div>
+                  <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#d29922' }}>{profileData.rating}</div>
+                </div>
 
-            {/* Badges */}
-            {profileData.badges.length > 0 && (
-              <div>
-                <h3 style={{ fontSize: '18px', marginBottom: '16px', color: 'var(--text-primary)' }}>Badges Earned</h3>
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                  {profileData.badges.map((badge, i) => (
-                    <div key={i} style={{ padding: '8px 16px', background: 'rgba(69, 243, 255, 0.1)', border: '1px solid var(--accent-primary)', borderRadius: '20px', color: 'var(--accent-primary)', fontSize: '14px', fontWeight: 500 }}>
-                      {badge}
-                    </div>
-                  ))}
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+                  {['Easy', 'Medium', 'Hard', 'Very Hard', 'Master'].map((b) => {
+                    const count = profileData.badges.filter(badge => badge === b).length;
+                    let color = 'var(--text-secondary)';
+                    if (b === 'Easy') color = '#3fb950'; // green
+                    if (b === 'Medium') color = '#d29922'; // yellow/gold
+                    if (b === 'Hard') color = '#f85149'; // red
+                    if (b === 'Very Hard') color = '#a371f7'; // purple
+                    if (b === 'Master') color = '#58a6ff'; // blue
+                    
+                    return (
+                      <div key={b} style={{ 
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', 
+                        background: 'rgba(255,255,255,0.05)', padding: '8px 12px', borderRadius: '8px', 
+                        border: `1px solid ${count > 0 ? color : 'rgba(255,255,255,0.1)'}`,
+                        opacity: count > 0 ? 1 : 0.5
+                      }}>
+                        <div style={{ fontSize: '12px', fontWeight: 'bold', color: count > 0 ? color : 'var(--text-secondary)', textTransform: 'uppercase' }}>{b}</div>
+                        <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--text-primary)' }}>{count}</div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-            )}
+            </div>
 
             <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
               {/* Courses Completed */}
