@@ -191,6 +191,8 @@ export const tutorialSessions: TutorialSession[] = [
             title: 'Quiz',
             description: 'Test your knowledge on the basics of quantum computing.',
             difficulty: 'Beginner',
+            isFinalTest: true,
+            pointsAward: 1,
             lessonContent: (
               <>
                 <p style={{ marginBottom: '16px' }}>

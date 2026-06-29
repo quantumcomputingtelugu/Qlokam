@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
+import Link from 'next/link';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { tutorialSessions } from '@/data/tutorials';
@@ -127,6 +128,9 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
                 <div style={{ textAlign: 'center', background: 'rgba(210, 153, 34, 0.1)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(210, 153, 34, 0.3)' }}>
                   <div style={{ fontSize: '12px', color: '#d29922', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Arena Rating</div>
                   <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#d29922' }}>{profileData.rating}</div>
+                  <Link href="/rating-history" style={{ display: 'inline-block', marginTop: '12px', background: 'rgba(210, 153, 34, 0.2)', color: '#d29922', textDecoration: 'none', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold' }}>
+                    View History &rarr;
+                  </Link>
                 </div>
 
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>

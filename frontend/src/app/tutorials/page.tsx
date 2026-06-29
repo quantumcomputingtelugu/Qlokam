@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, arrayUnion } from 'firebase/firestore';
 import VisualPlayground from '@/components/VisualPlayground';
 import { tutorialSessions, getAllTutorials } from '@/data/tutorials';
 import AdBanner from '@/components/AdBanner';
@@ -144,7 +144,16 @@ export default function TutorialsPage() {
       await setDoc(docRef, { 
         completedTutorials: newCompleted,
         ...(newlyEarnedBadge && { badges: updatedBadges }),
-        ...(activeTutorial.isFinalTest && { rating: updatedRating })
+        ...(activeTutorial.isFinalTest && { 
+          rating: updatedRating,
+          ...(activeTutorial.pointsAward && {
+            ratingHistory: arrayUnion({
+              reason: `Completed Module: ${activeTutorial.title}`,
+              points: activeTutorial.pointsAward,
+              timestamp: new Date().toISOString()
+            })
+          })
+        })
       }, { merge: true });
       
       setCompletedTutorials(newCompleted);

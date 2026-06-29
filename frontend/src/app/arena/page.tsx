@@ -6,7 +6,7 @@ import VisualPlayground from '@/components/VisualPlayground';
 import { arenaProblems, ArenaProblem } from '@/data/arena';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, arrayUnion } from 'firebase/firestore';
 import AdBanner from '@/components/AdBanner';
 import UsernameModal from '@/components/UsernameModal';
 
@@ -131,7 +131,15 @@ export default function ArenaPage() {
         setSolvedProblems(newSolved);
         try {
           const docRef = doc(db, 'users', user.uid);
-          await setDoc(docRef, { rating: newRating, solvedArenaProblems: newSolved }, { merge: true });
+          await setDoc(docRef, { 
+            rating: newRating, 
+            solvedArenaProblems: newSolved,
+            ratingHistory: arrayUnion({
+              reason: `Solved Arena Problem: ${activeProblem.title}`,
+              points: activeProblem.points,
+              timestamp: new Date().toISOString()
+            })
+          }, { merge: true });
         } catch (e) {
           console.error('Failed to save rating', e);
         }
