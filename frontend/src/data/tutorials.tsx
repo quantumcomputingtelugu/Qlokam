@@ -80,20 +80,67 @@ export const tutorialSessions: TutorialSession[] = [
             lessonContent: (
               <>
                 <p style={{ marginBottom: '16px' }}>
-                  Welcome to the quantum world! In classical computing, information is processed in bits, which can be either a <strong>0</strong> or a <strong>1</strong>. 
-                  However, quantum computing uses <strong>quantum bits</strong>, or <strong>qubits</strong>.
+                  Quantum computing is a way of performing computations using the laws of quantum mechanics—the branch of physics that describes how nature behaves at extremely small scales, such as atoms and subatomic particles.
                 </p>
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Superposition</h3>
                 <p style={{ marginBottom: '16px' }}>
-                  Unlike classical bits, qubits can exist in a state that is a combination of both 0 and 1 simultaneously. This property is known as <strong>superposition</strong>.
-                  Mathematically, a qubit&apos;s state $|\psi\rangle$ is represented as a linear combination of the computational basis states $|0\rangle$ and $|1\rangle$:
+                  The quantum world often behaves in ways that seem strange from our everyday point of view. Many quantum phenomena do not match our common sense because our intuition is built from experiences in the large, everyday world. Nevertheless, these phenomena are real and have been verified through countless experiments.
                 </p>
-                <div style={{ background: 'rgba(0,0,0,0.3)', padding: '16px', borderRadius: '8px', marginBottom: '16px', fontFamily: 'monospace', textAlign: 'center', fontSize: '18px', color: 'var(--accent-primary)' }}>
-                  |\psi\rangle = \alpha|0\rangle + \beta|1\rangle
+                <p style={{ marginBottom: '16px' }}>
+                  Quantum computers are fundamentally different from the computers, smartphones, and other electronic devices that we use today. To understand quantum computing, we first need to understand how ordinary computers store information.
+                </p>
+
+                {/* Visual Info: Classical Bit vs Qubit */}
+                <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', margin: '32px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ flex: '1', minWidth: '200px', textAlign: 'center' }}>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Classical Bit</h4>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+                      <div style={{ width: '60px', height: '60px', borderRadius: '8px', background: '#333', border: '2px solid #555', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '24px', fontWeight: 'bold', color: '#888' }}>0</div>
+                      <span style={{ color: 'var(--text-secondary)' }}>OR</span>
+                      <div style={{ width: '60px', height: '60px', borderRadius: '8px', background: 'var(--accent-primary)', border: '2px solid var(--accent-secondary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '24px', fontWeight: 'bold', color: '#fff', boxShadow: '0 0 15px var(--accent-primary)' }}>1</div>
+                    </div>
+                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>Strictly one state at a time.</p>
+                  </div>
+                  <div style={{ width: '1px', background: 'var(--surface-border)' }}></div>
+                  <div style={{ flex: '1', minWidth: '200px', textAlign: 'center' }}>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Quantum Bit (Qubit)</h4>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px' }}>
+                      <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'linear-gradient(135deg, #333 0%, var(--accent-primary) 100%)', border: '2px solid var(--accent-secondary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '20px', fontWeight: 'bold', color: '#fff', boxShadow: '0 0 20px var(--accent-primary)' }}>
+                        0 & 1
+                      </div>
+                    </div>
+                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>Can exist in a complex combination of both states (Superposition).</p>
+                  </div>
                 </div>
+
+                <p style={{ marginBottom: '16px' }}>
+                  In classical computers, information is stored using bits. A bit can have only one of two possible values: 0 or 1. In electronic circuits, these values are usually represented by different voltage levels. For example, a low voltage may represent 0, while a higher voltage may represent 1.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  So, in simple terms, a classical bit always exists in exactly one state at any moment: either 0 or 1.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Quantum computers use quantum bits, or qubits, instead of classical bits. A qubit can be realized using various quantum systems, such as:
+                </p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '8px' }}>the spin of an electron,</li>
+                  <li style={{ marginBottom: '8px' }}>the ground and excited energy states of an atom, or</li>
+                  <li style={{ marginBottom: '8px' }}>the polarization states of photons.</li>
+                </ul>
+                <p style={{ marginBottom: '16px' }}>
+                  At first glance, this may not seem very different from classical bits. However, quantum systems behave in ways that are fundamentally different from classical systems.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Measuring a classical bit is relatively straightforward. We can easily measure the voltage in a circuit using suitable instruments without significantly disturbing the system. In contrast, quantum systems are extremely small and delicate. At these microscopic scales, quantum effects dominate, physical processes occur extremely rapidly, and even the finite speed of light can become important when describing interactions and information transfer accurately.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Moreover, unlike in classical systems, the act of measuring a quantum system can itself disturb the system being measured. This makes observing and controlling quantum systems a challenging task.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Interestingly, this sensitivity is both a challenge and an opportunity. On one hand, quantum states can be easily disturbed by their surroundings, making it difficult to build reliable quantum computers. On the other hand, this same quantum behavior gives rise to remarkable phenomena such as superposition and entanglement, which provide quantum computers with capabilities beyond those of classical computers for certain problems.
+                </p>
               </>
             ),
-            practiceGoal: 'Place a single qubit in superposition by dragging a Hadamard (H) gate onto it!'
+            practiceGoal: 'Read through the foundational concepts of quantum computing.'
           },
           {
             id: 3,
