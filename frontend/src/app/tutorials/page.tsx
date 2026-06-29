@@ -336,15 +336,20 @@ export default function TutorialsPage() {
               ))}
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {tutorialSessions.find(s => s.id === activeCourseId)?.modules.map((tutorial) => {
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {tutorialSessions.find(s => s.id === activeCourseId)?.modules.map((tutorial, moduleIndex) => {
+                const isActive = activeTutorialId === tutorial.id || tutorial.subModules?.some(s => s.id === activeTutorialId);
                 const completed = completedTutorials.includes(tutorial.id);
-                const isActive = activeTutorialId === tutorial.id;
+                
                 return (
-                  <div key={tutorial.id} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div key={tutorial.id} style={{ display: 'flex', flexDirection: 'column' }}>
                     <div 
                       onClick={() => { 
-                        setActiveTutorialId(tutorial.id); 
+                        if (tutorial.subModules && tutorial.subModules.length > 0) {
+                          setActiveTutorialId(tutorial.subModules[0].id);
+                        } else {
+                          setActiveTutorialId(tutorial.id); 
+                        }
                         setActiveTab('lesson'); 
                         setSelectedAnswers({}); 
                         setShowQuizResults(false); 
@@ -372,7 +377,7 @@ export default function TutorialsPage() {
                     >
                       <div className="flex-between" style={{ flex: 1 }}>
                         <h4 style={{ fontSize: '15px', margin: 0, color: tutorial.isFinalTest ? '#d29922' : 'var(--text-primary)' }}>
-                          {tutorial.isFinalTest ? '🏆 ' : `${tutorial.id}. `}{tutorial.title}
+                          {tutorial.isFinalTest ? '🏆 ' : `${moduleIndex + 1}. `}{tutorial.title}
                         </h4>
                         {completed && (
                           <span style={{ fontSize: '12px', color: 'var(--success)' }}>
