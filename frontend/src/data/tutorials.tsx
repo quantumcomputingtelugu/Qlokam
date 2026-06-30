@@ -1831,6 +1831,7 @@ export const tutorialSessions: TutorialSession[] = [
                 </ul>
               </>
             ),
+            practiceGoal: 'Learn how to create an entangled pair of qubits.',
           },
           {
             id: 102,
