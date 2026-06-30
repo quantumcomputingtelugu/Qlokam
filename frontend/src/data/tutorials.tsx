@@ -745,6 +745,29 @@ export const tutorialSessions: TutorialSession[] = [
                     |α|² is the probability of measuring 0, and |β|² is the probability of measuring 1.
                   </p>
                 </div>
+
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Matrix Representation</h3>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  In quantum mechanics, qubits can also be represented as <strong>column vectors</strong> (a type of matrix with one column). The base states |0⟩ and |1⟩ look like this:
+                </p>
+                <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap', marginBottom: '32px' }}>
+                  <div style={{ flex: '1', minWidth: '150px', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+                    <div style={{ fontSize: '24px', color: 'var(--text-secondary)', marginBottom: '12px' }}>|0⟩ = </div>
+                    <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                      <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid var(--text-primary)', borderTop: '2px solid var(--text-primary)', borderBottom: '2px solid var(--text-primary)' }}></div>
+                      <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid var(--text-primary)', borderTop: '2px solid var(--text-primary)', borderBottom: '2px solid var(--text-primary)' }}></div>
+                      <div style={{ fontSize: '24px', lineHeight: '1.4', color: 'var(--text-primary)' }}>1<br/>0</div>
+                    </div>
+                  </div>
+                  <div style={{ flex: '1', minWidth: '150px', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+                    <div style={{ fontSize: '24px', color: 'var(--accent-primary)', marginBottom: '12px' }}>|1⟩ = </div>
+                    <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                      <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid var(--accent-primary)', borderTop: '2px solid var(--accent-primary)', borderBottom: '2px solid var(--accent-primary)' }}></div>
+                      <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid var(--accent-primary)', borderTop: '2px solid var(--accent-primary)', borderBottom: '2px solid var(--accent-primary)' }}></div>
+                      <div style={{ fontSize: '24px', lineHeight: '1.4', color: 'var(--accent-primary)' }}>0<br/>1</div>
+                    </div>
+                  </div>
+                </div>
               </>
             ),
             practiceGoal: 'Understand Dirac notation and probability amplitudes.'
@@ -1099,6 +1122,24 @@ export const tutorialSessions: TutorialSession[] = [
                 options: ["α", "1 - α", "|α|²", "α / 2"],
                 correctAnswerIndex: 2,
                 explanation: "The probability of measuring a state is the absolute square of its probability amplitude (|α|²)."
+              },
+              {
+                question: "In the angular representation of a qubit (θ and φ), what does the angle θ (theta) control?",
+                options: ["The probability of measuring |0⟩ vs |1⟩", "The relative phase between |0⟩ and |1⟩", "The speed of decoherence", "The entanglement strength"],
+                correctAnswerIndex: 0,
+                explanation: "Theta (θ) determines the latitude on the Bloch sphere, which directly controls the probabilities of measuring |0⟩ or |1⟩."
+              },
+              {
+                question: "If a qubit's probability amplitude for |0⟩ is 1/√2, what is the probability of measuring 0?",
+                options: ["100%", "25%", "50%", "70.7%"],
+                correctAnswerIndex: 2,
+                explanation: "The probability is the absolute square of the amplitude. (1/√2)² = 1/2, or 50%."
+              },
+              {
+                question: "In the matrix representation of qubits, what does a column vector with 1 on top and 0 on the bottom represent?",
+                options: ["State |1⟩", "State |0⟩", "A qubit in superposition", "A Pauli Gate"],
+                correctAnswerIndex: 1,
+                explanation: "The column vector [1; 0] is the standard mathematical matrix representation of the base state |0⟩."
               }
             ]
           }
@@ -1259,14 +1300,79 @@ export const tutorialSessions: TutorialSession[] = [
             difficulty: 'Beginner',
             lessonContent: (
               <>
-                <p style={{ marginBottom: '16px' }}>
-                  The Pauli gates are the most basic single-qubit operations:
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  The Pauli gates are the most fundamental single-qubit operations. Geometrically, they correspond to <strong>180-degree rotations</strong> around the X, Y, and Z axes of the Bloch sphere.
                 </p>
-                <ul style={{ paddingLeft: '20px', marginBottom: '16px', lineHeight: '1.6' }}>
-                  <li><strong>Pauli-X (NOT Gate):</strong> Rotates the state 180 degrees around the X-axis. It flips |0⟩ to |1⟩ and |1⟩ to |0⟩, acting like a classical NOT gate.</li>
-                  <li><strong>Pauli-Y:</strong> Rotates the state 180 degrees around the Y-axis. It maps |0⟩ to i|1⟩ and |1⟩ to -i|0⟩.</li>
-                  <li><strong>Pauli-Z (Phase Flip):</strong> Rotates the state 180 degrees around the Z-axis. It leaves |0⟩ unchanged but flips the sign of |1⟩ to -|1⟩, changing the quantum phase.</li>
-                </ul>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', margin: '32px 0' }}>
+                  
+                  {/* Pauli X */}
+                  <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                      <div style={{ flex: '2', minWidth: '200px' }}>
+                        <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '18px' }}>Pauli-X (NOT Gate)</h4>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                          Rotates the state 180° around the <strong>X-axis</strong>. It flips |0⟩ to |1⟩ and |1⟩ to |0⟩, acting just like a classical NOT gate.
+                        </p>
+                      </div>
+                      <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ fontSize: '24px', color: 'var(--accent-primary)', display: 'flex', alignItems: 'center' }}>
+                          <span style={{ marginRight: '12px' }}>X =</span>
+                          <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid var(--accent-primary)', borderTop: '2px solid var(--accent-primary)', borderBottom: '2px solid var(--accent-primary)' }}></div>
+                            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid var(--accent-primary)', borderTop: '2px solid var(--accent-primary)', borderBottom: '2px solid var(--accent-primary)' }}></div>
+                            <div style={{ fontSize: '20px', lineHeight: '1.4', textAlign: 'center' }}>0 &nbsp; 1<br/>1 &nbsp; 0</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Pauli Y */}
+                  <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                      <div style={{ flex: '2', minWidth: '200px' }}>
+                        <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '18px' }}>Pauli-Y</h4>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                          Rotates the state 180° around the <strong>Y-axis</strong>. It maps |0⟩ to i|1⟩ and |1⟩ to -i|0⟩, introducing complex phases.
+                        </p>
+                      </div>
+                      <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ fontSize: '24px', color: '#ff6b6b', display: 'flex', alignItems: 'center' }}>
+                          <span style={{ marginRight: '12px' }}>Y =</span>
+                          <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid #ff6b6b', borderTop: '2px solid #ff6b6b', borderBottom: '2px solid #ff6b6b' }}></div>
+                            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid #ff6b6b', borderTop: '2px solid #ff6b6b', borderBottom: '2px solid #ff6b6b' }}></div>
+                            <div style={{ fontSize: '20px', lineHeight: '1.4', textAlign: 'center' }}>0 &nbsp; -i<br/>i &nbsp; &nbsp;0</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Pauli Z */}
+                  <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                      <div style={{ flex: '2', minWidth: '200px' }}>
+                        <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '18px' }}>Pauli-Z (Phase Flip)</h4>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                          Rotates the state 180° around the <strong>Z-axis</strong>. It leaves |0⟩ unchanged but flips the sign of |1⟩ to -|1⟩ (changing the quantum phase).
+                        </p>
+                      </div>
+                      <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ fontSize: '24px', color: '#4CAF50', display: 'flex', alignItems: 'center' }}>
+                          <span style={{ marginRight: '12px' }}>Z =</span>
+                          <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid #4CAF50', borderTop: '2px solid #4CAF50', borderBottom: '2px solid #4CAF50' }}></div>
+                            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid #4CAF50', borderTop: '2px solid #4CAF50', borderBottom: '2px solid #4CAF50' }}></div>
+                            <div style={{ fontSize: '20px', lineHeight: '1.4', textAlign: 'center' }}>1 &nbsp; &nbsp;0<br/>0 &nbsp; -1</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
               </>
             ),
             practiceGoal: 'Learn the effects of the X, Y, and Z Pauli gates.',
