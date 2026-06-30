@@ -1143,9 +1143,39 @@ export const tutorialSessions: TutorialSession[] = [
                 <p style={{ marginBottom: '16px' }}>
                   A quantum gate is a basic quantum circuit operating on a small number of qubits. They are the building blocks of quantum algorithms.
                 </p>
-                <p style={{ marginBottom: '16px' }}>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
                   Mathematically, quantum gates are represented by <strong>Unitary Matrices</strong>. Because they are unitary, all quantum gates are reversible (except for measurement). If you apply a gate, there is always a way to apply an inverse gate to perfectly undo the operation.
                 </p>
+
+                {/* Visual Info: Quantum Gate Action */}
+                <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', margin: '32px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ flex: '1', minWidth: '300px', textAlign: 'center' }}>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Circuit Representation</h4>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px' }}>
+                      
+                      {/* Input Qubit */}
+                      <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>|0⟩</div>
+                      
+                      {/* Quantum Wire & Gate */}
+                      <div style={{ position: 'relative', width: '200px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 16px' }}>
+                        {/* The Wire */}
+                        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'var(--surface-border)' }}></div>
+                        
+                        {/* The Gate Box */}
+                        <div style={{ zIndex: 1, width: '60px', height: '60px', borderRadius: '8px', background: 'rgba(69,243,255,0.1)', border: '2px solid var(--accent-primary)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '24px', fontWeight: 'bold', color: 'var(--accent-primary)', boxShadow: '0 0 15px rgba(69,243,255,0.2)' }}>
+                          X
+                        </div>
+                      </div>
+
+                      {/* Output Qubit */}
+                      <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--accent-primary)' }}>|1⟩</div>
+
+                    </div>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.6' }}>
+                      The state <strong style={{ color: 'var(--text-primary)' }}>|0⟩</strong> flows along a "wire", passes through a <strong style={{ color: 'var(--accent-primary)' }}>Quantum Gate (X)</strong>, and is transformed into <strong style={{ color: 'var(--accent-primary)' }}>|1⟩</strong>.
+                    </p>
+                  </div>
+                </div>
               </>
             ),
             practiceGoal: 'Understand the concept of a quantum gate and unitarity.',
