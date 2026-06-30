@@ -516,6 +516,13 @@ export default function TutorialsPage() {
                         </ul>
                         
                         {(() => {
+                          if (!user) {
+                            return (
+                              <div style={{ padding: '16px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid var(--surface-border)', borderRadius: '8px', color: 'var(--text-secondary)' }}>
+                                🔒 Please sign in to take this quiz and save your progress.
+                              </div>
+                            );
+                          }
                           if (activeTutorial.prerequisiteId && !completedTutorials.includes(activeTutorial.prerequisiteId)) {
                             return (
                               <div style={{ padding: '16px', background: 'rgba(248, 175, 73, 0.1)', border: '1px solid var(--warning)', borderRadius: '8px', color: 'var(--warning)', marginTop: '16px' }}>
