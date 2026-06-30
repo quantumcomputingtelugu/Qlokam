@@ -22,6 +22,41 @@ export type TutorialModule = {
   subModules?: TutorialModule[];
 };
 
+const MatrixMultiplication = ({
+  equation,
+  matrixContent,
+  resultContent,
+  resultColor = 'var(--accent-primary)'
+}: {
+  equation: string;
+  matrixContent: React.ReactNode;
+  resultContent: React.ReactNode;
+  resultColor?: string;
+}) => (
+  <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', fontSize: '14px', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>
+    <div style={{ marginBottom: '12px' }} dangerouslySetInnerHTML={{ __html: equation }}></div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ display: 'inline-block', position: 'relative', padding: '0 8px' }}>
+        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '4px', borderLeft: '1px solid var(--text-secondary)', borderTop: '1px solid var(--text-secondary)', borderBottom: '1px solid var(--text-secondary)' }}></div>
+        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '4px', borderRight: '1px solid var(--text-secondary)', borderTop: '1px solid var(--text-secondary)', borderBottom: '1px solid var(--text-secondary)' }}></div>
+        {matrixContent}
+      </div>
+      <span>&times;</span>
+      <div style={{ display: 'inline-block', position: 'relative', padding: '0 8px' }}>
+        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '4px', borderLeft: '1px solid var(--text-secondary)', borderTop: '1px solid var(--text-secondary)', borderBottom: '1px solid var(--text-secondary)' }}></div>
+        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '4px', borderRight: '1px solid var(--text-secondary)', borderTop: '1px solid var(--text-secondary)', borderBottom: '1px solid var(--text-secondary)' }}></div>
+        α<br/>β
+      </div>
+      <span>=</span>
+      <div style={{ display: 'inline-block', position: 'relative', padding: '0 8px' }}>
+        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '4px', borderLeft: `1px solid ${resultColor}`, borderTop: `1px solid ${resultColor}`, borderBottom: `1px solid ${resultColor}` }}></div>
+        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '4px', borderRight: `1px solid ${resultColor}`, borderTop: `1px solid ${resultColor}`, borderBottom: `1px solid ${resultColor}` }}></div>
+        <span style={{ color: resultColor }}>{resultContent}</span>
+      </div>
+    </div>
+  </div>
+);
+
 export interface TutorialSession {
   id: string; // e.g. "course-basics"
   sessionName: string;
@@ -1314,6 +1349,7 @@ export const tutorialSessions: TutorialSession[] = [
                         <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                           Rotates the state 180° around the <strong>X-axis</strong>. It flips |0⟩ to |1⟩ and |1⟩ to |0⟩, acting just like a classical NOT gate.
                         </p>
+                        <MatrixMultiplication equation="X(α|0⟩ + β|1⟩) = β|0⟩ + α|1⟩" matrixContent={<>0 &nbsp; 1<br/>1 &nbsp; 0</>} resultContent={<>β<br/>α</>} />
                       </div>
                       <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
                         <div style={{ fontSize: '24px', color: 'var(--accent-primary)', display: 'flex', alignItems: 'center' }}>
@@ -1336,6 +1372,7 @@ export const tutorialSessions: TutorialSession[] = [
                         <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                           Rotates the state 180° around the <strong>Y-axis</strong>. It maps |0⟩ to i|1⟩ and |1⟩ to -i|0⟩, introducing complex phases.
                         </p>
+                        <MatrixMultiplication equation="Y(α|0⟩ + β|1⟩) = -iβ|0⟩ + iα|1⟩" matrixContent={<>0 &nbsp; -i<br/>i &nbsp; &nbsp;0</>} resultContent={<>-iβ<br/>iα</>} resultColor="#ff6b6b" />
                       </div>
                       <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
                         <div style={{ fontSize: '24px', color: '#ff6b6b', display: 'flex', alignItems: 'center' }}>
@@ -1358,6 +1395,7 @@ export const tutorialSessions: TutorialSession[] = [
                         <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                           Rotates the state 180° around the <strong>Z-axis</strong>. It leaves |0⟩ unchanged but flips the sign of |1⟩ to -|1⟩ (changing the quantum phase).
                         </p>
+                        <MatrixMultiplication equation="Z(α|0⟩ + β|1⟩) = α|0⟩ - β|1⟩" matrixContent={<>1 &nbsp; &nbsp;0<br/>0 &nbsp; -1</>} resultContent={<>α<br/>-β</>} resultColor="#4CAF50" />
                       </div>
                       <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
                         <div style={{ fontSize: '24px', color: '#4CAF50', display: 'flex', alignItems: 'center' }}>
@@ -1398,6 +1436,7 @@ export const tutorialSessions: TutorialSession[] = [
                         <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                           Rotates the state by <strong>90 degrees (π/2)</strong> around the Z-axis. Applying it twice equals a Pauli-Z gate.
                         </p>
+                        <MatrixMultiplication equation="S(α|0⟩ + β|1⟩) = α|0⟩ + iβ|1⟩" matrixContent={<>1 &nbsp; 0<br/>0 &nbsp; i</>} resultContent={<>α<br/>iβ</>} resultColor="#ffb84d" />
                       </div>
                       <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
                         <div style={{ fontSize: '24px', color: '#ffb84d', display: 'flex', alignItems: 'center' }}>
@@ -1420,6 +1459,7 @@ export const tutorialSessions: TutorialSession[] = [
                         <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                           Rotates the state by <strong>45 degrees (π/4)</strong> around the Z-axis. Applying it twice equals an S gate.
                         </p>
+                        <MatrixMultiplication equation="T(α|0⟩ + β|1⟩) = α|0⟩ + e<sup>iπ/4</sup>β|1⟩" matrixContent={<>1 &nbsp; &nbsp;0<br/>0 &nbsp; e<sup>iπ/4</sup></>} resultContent={<>α<br/>e<sup>iπ/4</sup>β</>} resultColor="#ffb84d" />
                       </div>
                       <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
                         <div style={{ fontSize: '24px', color: '#ffb84d', display: 'flex', alignItems: 'center' }}>
@@ -1460,6 +1500,7 @@ export const tutorialSessions: TutorialSession[] = [
                         <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                           Rotates the qubit by angle θ around the <strong>X-axis</strong>.
                         </p>
+                        <MatrixMultiplication equation="Rx(θ)(α|0⟩ + β|1⟩)" matrixContent={<>cos(θ/2) &nbsp; -i sin(θ/2)<br/>-i sin(θ/2) &nbsp; cos(θ/2)</>} resultContent={<>α cos(θ/2) - iβ sin(θ/2)<br/>-iα sin(θ/2) + β cos(θ/2)</>} />
                       </div>
                       <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
                         <div style={{ fontSize: '24px', color: 'var(--accent-primary)', display: 'flex', alignItems: 'center' }}>
@@ -1482,6 +1523,7 @@ export const tutorialSessions: TutorialSession[] = [
                         <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                           Rotates the qubit by angle θ around the <strong>Y-axis</strong>.
                         </p>
+                        <MatrixMultiplication equation="Ry(θ)(α|0⟩ + β|1⟩)" matrixContent={<>cos(θ/2) &nbsp; -sin(θ/2)<br/>sin(θ/2) &nbsp; cos(θ/2)</>} resultContent={<>α cos(θ/2) - β sin(θ/2)<br/>α sin(θ/2) + β cos(θ/2)</>} resultColor="#ff6b6b" />
                       </div>
                       <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
                         <div style={{ fontSize: '24px', color: '#ff6b6b', display: 'flex', alignItems: 'center' }}>
@@ -1504,6 +1546,7 @@ export const tutorialSessions: TutorialSession[] = [
                         <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                           Rotates the qubit by angle θ around the <strong>Z-axis</strong>.
                         </p>
+                        <MatrixMultiplication equation="Rz(θ)(α|0⟩ + β|1⟩)" matrixContent={<>e<sup>-iθ/2</sup> &nbsp; 0<br/>0 &nbsp; e<sup>iθ/2</sup></>} resultContent={<>α e<sup>-iθ/2</sup><br/>β e<sup>iθ/2</sup></>} resultColor="#4CAF50" />
                       </div>
                       <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
                         <div style={{ fontSize: '24px', color: '#4CAF50', display: 'flex', alignItems: 'center' }}>
