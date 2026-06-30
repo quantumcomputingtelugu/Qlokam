@@ -493,8 +493,11 @@ try:
     if measured_indices:
         try:
 ` +
-        code + // include the original code WITH measurements to simulate collapse
-        `\n
+        code
+          .split("\n")
+          .map((l) => "            " + l)
+          .join("\n") + // include the original code WITH measurements to simulate collapse
+        `
             qc.save_statevector()
             sim = AerSimulator(method='statevector')
             res = sim.run(qc, shots=1).result()
@@ -560,8 +563,11 @@ try:
     if measured_indices:
         try:
 ` +
-        code + // re-evaluate original code WITH measurements
-        `\n
+        code
+          .split("\n")
+          .map((l) => "            " + l)
+          .join("\n") + // re-evaluate original code WITH measurements
+        `
             result = simulator.simulate(circuit)
             collapsed_sv = result.final_state_vector
             c_probs = np.abs(collapsed_sv)**2
