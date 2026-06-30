@@ -116,6 +116,7 @@ export default function VisualPlayground({
   const [blochVectors, setBlochVectors] = useState<
     Record<string, { x: number; y: number; z: number }>
   >({});
+  const [measuredVals, setMeasuredVals] = useState<Record<string, number>>({});
   const [selectedBlochQubit, setSelectedBlochQubit] = useState<number | null>(
     null,
   );
@@ -141,6 +142,7 @@ export default function VisualPlayground({
       setNumQubits(3);
       setProbabilities({});
       setBlochVectors({});
+      setMeasuredVals({});
       setErrorMsg("");
       setCode("");
       setPendingTwoQubit(null);
@@ -468,12 +470,7 @@ try:
     theoretical_probs = {}
     for k, v in probs.items():
         if v > 1e-5:
-            if measured_indices:
-                measured_bits = "".join([k[${numQubits} - 1 - idx] for idx in measured_indices])
-                measured_bits = measured_bits[::-1]
-                theoretical_probs[measured_bits] = theoretical_probs.get(measured_bits, 0) + float(v)
-            else:
-                theoretical_probs[k] = float(v)
+            theoretical_probs[k] = float(v)
 
     bloch_vectors = {}
     try:
@@ -490,6 +487,7 @@ try:
         pass
 
     collapsed_probs = theoretical_probs
+    measured_vals = {}
     if measured_indices:
         try:
 ` +
@@ -503,18 +501,16 @@ try:
             res = sim.run(qc, shots=1).result()
             collapsed_sv = res.get_statevector()
             c_probs = collapsed_sv.probabilities_dict()
-            c_filtered = {}
-            for k, v in c_probs.items():
-                if v > 1e-5:
-                    mb = "".join([k[${numQubits} - 1 - idx] for idx in measured_indices])
-                    mb = mb[::-1]
-                    c_filtered[mb] = c_filtered.get(mb, 0) + float(v)
-            collapsed_probs = c_filtered
+            collapsed_probs = {k: float(v) for k, v in c_probs.items() if v > 1e-5}
+            for k, v in collapsed_probs.items():
+                for idx in measured_indices:
+                    measured_vals[str(idx)] = int(k[${numQubits} - 1 - idx])
+                break
         except Exception:
             pass
 
     print("##JSON_START##")
-    print(json.dumps({"probs": collapsed_probs, "theoretical_probs": theoretical_probs, "bloch": bloch_vectors}))
+    print(json.dumps({"probs": collapsed_probs, "theoretical_probs": theoretical_probs, "bloch": bloch_vectors, "measured_vals": measured_vals}))
     print("##JSON_END##")
 except Exception as e:
     print("ERROR:", str(e))
@@ -536,16 +532,9 @@ try:
     for i, p in enumerate(probs):
         if p > 1e-5:
             bin_str = format(i, f'0{${numQubits}}b')
-            if measured_indices:
-                # Cirq format has q0 on the far left (index 0)
-                measured_bits = "".join([bin_str[idx] for idx in measured_indices])
-                # To match Qiskit format (q0 on the far right), we reverse it
-                measured_bits = measured_bits[::-1]
-                theoretical_probs[measured_bits] = theoretical_probs.get(measured_bits, 0) + float(p)
-            else:
-                # Default reverse to match Qiskit
-                rev_bin_str = bin_str[::-1]
-                theoretical_probs[rev_bin_str] = float(p)
+            # Default reverse to match Qiskit
+            rev_bin_str = bin_str[::-1]
+            theoretical_probs[rev_bin_str] = float(p)
             
     bloch_vectors = {}
     try:
@@ -560,6 +549,7 @@ try:
         pass
 
     collapsed_probs = theoretical_probs
+    measured_vals = {}
     if measured_indices:
         try:
 ` +
@@ -571,19 +561,20 @@ try:
             result = simulator.simulate(circuit)
             collapsed_sv = result.final_state_vector
             c_probs = np.abs(collapsed_sv)**2
-            c_filtered = {}
             for i, p in enumerate(c_probs):
                 if p > 1e-5:
                     bin_str = format(i, f'0{${numQubits}}b')
-                    measured_bits = "".join([bin_str[idx] for idx in measured_indices])
-                    measured_bits = measured_bits[::-1]
-                    c_filtered[measured_bits] = c_filtered.get(measured_bits, 0) + float(p)
-            collapsed_probs = c_filtered
+                    rev_bin_str = bin_str[::-1]
+                    collapsed_probs[rev_bin_str] = float(p)
+            for k, v in collapsed_probs.items():
+                for idx in measured_indices:
+                    measured_vals[str(idx)] = int(k[${numQubits} - 1 - idx])
+                break
         except Exception:
             pass
         
     print("##JSON_START##")
-    print(json.dumps({"probs": collapsed_probs, "theoretical_probs": theoretical_probs, "bloch": bloch_vectors}))
+    print(json.dumps({"probs": collapsed_probs, "theoretical_probs": theoretical_probs, "bloch": bloch_vectors, "measured_vals": measured_vals}))
     print("##JSON_END##")
 except Exception as e:
     print("ERROR:", str(e))
@@ -611,6 +602,11 @@ except Exception as e:
             if (parsed.bloch && Object.keys(parsed.bloch).length > 0) {
               // We will store bloch vectors in a state variable (we need to add this)
               setBlochVectors(parsed.bloch);
+            }
+            if (parsed.measured_vals) {
+              setMeasuredVals(parsed.measured_vals);
+            } else {
+              setMeasuredVals({});
             }
           } else {
             setProbabilities(parsed);
@@ -1343,6 +1339,20 @@ except Exception as e:
                         />
                       </div>
                     </div>
+                    {measuredVals[qIdx] !== undefined && (
+                      <div
+                        style={{
+                          marginLeft: "12px",
+                          color: "#ff7b72",
+                          fontWeight: "bold",
+                          fontSize: "14px",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        M = {measuredVals[qIdx]}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
