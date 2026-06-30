@@ -2240,7 +2240,7 @@ export const tutorialSessions: TutorialSession[] = [
           {
             id: 104,
             title: 'Entanglement Circuit',
-            description: 'Build and analyze the Bell State circuit that creates a maximally entangled pair of qubits, with Qiskit convention.',
+            description: 'Build and analyze the Bell State circuit that creates a maximally entangled pair of qubits.',
             difficulty: 'Intermediate',
             lessonContent: (
               <>
@@ -2251,7 +2251,7 @@ export const tutorialSessions: TutorialSession[] = [
 
                 {/* ── Bell State Circuit ── */}
                 <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '28px', marginBottom: '16px' }}>Bell State Circuit</h3>
-                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 24px', margin: '16px 0', overflowX: 'auto' }}>
+                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 24px', margin: '16px 0', overflowX: 'auto', border: '1px solid rgba(255,255,255,0.05)' }}>
                   {/*
                     Grid: label(90) wire(20) H/blank(44) wire(20) CNOT(44) wire(1fr) M(44)
                     q₁ on TOP = target ⊕   |   q₀ on BOTTOM = H + control ●
@@ -2271,7 +2271,7 @@ export const tutorialSessions: TutorialSession[] = [
                       <div style={{ position: 'relative', width: '44px', height: '44px', border: '2px solid var(--text-secondary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.05)' }}>⊕</div>
                     </div>
                     <div style={{ height: '2px', background: 'var(--text-secondary)' }} />
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', justifySelf: 'center' }}>M</div>
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#b28215', background: 'rgba(178,130,21,0.08)', justifySelf: 'center' }}>M</div>
 
                     {/* Spacer with CNOT vertical connector */}
                     <div /><div /><div /><div />
@@ -2282,18 +2282,18 @@ export const tutorialSessions: TutorialSession[] = [
 
                     {/* ── q₀ row (BOTTOM — H + control) ── */}
                     <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontFamily: 'monospace' }}>q₀ |0⟩</span>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
                     {/* H gate */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.08)', boxShadow: '0 0 6px var(--accent-primary)', justifySelf: 'center' }}>H</div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.05)', justifySelf: 'center' }}>H</div>
+                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
                     {/* CNOT control ● with line going UP */}
                     <div style={{ position: 'relative', width: '44px', height: '44px', justifySelf: 'center' }}>
-                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'var(--accent-primary)', transform: 'translateY(-50%)' }} />
-                      <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '2px', height: '22px', background: 'var(--accent-primary)' }} />
-                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '14px', height: '14px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 6px var(--accent-primary)', zIndex: 1 }} />
+                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(0,212,255,0.4)', transform: 'translateY(-50%)' }} />
+                      <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '2px', height: '22px', background: 'rgba(0,212,255,0.4)' }} />
+                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '12px', height: '12px', borderRadius: '50%', background: 'var(--accent-primary)', zIndex: 1 }} />
                     </div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', justifySelf: 'center' }}>M</div>
+                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#b28215', background: 'rgba(178,130,21,0.08)', justifySelf: 'center' }}>M</div>
 
                   </div>
                   <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>
@@ -2304,7 +2304,7 @@ export const tutorialSessions: TutorialSession[] = [
                 {/* ── Step by Step ── */}
                 <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Step-by-Step State Analysis</h3>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)', fontSize: '14px' }}>
-                  We track the 2-qubit state <strong>|q₀ q₁⟩</strong> at each timestep T.
+                  We track the 2-qubit state <strong>|q₀ q₁⟩</strong> (where q₀ is the bottom qubit and q₁ is the top qubit) at each timestep T.
                 </p>
                 {[
                   {
@@ -2324,25 +2324,25 @@ export const tutorialSessions: TutorialSession[] = [
                   {
                     t: 'T=2',
                     label: 'After CNOT (ctrl=q₀, tgt=q₁)',
-                    color: '#3fb950',
+                    color: '#2e7d32',
                     state: '|Φ⁺⟩ = 1/√2 (|00⟩ + |11⟩)',
                     desc: 'CNOT flips q₁ whenever q₀=|1⟩. The |10⟩ term becomes |11⟩. The result is the Φ⁺ Bell state — the two qubits are now maximally entangled and cannot be described independently.',
                   },
                   {
                     t: 'T=3',
                     label: 'Measurement',
-                    color: '#d29922',
+                    color: '#b28215',
                     state: '|00⟩ or |11⟩ (50% each)',
-                    desc: 'Measuring either qubit instantly determines the state of the other. If q₀ yields 0, q₁ is immediately known to be 0 — and vice versa for 1. They always agree, no matter how far apart. This is the essence of entanglement.',
+                    desc: 'Measuring either qubit instantly determines the state of the other. If q₀ yields 0, q₁ is immediately known to be 0. If q₀ yields 1, q₁ is immediately known to be 1. They always agree, no matter how far apart. This is the essence of entanglement.',
                   },
                 ].map(({ t, label, color, state, desc }) => (
-                  <div key={t} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: `1px solid ${color}33`, marginBottom: '12px' }}>
+                  <div key={t} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px', border: `1px solid rgba(255,255,255,0.08)`, marginBottom: '12px' }}>
                     <div style={{ width: '52px', flexShrink: 0, textAlign: 'center' }}>
-                      <div style={{ background: color, color: '#000', borderRadius: '6px', padding: '4px 6px', fontSize: '11px', fontWeight: 'bold', fontFamily: 'monospace' }}>{t}</div>
+                      <div style={{ background: color, color: '#000', borderRadius: '4px', padding: '4px 6px', fontSize: '11px', fontWeight: 'bold', fontFamily: 'monospace' }}>{t}</div>
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color, fontWeight: 'bold', fontSize: '14px', marginBottom: '4px' }}>{label}</div>
-                      <div style={{ fontFamily: 'monospace', color: 'var(--text-primary)', fontSize: '14px', marginBottom: '6px', background: 'rgba(0,0,0,0.2)', padding: '6px 10px', borderRadius: '6px', display: 'inline-block' }}>{state}</div>
+                      <div style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '14px', marginBottom: '4px' }}>{label}</div>
+                      <div style={{ fontFamily: 'monospace', color: 'var(--accent-primary)', fontSize: '14px', marginBottom: '6px', background: 'rgba(0,0,0,0.2)', padding: '6px 10px', borderRadius: '6px', display: 'inline-block' }}>{state}</div>
                       <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: '6px 0 0 0', lineHeight: '1.6' }}>{desc}</p>
                     </div>
                   </div>
@@ -2369,9 +2369,20 @@ export const tutorialSessions: TutorialSession[] = [
                   <li>A pre-shared <strong>entangled Bell pair |Φ⁺⟩</strong> between Alice and Bob</li>
                   <li>Two <strong>classical bits</strong> of measurement results sent from Alice to Bob</li>
                 </ul>
-                <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '14px 18px', marginBottom: '24px' }}>
+                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '10px', padding: '14px 18px', marginBottom: '24px' }}>
                   <strong style={{ color: 'var(--text-primary)' }}>Key insight:</strong>
                   <span style={{ color: 'var(--text-secondary)', marginLeft: '8px' }}>No physical qubit travels from Alice to Bob. Only 2 classical bits are sent. The quantum state |ψ⟩ is <em>reconstructed</em> at Bob's side. Alice's original qubit is destroyed — the no-cloning theorem is preserved.</span>
+                </div>
+
+                {/* ── The Teleportation Myth ── */}
+                <div style={{ background: 'rgba(255, 71, 87, 0.05)', border: '1px solid rgba(255, 71, 87, 0.15)', borderRadius: '10px', padding: '16px 20px', marginBottom: '24px' }}>
+                  <h4 style={{ color: '#ff4757', margin: '0 0 8px 0', fontSize: '15px', fontWeight: 'bold' }}>⚛ The Teleportation Myth</h4>
+                  <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px', lineHeight: '1.7' }}>
+                    <strong>Myth:</strong> Quantum teleportation allows instantaneous (faster-than-light) communication or physical transportation of objects, similar to science fiction. <br />
+                    <strong>Reality:</strong> <br />
+                    1. <strong>No matter is moved:</strong> Only the <em>quantum state</em> (information) is transferred. The original qubit's state is destroyed in the process (preserving the No-Cloning Theorem). <br />
+                    2. <strong>No FTL communication:</strong> Bob cannot read the teleported state until he receives Alice's classical measurement results. Because these 2 bits must travel over a classical channel (limited by the speed of light), the protocol is strictly bounded by the speed of light.
+                  </p>
                 </div>
 
                 {/* ── Roles ── */}
@@ -2382,7 +2393,7 @@ export const tutorialSessions: TutorialSession[] = [
                     { label: 'A  (Alice)', role: "Alice's half of the Bell pair", color: 'var(--text-primary)' },
                     { label: 'B  (Bob)', role: "Bob's half of the Bell pair — receives |ψ⟩", color: 'var(--text-secondary)' },
                   ].map(({ label, role, color }) => (
-                    <div key={label} style={{ flex: '1', minWidth: '150px', padding: '12px', background: 'rgba(255,255,255,0.04)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div key={label} style={{ flex: '1', minWidth: '150px', padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }}>
                       <div style={{ fontFamily: 'monospace', fontWeight: 'bold', color, marginBottom: '4px', fontSize: '14px' }}>{label}</div>
                       <div style={{ color: 'var(--text-secondary)', fontSize: '12px' }}>{role}</div>
                     </div>
@@ -2391,7 +2402,7 @@ export const tutorialSessions: TutorialSession[] = [
 
                 {/* ── Circuit matching image style ── */}
                 <h3 style={{ fontSize: '18px', color: 'var(--text-primary)', marginTop: '8px', marginBottom: '12px' }}>Teleportation Circuit</h3>
-                <div style={{ background: 'rgba(0,0,0,0.35)', borderRadius: '12px', padding: '24px 20px', margin: '12px 0', overflowX: 'auto', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div style={{ background: 'rgba(0,0,0,0.35)', borderRadius: '12px', padding: '24px 20px', margin: '12px 0', overflowX: 'auto', border: '1px solid rgba(255,255,255,0.05)' }}>
                   {/*
                     5 gate columns: CNOT(Q ctrl, A tgt) | H on Q | M on Q | X on B | Z on B
                     Grid: label(80) w(14) g1(44) w(14) g2(44) w(14) g3(44) w(14) g4(44) w(14) g5(44)
@@ -2400,31 +2411,31 @@ export const tutorialSessions: TutorialSession[] = [
 
                     {/* ── Q row (Alice's message qubit |ψ⟩) ── */}
                     <span style={{ fontFamily: 'monospace', fontSize: '13px', color: 'var(--text-primary)' }}>Q |ψ⟩</span>
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* CNOT control ● with line going DOWN to A */}
                     <div style={{ position: 'relative', width: '44px', height: '44px', justifySelf: 'center' }}>
-                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.5)', transform: 'translateY(-50%)' }} />
-                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translateX(-50%)', width: '2px', height: '22px', background: 'rgba(255,255,255,0.7)' }} />
-                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '12px', height: '12px', borderRadius: '50%', background: 'rgba(255,255,255,0.9)', zIndex: 1 }} />
+                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.3)', transform: 'translateY(-50%)' }} />
+                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translateX(-50%)', width: '2px', height: '22px', background: 'rgba(255,255,255,0.5)' }} />
+                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '12px', height: '12px', borderRadius: '50%', background: 'rgba(255,255,255,0.7)', zIndex: 1 }} />
                     </div>
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* H gate */}
-                    <div style={{ width: '44px', height: '44px', background: '#4a9eff', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#000', fontSize: '16px', justifySelf: 'center' }}>H</div>
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.05)', justifySelf: 'center', fontSize: '16px' }}>H</div>
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* Measurement M */}
-                    <div style={{ width: '44px', height: '44px', background: '#222', border: '2px solid #555', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#ccc', fontSize: '14px', justifySelf: 'center' }}>M</div>
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#b28215', background: 'rgba(178,130,21,0.08)', justifySelf: 'center', fontSize: '14px' }}>M</div>
                     {/* classical wire → Z on Bob (indicated by dashed) */}
-                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.3)' }} />
+                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.2)' }} />
                     {/* blank (no gate on Q at X column) */}
-                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.3)' }} />
-                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.3)' }} />
+                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.2)' }} />
+                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.2)' }} />
                     {/* blank at Z column */}
                     <div />
 
                     {/* spacer with CNOT connector */}
                     <div />
                     <div style={{ height: '8px' }} />
-                    <div style={{ height: '8px', display: 'flex', justifyContent: 'center' }}><div style={{ width: '2px', height: '100%', background: 'rgba(255,255,255,0.7)' }} /></div>
+                    <div style={{ height: '8px', display: 'flex', justifyContent: 'center' }}><div style={{ width: '2px', height: '100%', background: 'rgba(255,255,255,0.5)' }} /></div>
                     <div style={{ height: '8px' }} />
                     <div style={{ height: '8px' }} />
                     <div style={{ height: '8px' }} />
@@ -2436,67 +2447,67 @@ export const tutorialSessions: TutorialSession[] = [
 
                     {/* ── A row (Alice's Bell pair half) ── */}
                     <span style={{ fontFamily: 'monospace', fontSize: '13px', color: 'var(--text-primary)' }}>A</span>
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* CNOT target ⊕ */}
                     <div style={{ position: 'relative', width: '44px', height: '44px', justifySelf: 'center' }}>
-                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.5)', transform: 'translateY(-50%)' }} />
-                      <div style={{ position: 'relative', width: '44px', height: '44px', border: '2px solid rgba(255,255,255,0.8)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: 'rgba(255,255,255,0.9)' }}>⊕</div>
+                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.3)', transform: 'translateY(-50%)' }} />
+                      <div style={{ position: 'relative', width: '44px', height: '44px', border: '2px solid var(--text-secondary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.05)' }}>⊕</div>
                     </div>
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* identity — wire continues */}
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* Measurement M */}
-                    <div style={{ width: '44px', height: '44px', background: '#222', border: '2px solid #555', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#ccc', fontSize: '14px', justifySelf: 'center' }}>M</div>
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#b28215', background: 'rgba(178,130,21,0.08)', justifySelf: 'center', fontSize: '14px' }}>M</div>
                     {/* classical wire → X on Bob */}
-                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.3)' }} />
+                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.2)' }} />
                     {/* blank at X column */}
                     <div />
-                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.3)' }} />
+                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.2)' }} />
                     {/* blank at Z column */}
                     <div />
 
                     {/* Alice / Bob divider */}
                     <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', margin: '14px 0 4px 0', gap: '10px' }}>
-                      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.15)' }} />
-                      <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', whiteSpace: 'nowrap', letterSpacing: '1px' }}>Alice ──── Bob</span>
-                      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.15)' }} />
+                      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
+                      <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', whiteSpace: 'nowrap', letterSpacing: '1px' }}>Alice ──── Bob</span>
+                      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }} />
                     </div>
 
                     {/* ── B row (Bob's Bell pair half) ── */}
                     <span style={{ fontFamily: 'monospace', fontSize: '13px', color: 'var(--text-primary)' }}>B  |Φ⁺⟩</span>
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* identity — wire */}
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* identity */}
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* blank at M column */}
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* X gate (classically controlled by A's result) */}
-                    <div style={{ width: '44px', height: '44px', background: '#4a9eff', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#000', fontSize: '16px', justifySelf: 'center' }}>X</div>
-                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--text-secondary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.05)', justifySelf: 'center', fontSize: '16px' }}>X</div>
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.3)' }} />
                     {/* Z gate (classically controlled by Q's result) */}
-                    <div style={{ width: '44px', height: '44px', background: '#4a9eff', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#000', fontSize: '16px', justifySelf: 'center' }}>Z</div>
+                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--text-secondary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.05)', justifySelf: 'center', fontSize: '16px' }}>Z</div>
 
                   </div>
 
                   {/* Column labels */}
                   <div style={{ display: 'grid', gridTemplateColumns: '80px 14px 44px 14px 44px 14px 44px 14px 44px 14px 44px', minWidth: '480px', marginTop: '10px' }}>
                     <div /><div />
-                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>CNOT</div>
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.3)' }}>CNOT</div>
                     <div />
-                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>H</div>
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.3)' }}>H</div>
                     <div />
-                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>Measure</div>
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.3)' }}>Measure</div>
                     <div />
-                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>X corr.</div>
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.3)' }}>X corr.</div>
                     <div />
-                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>Z corr. → |ψ⟩</div>
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.3)' }}>Z corr. → |ψ⟩</div>
                   </div>
-                  <div style={{ marginTop: '10px', fontSize: '12px', color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace' }}>
+                  <div style={{ marginTop: '10px', fontSize: '12px', color: 'rgba(255,255,255,0.25)', fontFamily: 'monospace' }}>
                     Dashed lines = classical bits sent from Alice. X applied if m_A=1. Z applied if m_Q=1.
                   </div>
                 </div>
@@ -2530,9 +2541,9 @@ export const tutorialSessions: TutorialSession[] = [
                     desc: 'Bob applies X if Alice measured m_A=1, and Z if m_Q=1. This corrects Bob\'s qubit to exactly |ψ⟩. The state is teleported — Alice\'s Q qubit is destroyed, and Bob\'s B qubit is now |ψ⟩.',
                   },
                 ].map(({ t, label, color, state, desc }) => (
-                  <div key={t} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', marginBottom: '10px' }}>
+                  <div key={t} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '10px' }}>
                     <div style={{ width: '52px', flexShrink: 0, textAlign: 'center' }}>
-                      <div style={{ background: color, color: '#000', borderRadius: '6px', padding: '4px 6px', fontSize: '11px', fontWeight: 'bold', fontFamily: 'monospace' }}>{t}</div>
+                      <div style={{ background: color, color: '#000', borderRadius: '4px', padding: '4px 6px', fontSize: '11px', fontWeight: 'bold', fontFamily: 'monospace' }}>{t}</div>
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '14px', marginBottom: '4px' }}>{label}</div>
@@ -2592,13 +2603,13 @@ export const tutorialSessions: TutorialSession[] = [
                 <p style={{ marginBottom: '16px' }}>
                   <strong>Superdense Coding</strong> is the <em>dual</em> of Quantum Teleportation. Instead of sending quantum states using classical bits, here Alice sends <strong>2 classical bits</strong> to Bob by transmitting just <strong>1 qubit</strong> — thanks to a pre-shared Bell pair.
                 </p>
-                <div style={{ background: 'rgba(63,185,80,0.07)', border: '1px solid #3fb950', borderRadius: '10px', padding: '16px 20px', marginBottom: '24px' }}>
+                <div style={{ background: 'rgba(63,185,80,0.03)', border: '1px solid rgba(63,185,80,0.2)', borderRadius: '10px', padding: '16px 20px', marginBottom: '24px' }}>
                   <strong style={{ color: '#3fb950' }}>Core idea:</strong>
                   <span style={{ color: 'var(--text-secondary)', marginLeft: '8px' }}>Alice and Bob share a Bell pair. Alice encodes 2 bits into her qubit using one of four gates (I, X, Z, or XZ). She sends her qubit to Bob. Bob decodes both bits by measuring after applying CNOT + H.</span>
                 </div>
 
                 {/* Qiskit note */}
-                <div style={{ background: 'rgba(210,153,34,0.08)', border: '1px solid #d29922', borderRadius: '10px', padding: '16px 20px', marginBottom: '24px' }}>
+                <div style={{ background: 'rgba(210,153,34,0.03)', border: '1px solid rgba(210,153,34,0.2)', borderRadius: '10px', padding: '16px 20px', marginBottom: '24px' }}>
                   <h4 style={{ color: '#d29922', margin: '0 0 8px 0', fontSize: '15px' }}>⚠ Qiskit Convention (2 qubits)</h4>
                   <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px', lineHeight: '1.7' }}>
                     In Qiskit: <code>q[0]</code> = Alice's qubit (bottom), <code>q[1]</code> = Bob's qubit (top).<br />
@@ -2641,7 +2652,7 @@ export const tutorialSessions: TutorialSession[] = [
                 <p style={{ marginBottom: '16px', fontSize: '14px', color: 'var(--text-secondary)' }}>
                   The circuit has 3 phases: <span style={{ color: '#3fb950' }}>① Setup Bell pair</span> → <span style={{ color: 'var(--accent-primary)' }}>② Alice encodes</span> → <span style={{ color: '#d29922' }}>③ Bob decodes</span>.
                 </p>
-                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 20px', margin: '16px 0', overflowX: 'auto' }}>
+                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 20px', margin: '16px 0', overflowX: 'auto', border: '1px solid rgba(255,255,255,0.05)' }}>
                   {/* 
                     Columns: label(90) | w(14) | H(44) | w(14) | CNOT(44) | w(14) | encode(44) | w(14) | CNOT(44) | w(14) | H(44) | w(14) | M(44) 
                     = 90 + 7*(14+44) = 90 + 406 = 496px min
@@ -2650,66 +2661,66 @@ export const tutorialSessions: TutorialSession[] = [
 
                     {/* ── q₀ (Alice) row ── */}
                     <span style={{ color: 'var(--accent-primary)', fontSize: '13px', fontFamily: 'monospace' }}>q₀ Alice</span>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
                     {/* Phase 1: H */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #3fb950', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#3fb950', background: 'rgba(63,185,80,0.08)', boxShadow: '0 0 8px #3fb950', justifySelf: 'center' }}>H</div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #2e7d32', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#2e7d32', background: 'rgba(46,125,50,0.05)', justifySelf: 'center' }}>H</div>
+                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
                     {/* Phase 1: CNOT control */}
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', position: 'relative', height: '44px' }}>
-                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'var(--accent-primary)', transform: 'translateY(-50%)' }} />
-                      <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: '#3fb950', boxShadow: '0 0 8px #3fb950', zIndex: 1, marginTop: '15px' }} />
-                      <div style={{ width: '2px', flex: 1, background: '#3fb950' }} />
+                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(0,212,255,0.4)', transform: 'translateY(-50%)' }} />
+                      <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#2e7d32', zIndex: 1, marginTop: '16px' }} />
+                      <div style={{ width: '2px', flex: 1, background: '#2e7d32' }} />
                     </div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
                     {/* Phase 2: encode — X gate (for bit 01) then Z (for bit 10), here XZ for "11" */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.08)', boxShadow: '0 0 8px var(--accent-primary)', justifySelf: 'center', fontSize: '12px' }}>XZ</div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.05)', justifySelf: 'center', fontSize: '12px' }}>XZ</div>
+                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
                     {/* Phase 3: CNOT control */}
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', position: 'relative', height: '44px' }}>
-                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'var(--accent-primary)', transform: 'translateY(-50%)' }} />
-                      <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: '#d29922', boxShadow: '0 0 8px #d29922', zIndex: 1, marginTop: '15px' }} />
-                      <div style={{ width: '2px', flex: 1, background: '#d29922' }} />
+                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(0,212,255,0.4)', transform: 'translateY(-50%)' }} />
+                      <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#b28215', zIndex: 1, marginTop: '16px' }} />
+                      <div style={{ width: '2px', flex: 1, background: '#b28215' }} />
                     </div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
                     {/* Phase 3: H */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>H</div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#b28215', background: 'rgba(178,130,21,0.05)', justifySelf: 'center' }}>H</div>
+                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
                     {/* Measure */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>M</div>
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#b28215', background: 'rgba(178,130,21,0.05)', justifySelf: 'center' }}>M</div>
 
                     <div style={{ gridColumn: '1 / -1', height: '8px' }} />
 
                     {/* ── q₁ (Bob) row ── */}
                     <span style={{ color: '#3fb950', fontSize: '13px', fontFamily: 'monospace' }}>q₁  Bob</span>
-                    <div style={{ height: '2px', background: '#3fb950' }} />
+                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
                     {/* Phase 1: identity */}
-                    <div style={{ height: '2px', background: '#3fb950', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: '#3fb950' }} />
+                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)', justifySelf: 'stretch' }} />
+                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
                     {/* Phase 1: CNOT target */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #3fb950', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#3fb950', background: 'rgba(63,185,80,0.08)', boxShadow: '0 0 8px #3fb950', justifySelf: 'center' }}>⊕</div>
-                    <div style={{ height: '2px', background: '#3fb950' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #2e7d32', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#2e7d32', background: 'rgba(46,125,50,0.05)', justifySelf: 'center' }}>⊕</div>
+                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
                     {/* Phase 2: identity (Bob waits) */}
-                    <div style={{ height: '2px', background: '#3fb950', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: '#3fb950' }} />
+                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)', justifySelf: 'stretch' }} />
+                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
                     {/* Phase 3: CNOT target */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>⊕</div>
-                    <div style={{ height: '2px', background: '#3fb950' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#b28215', background: 'rgba(178,130,21,0.05)', justifySelf: 'center' }}>⊕</div>
+                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
                     {/* Phase 3: identity */}
-                    <div style={{ height: '2px', background: '#3fb950', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: '#3fb950' }} />
+                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)', justifySelf: 'stretch' }} />
+                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
                     {/* Measure */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>M</div>
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#b28215', background: 'rgba(178,130,21,0.05)', justifySelf: 'center' }}>M</div>
 
                   </div>
 
                   {/* Phase labels */}
                   <div style={{ display: 'grid', gridTemplateColumns: '90px 14px 44px 14px 44px 14px 44px 14px 44px 14px 44px 14px 44px', minWidth: '520px', marginTop: '14px' }}>
                     <div /><div />
-                    <div style={{ textAlign: 'center', fontSize: '11px', color: '#3fb950', gridColumn: 'span 3' }}>① Setup Bell pair (H + CNOT)</div>
+                    <div style={{ textAlign: 'center', fontSize: '11px', color: '#2e7d32', gridColumn: 'span 3' }}>① Setup Bell pair (H + CNOT)</div>
                     <div /><div style={{ textAlign: 'center', fontSize: '11px', color: 'var(--accent-primary)' }}>② Encode</div>
                     <div />
-                    <div style={{ textAlign: 'center', fontSize: '11px', color: '#d29922', gridColumn: 'span 3' }}>③ Bob decodes (CNOT + H)</div>
-                    <div /><div style={{ textAlign: 'center', fontSize: '11px', color: '#d29922' }}>Measure</div>
+                    <div style={{ textAlign: 'center', fontSize: '11px', color: '#b28215', gridColumn: 'span 3' }}>③ Bob decodes (CNOT + H)</div>
+                    <div /><div style={{ textAlign: 'center', fontSize: '11px', color: '#b28215' }}>Measure</div>
                   </div>
                 </div>
 
@@ -2722,12 +2733,12 @@ export const tutorialSessions: TutorialSession[] = [
                     desc: 'Alice (q₀) and Bob (q₁) both start in |0⟩. They share a quantum channel to create entanglement.',
                   },
                   {
-                    t: 'T=1', label: 'H on q₀', color: '#3fb950',
-                    state: '1/√2(|00⟩ + |10⟩)',
+                    t: 'T=1', label: 'H on q₀', color: '#2e7d32',
+                    state: '1/2(|00⟩ + |10⟩)',
                     desc: 'H gate on Alice\'s qubit q₀ creates superposition. The combined state is a tensor product with Bob\'s |0⟩.',
                   },
                   {
-                    t: 'T=2', label: 'CNOT (ctrl=q₀, tgt=q₁) → Bell pair shared', color: '#3fb950',
+                    t: 'T=2', label: 'CNOT (ctrl=q₀, tgt=q₁) → Bell pair shared', color: '#2e7d32',
                     state: '|Φ⁺⟩ = 1/√2(|00⟩ + |11⟩)',
                     desc: 'CNOT creates the Bell state. Now Alice and Bob share a maximally entangled pair. This setup happens BEFORE Alice knows the message.',
                   },
@@ -2737,23 +2748,23 @@ export const tutorialSessions: TutorialSession[] = [
                     desc: 'Alice applies Z first: |Φ⁺⟩ → |Φ⁻⟩ = 1/√2(|00⟩−|11⟩). Then X: → 1/√2(|01⟩−|10⟩) = |Ψ⁻⟩. She sends q₀ to Bob.',
                   },
                   {
-                    t: 'T=4', label: 'Bob applies CNOT (ctrl=q₀, tgt=q₁)', color: '#d29922',
-                    state: '1/√2(|01⟩ − |11⟩) = 1/√2|0−1⟩⊗|1⟩ ... → after H: |11⟩',
+                    t: 'T=4', label: 'Bob applies CNOT (ctrl=q₀, tgt=q₁)', color: '#b28215',
+                    state: '1/√2(|01⟩ − |11⟩) = 1/√2(|0⟩ − |1⟩) ⊗ |1⟩ ... → after H on q₀: |11⟩',
                     desc: 'Bob applies CNOT to disentangle, then H on q₀. This reverses the Bell pair creation and maps each Bell state to a unique computational basis state.',
                   },
                   {
-                    t: 'T=5', label: 'Bob measures both qubits', color: '#d29922',
+                    t: 'T=5', label: 'Bob measures both qubits', color: '#b28215',
                     state: '|11⟩ → measures 1,1',
                     desc: "Bob reads out |q₀q₁⟩ = |11⟩. He recovers Alice's original message: '11'. In Qiskit output order: bitstring '11' (q[1]q[0]).",
                   },
                 ].map(({ t, label, color, state, desc }) => (
-                  <div key={t} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: `1px solid ${color}33`, marginBottom: '12px' }}>
+                  <div key={t} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px', border: `1px solid rgba(255,255,255,0.05)`, marginBottom: '12px' }}>
                     <div style={{ width: '52px', flexShrink: 0, textAlign: 'center' }}>
-                      <div style={{ background: color, color: '#000', borderRadius: '6px', padding: '4px 6px', fontSize: '11px', fontWeight: 'bold', fontFamily: 'monospace' }}>{t}</div>
+                      <div style={{ background: color, color: '#000', borderRadius: '4px', padding: '4px 6px', fontSize: '11px', fontWeight: 'bold', fontFamily: 'monospace' }}>{t}</div>
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color, fontWeight: 'bold', fontSize: '14px', marginBottom: '4px' }}>{label}</div>
-                      <div style={{ fontFamily: 'monospace', color: 'var(--text-primary)', fontSize: '13px', marginBottom: '6px', background: 'rgba(0,0,0,0.2)', padding: '6px 10px', borderRadius: '6px', display: 'inline-block', maxWidth: '100%', wordBreak: 'break-word' }}>{state}</div>
+                      <div style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '14px', marginBottom: '4px' }}>{label}</div>
+                      <div style={{ fontFamily: 'monospace', color: 'var(--accent-primary)', fontSize: '13px', marginBottom: '6px', background: 'rgba(0,0,0,0.2)', padding: '6px 10px', borderRadius: '6px', display: 'inline-block', maxWidth: '100%', wordBreak: 'break-word' }}>{state}</div>
                       <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: '6px 0 0 0', lineHeight: '1.6' }}>{desc}</p>
                     </div>
                   </div>
