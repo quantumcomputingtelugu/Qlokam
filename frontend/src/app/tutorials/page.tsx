@@ -351,26 +351,34 @@ export default function TutorialsPage() {
                         }
                         
                         if (tutorial.subModules && tutorial.subModules.length > 0) {
-                          setActiveTutorialId(tutorial.subModules[0].id);
+                          // Only expand/collapse the dropdown if it has submodules
+                          setExpandedModules(prev => 
+                            prev.includes(tutorial.id) ? prev.filter(x => x !== tutorial.id) : [...prev, tutorial.id]
+                          );
                         } else {
+                          // Standard module with no submodules
                           setActiveTutorialId(tutorial.id); 
-                        }
-                        setActiveTab('lesson'); 
-                        setSelectedAnswers({}); 
-                        setShowQuizResults(false); 
-                        
-                        setExpandedModules(prev => 
-                          prev.includes(tutorial.id) ? prev.filter(x => x !== tutorial.id) : [...prev, tutorial.id]
-                        );
+                          setActiveTab('lesson'); 
+                          setSelectedAnswers({}); 
+                          setShowQuizResults(false); 
+                          
+                          setExpandedModules(prev => 
+                            prev.includes(tutorial.id) ? prev.filter(x => x !== tutorial.id) : [...prev, tutorial.id]
+                          );
 
-                        if (!tutorial.subModules?.length && typeof window !== 'undefined' && window.innerWidth <= 768) {
-                          setIsSidebarOpen(false);
+                          if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+                            setIsSidebarOpen(false);
+                          }
                         }
                       }}
                       style={{ 
                         padding: '16px', 
-                        background: isActive ? 'rgba(69, 243, 255, 0.1)' : 'rgba(255,255,255,0.03)', 
-                        border: `1px solid ${isActive ? 'var(--accent-primary)' : 'var(--surface-border)'}`, 
+                        background: (tutorial.subModules && tutorial.subModules.length > 0) 
+                          ? (expandedModules.includes(tutorial.id) ? 'rgba(192, 132, 252, 0.15)' : 'rgba(255,255,255,0.03)')
+                          : (isActive ? 'rgba(69, 243, 255, 0.1)' : 'rgba(255,255,255,0.03)'), 
+                        border: `1px solid ${(tutorial.subModules && tutorial.subModules.length > 0) 
+                          ? (expandedModules.includes(tutorial.id) ? '#c084fc' : 'var(--surface-border)')
+                          : (isActive ? 'var(--accent-primary)' : 'var(--surface-border)')}`, 
                         borderRadius: '8px',
                         cursor: 'pointer',
                         transition: 'all 0.2s',
