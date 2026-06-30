@@ -1384,13 +1384,57 @@ export const tutorialSessions: TutorialSession[] = [
             difficulty: 'Beginner',
             lessonContent: (
               <>
-                <p style={{ marginBottom: '16px' }}>
-                  Phase gates rotate the state around the Z-axis by specific fractions of a circle:
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  Phase gates rotate the state around the Z-axis by specific fractions of a circle. Importantly, a rotation around the Z-axis <strong>only affects the azimuthal angle (φ)</strong>, leaving the probability of measuring |0⟩ or |1⟩ unchanged. It only changes the quantum phase!
                 </p>
-                <ul style={{ paddingLeft: '20px', marginBottom: '16px', lineHeight: '1.6' }}>
-                  <li><strong>S Gate (Phase Gate):</strong> Rotates the state by 90 degrees (π/2) around the Z-axis. Applying it twice equals a Pauli-Z gate.</li>
-                  <li><strong>T Gate:</strong> Rotates the state by 45 degrees (π/4) around the Z-axis. Applying it twice equals an S gate.</li>
-                </ul>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', margin: '32px 0' }}>
+                  
+                  {/* S Gate */}
+                  <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                      <div style={{ flex: '2', minWidth: '200px' }}>
+                        <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '18px' }}>S Gate (Phase Gate)</h4>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                          Rotates the state by <strong>90 degrees (π/2)</strong> around the Z-axis. Applying it twice equals a Pauli-Z gate.
+                        </p>
+                      </div>
+                      <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ fontSize: '24px', color: '#ffb84d', display: 'flex', alignItems: 'center' }}>
+                          <span style={{ marginRight: '12px' }}>S =</span>
+                          <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid #ffb84d', borderTop: '2px solid #ffb84d', borderBottom: '2px solid #ffb84d' }}></div>
+                            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid #ffb84d', borderTop: '2px solid #ffb84d', borderBottom: '2px solid #ffb84d' }}></div>
+                            <div style={{ fontSize: '20px', lineHeight: '1.4', textAlign: 'center' }}>1 &nbsp; 0<br/>0 &nbsp; i</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* T Gate */}
+                  <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                      <div style={{ flex: '2', minWidth: '200px' }}>
+                        <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '18px' }}>T Gate</h4>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                          Rotates the state by <strong>45 degrees (π/4)</strong> around the Z-axis. Applying it twice equals an S gate.
+                        </p>
+                      </div>
+                      <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ fontSize: '24px', color: '#ffb84d', display: 'flex', alignItems: 'center' }}>
+                          <span style={{ marginRight: '12px' }}>T =</span>
+                          <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid #ffb84d', borderTop: '2px solid #ffb84d', borderBottom: '2px solid #ffb84d' }}></div>
+                            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid #ffb84d', borderTop: '2px solid #ffb84d', borderBottom: '2px solid #ffb84d' }}></div>
+                            <div style={{ fontSize: '20px', lineHeight: '1.4', textAlign: 'center' }}>1 &nbsp; &nbsp;0<br/>0 &nbsp; e<sup>iπ/4</sup></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
               </>
             ),
             practiceGoal: 'Understand fractional Z-axis rotations.',
@@ -1402,15 +1446,81 @@ export const tutorialSessions: TutorialSession[] = [
             difficulty: 'Intermediate',
             lessonContent: (
               <>
-                <p style={{ marginBottom: '16px' }}>
-                  While Pauli and Phase gates represent fixed rotations, <strong>Rotation Gates</strong> allow you to rotate a qubit by an arbitrary angle θ:
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  While Pauli and Phase gates represent fixed, predefined rotations, <strong>Rotation Gates</strong> allow you to specify a <strong>custom angle θ (theta)</strong> to rotate a qubit by any arbitrary amount around the X, Y, or Z axes.
                 </p>
-                <ul style={{ paddingLeft: '20px', marginBottom: '16px', lineHeight: '1.6' }}>
-                  <li><strong>Rx(θ):</strong> Rotates by θ around the X-axis.</li>
-                  <li><strong>Ry(θ):</strong> Rotates by θ around the Y-axis.</li>
-                  <li><strong>Rz(θ):</strong> Rotates by θ around the Z-axis.</li>
-                </ul>
-                <p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', margin: '32px 0' }}>
+                  
+                  {/* Rx Gate */}
+                  <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                      <div style={{ flex: '2', minWidth: '200px' }}>
+                        <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '18px' }}>Rx(θ)</h4>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                          Rotates the qubit by angle θ around the <strong>X-axis</strong>.
+                        </p>
+                      </div>
+                      <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ fontSize: '24px', color: 'var(--accent-primary)', display: 'flex', alignItems: 'center' }}>
+                          <span style={{ marginRight: '12px' }}>Rx =</span>
+                          <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid var(--accent-primary)', borderTop: '2px solid var(--accent-primary)', borderBottom: '2px solid var(--accent-primary)' }}></div>
+                            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid var(--accent-primary)', borderTop: '2px solid var(--accent-primary)', borderBottom: '2px solid var(--accent-primary)' }}></div>
+                            <div style={{ fontSize: '16px', lineHeight: '1.4', textAlign: 'center' }}>cos(θ/2) &nbsp; -i sin(θ/2)<br/>-i sin(θ/2) &nbsp; cos(θ/2)</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Ry Gate */}
+                  <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                      <div style={{ flex: '2', minWidth: '200px' }}>
+                        <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '18px' }}>Ry(θ)</h4>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                          Rotates the qubit by angle θ around the <strong>Y-axis</strong>.
+                        </p>
+                      </div>
+                      <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ fontSize: '24px', color: '#ff6b6b', display: 'flex', alignItems: 'center' }}>
+                          <span style={{ marginRight: '12px' }}>Ry =</span>
+                          <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid #ff6b6b', borderTop: '2px solid #ff6b6b', borderBottom: '2px solid #ff6b6b' }}></div>
+                            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid #ff6b6b', borderTop: '2px solid #ff6b6b', borderBottom: '2px solid #ff6b6b' }}></div>
+                            <div style={{ fontSize: '16px', lineHeight: '1.4', textAlign: 'center' }}>cos(θ/2) &nbsp; -sin(θ/2)<br/>sin(θ/2) &nbsp; cos(θ/2)</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Rz Gate */}
+                  <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                      <div style={{ flex: '2', minWidth: '200px' }}>
+                        <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '18px' }}>Rz(θ)</h4>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                          Rotates the qubit by angle θ around the <strong>Z-axis</strong>.
+                        </p>
+                      </div>
+                      <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ fontSize: '24px', color: '#4CAF50', display: 'flex', alignItems: 'center' }}>
+                          <span style={{ marginRight: '12px' }}>Rz =</span>
+                          <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid #4CAF50', borderTop: '2px solid #4CAF50', borderBottom: '2px solid #4CAF50' }}></div>
+                            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid #4CAF50', borderTop: '2px solid #4CAF50', borderBottom: '2px solid #4CAF50' }}></div>
+                            <div style={{ fontSize: '16px', lineHeight: '1.4', textAlign: 'center' }}>e<sup>-iθ/2</sup> &nbsp; 0<br/>0 &nbsp; e<sup>iθ/2</sup></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                   These are essential for fine-tuning states in algorithms like VQE (Variational Quantum Eigensolver).
                 </p>
               </>
