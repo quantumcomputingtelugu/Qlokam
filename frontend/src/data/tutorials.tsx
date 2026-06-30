@@ -2249,115 +2249,91 @@ export const tutorialSessions: TutorialSession[] = [
                   The simplest way to create entanglement is the <strong>Bell State circuit</strong>.
                 </p>
 
-                {/* ── Qiskit Convention ── */}
-                <div style={{ background: 'rgba(210,153,34,0.08)', border: '1px solid #d29922', borderRadius: '10px', padding: '16px 20px', marginBottom: '24px' }}>
-                  <h4 style={{ color: '#d29922', margin: '0 0 8px 0', fontSize: '15px' }}>⚠ Qiskit Bit-Order Convention</h4>
-                  <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px', lineHeight: '1.7' }}>
-                    In <strong>Qiskit</strong>, qubit indices are <em>little-endian</em> — <strong>q[0] is drawn at the bottom</strong> of the circuit and contributes the <em>least significant bit</em> to the statevector.
-                    So the state <code>|q[1]q[0]⟩</code> is written with q[1] first in ket notation.<br /><br />
-                    In our diagrams below, we use the standard textbook convention (q₀ on top). We will show the Qiskit equivalent separately.
-                  </p>
-                </div>
-
                 {/* ── Bell State Circuit ── */}
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '28px', marginBottom: '16px' }}>Bell State Circuit — Standard (Textbook)</h3>
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '28px', marginBottom: '16px' }}>Bell State Circuit</h3>
                 <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 24px', margin: '16px 0', overflowX: 'auto' }}>
+                  {/*
+                    Grid: label(90) wire(20) H/blank(44) wire(20) CNOT(44) wire(1fr) M(44)
+                    q₁ on TOP = target ⊕   |   q₀ on BOTTOM = H + control ●
+                  */}
                   <div style={{ display: 'grid', gridTemplateColumns: '90px 20px 44px 20px 44px 1fr 44px', minWidth: '420px', alignItems: 'center' }}>
-                    <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontFamily: 'monospace' }}>q₀ |0⟩</span>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
-                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.08)', boxShadow: '0 0 8px var(--accent-primary)', justifySelf: 'center' }}>H</div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', position: 'relative', height: '44px' }}>
-                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'var(--accent-primary)', transform: 'translateY(-50%)' }} />
-                      <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 8px var(--accent-primary)', zIndex: 1, marginTop: '15px' }} />
-                      <div style={{ width: '2px', flex: 1, background: 'var(--accent-primary)' }} />
-                    </div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>M</div>
-                    <div style={{ gridColumn: '1 / -1', height: '8px' }} />
-                    <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontFamily: 'monospace' }}>q₁ |0⟩</span>
-                    <div style={{ height: '2px', background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
-                    <div style={{ height: '2px', background: '#3fb950', boxShadow: '0 0 4px #3fb950', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #3fb950', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#3fb950', background: 'rgba(63,185,80,0.08)', boxShadow: '0 0 8px #3fb950', justifySelf: 'center' }}>⊕</div>
-                    <div style={{ height: '2px', background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>M</div>
-                  </div>
-                  <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>
-                    Standard (textbook) — q₀ on top, q₁ on bottom
-                  </div>
-                </div>
 
-                {/* ── Qiskit Circuit ── */}
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '28px', marginBottom: '8px' }}>Bell State Circuit — Qiskit Convention</h3>
-                <p style={{ marginBottom: '16px', fontSize: '14px', color: 'var(--text-secondary)' }}>
-                  In Qiskit the diagram is <em>flipped vertically</em>: <strong>q[0] is at the bottom</strong>. The logic is identical; only the visual order changes.
-                </p>
-                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 24px', margin: '16px 0', overflowX: 'auto' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '90px 20px 44px 20px 44px 1fr 44px', minWidth: '420px', alignItems: 'center' }}>
-                    {/* q[1] on top in Qiskit diagram */}
-                    <span style={{ color: '#3fb950', fontSize: '13px', fontFamily: 'monospace' }}>q[1] |0⟩</span>
-                    <div style={{ height: '2px', background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
-                    <div style={{ height: '2px', background: '#3fb950', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: '#3fb950' }} />
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', position: 'relative', height: '44px' }}>
-                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: '#3fb950', transform: 'translateY(-50%)' }} />
-                      <div style={{ width: '44px', height: '44px', border: '2px solid #3fb950', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#3fb950', background: 'rgba(63,185,80,0.08)', boxShadow: '0 0 8px #3fb950' }}>⊕</div>
+                    {/* ── q₁ row (TOP — target) ── */}
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontFamily: 'monospace' }}>q₁ |0⟩</span>
+                    <div style={{ height: '2px', background: 'var(--text-secondary)' }} />
+                    {/* No gate in H column */}
+                    <div style={{ height: '2px', background: 'var(--text-secondary)', justifySelf: 'stretch' }} />
+                    <div style={{ height: '2px', background: 'var(--text-secondary)' }} />
+                    {/* CNOT target ⊕ with line going DOWN to q₀ */}
+                    <div style={{ position: 'relative', width: '44px', height: '44px', justifySelf: 'center' }}>
+                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'var(--text-secondary)', transform: 'translateY(-50%)' }} />
+                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translateX(-50%)', width: '2px', height: '22px', background: 'var(--accent-primary)' }} />
+                      <div style={{ position: 'relative', width: '44px', height: '44px', border: '2px solid var(--text-secondary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.05)' }}>⊕</div>
                     </div>
-                    <div style={{ height: '2px', background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>M</div>
-                    <div style={{ gridColumn: '1 / -1', height: '8px' }} />
-                    {/* q[0] on bottom in Qiskit diagram — this is control */}
-                    <span style={{ color: 'var(--accent-primary)', fontSize: '13px', fontFamily: 'monospace' }}>q[0] |0⟩</span>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
-                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.08)', boxShadow: '0 0 8px var(--accent-primary)', justifySelf: 'center' }}>H</div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', position: 'relative', height: '44px' }}>
+                    <div style={{ height: '2px', background: 'var(--text-secondary)' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', justifySelf: 'center' }}>M</div>
+
+                    {/* Spacer with CNOT vertical connector */}
+                    <div /><div /><div /><div />
+                    <div style={{ height: '8px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <div style={{ width: '2px', height: '100%', background: 'var(--accent-primary)' }} />
+                    </div>
+                    <div /><div />
+
+                    {/* ── q₀ row (BOTTOM — H + control) ── */}
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontFamily: 'monospace' }}>q₀ |0⟩</span>
+                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    {/* H gate */}
+                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.08)', boxShadow: '0 0 6px var(--accent-primary)', justifySelf: 'center' }}>H</div>
+                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    {/* CNOT control ● with line going UP */}
+                    <div style={{ position: 'relative', width: '44px', height: '44px', justifySelf: 'center' }}>
                       <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'var(--accent-primary)', transform: 'translateY(-50%)' }} />
-                      <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 8px var(--accent-primary)', zIndex: 1, marginTop: '15px' }} />
-                      <div style={{ width: '2px', flex: 1, background: 'var(--accent-primary)' }} />
+                      <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '2px', height: '22px', background: 'var(--accent-primary)' }} />
+                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '14px', height: '14px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 6px var(--accent-primary)', zIndex: 1 }} />
                     </div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>M</div>
+                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', justifySelf: 'center' }}>M</div>
+
                   </div>
                   <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>
-                    Qiskit convention — q[0] at bottom (little-endian). Statevector order: |q[1]q[0]⟩
+                    q₁ on top (CNOT target ⊕) · q₀ at bottom (H gate + CNOT control ●)
                   </div>
                 </div>
 
                 {/* ── Step by Step ── */}
                 <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Step-by-Step State Analysis</h3>
                 <p style={{ marginBottom: '16px', color: 'var(--text-secondary)', fontSize: '14px' }}>
-                  We track the combined 2-qubit state <strong>|q₀q₁⟩</strong> at each timestep T.
+                  We track the 2-qubit state <strong>|q₀ q₁⟩</strong> at each timestep T.
                 </p>
                 {[
                   {
                     t: 'T=0',
                     label: 'Initial State',
                     color: 'var(--text-secondary)',
-                    state: '|00⟩ = |0⟩ ⊗ |0⟩',
-                    desc: 'Both qubits start in the ground state |0⟩. The combined state is |00⟩.',
+                    state: '|q₀q₁⟩ = |00⟩',
+                    desc: 'Both qubits start in the ground state |0⟩. The combined 2-qubit state is |00⟩.',
                   },
                   {
                     t: 'T=1',
                     label: 'After H on q₀',
                     color: 'var(--accent-primary)',
                     state: '1/√2 (|00⟩ + |10⟩)',
-                    desc: 'The Hadamard gate puts q₀ into superposition: |0⟩ → 1/√2(|0⟩+|1⟩). q₁ is still |0⟩, giving us 1/√2(|00⟩+|10⟩).',
+                    desc: 'The Hadamard gate puts q₀ into an equal superposition: |0⟩ → 1/√2(|0⟩+|1⟩). q₁ remains |0⟩, so the combined state becomes 1/√2(|00⟩+|10⟩).',
                   },
                   {
                     t: 'T=2',
                     label: 'After CNOT (ctrl=q₀, tgt=q₁)',
                     color: '#3fb950',
-                    state: '1/√2 (|00⟩ + |11⟩) = |Φ⁺⟩',
-                    desc: 'CNOT flips q₁ when q₀=|1⟩. The |10⟩ term becomes |11⟩. Result: the Φ⁺ Bell state — maximally entangled!',
+                    state: '|Φ⁺⟩ = 1/√2 (|00⟩ + |11⟩)',
+                    desc: 'CNOT flips q₁ whenever q₀=|1⟩. The |10⟩ term becomes |11⟩. The result is the Φ⁺ Bell state — the two qubits are now maximally entangled and cannot be described independently.',
                   },
                   {
                     t: 'T=3',
                     label: 'Measurement',
                     color: '#d29922',
                     state: '|00⟩ or |11⟩ (50% each)',
-                    desc: 'Measuring q₀ collapses the Bell state. If q₀=0 → q₁=0. If q₀=1 → q₁=1. The two qubits are always correlated.',
+                    desc: 'Measuring either qubit instantly determines the state of the other. If q₀ yields 0, q₁ is immediately known to be 0 — and vice versa for 1. They always agree, no matter how far apart. This is the essence of entanglement.',
                   },
                 ].map(({ t, label, color, state, desc }) => (
                   <div key={t} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: `1px solid ${color}33`, marginBottom: '12px' }}>
@@ -2387,155 +2363,180 @@ export const tutorialSessions: TutorialSession[] = [
             lessonContent: (
               <>
                 <p style={{ marginBottom: '16px' }}>
-                  <strong>Quantum Teleportation</strong> is a protocol that allows Alice to send an <em>unknown qubit state</em> to Bob using:
+                  <strong>Quantum Teleportation</strong> is a protocol that transfers an unknown qubit state from Alice to Bob using:
                 </p>
                 <ul style={{ paddingLeft: '20px', marginBottom: '20px', color: 'var(--text-secondary)', lineHeight: '2' }}>
-                  <li>One <strong>shared entangled Bell pair</strong></li>
-                  <li>Two <strong>classical bits</strong> of communication</li>
+                  <li>A pre-shared <strong>entangled Bell pair |Φ⁺⟩</strong> between Alice and Bob</li>
+                  <li>Two <strong>classical bits</strong> of measurement results sent from Alice to Bob</li>
                 </ul>
-                <div style={{ background: 'rgba(0,212,255,0.06)', border: '1px solid var(--accent-primary)', borderRadius: '10px', padding: '16px 20px', marginBottom: '24px' }}>
-                  <strong style={{ color: 'var(--accent-primary)' }}>Key insight:</strong>
-                  <span style={{ color: 'var(--text-secondary)', marginLeft: '8px' }}>No physical qubit travels. The <em>quantum information</em> (the state) is reconstructed at Bob's location. This does NOT violate no-cloning: Alice's qubit is destroyed in the process.</span>
-                </div>
-
-                {/* ── Qiskit note ── */}
-                <div style={{ background: 'rgba(210,153,34,0.08)', border: '1px solid #d29922', borderRadius: '10px', padding: '16px 20px', marginBottom: '24px' }}>
-                  <h4 style={{ color: '#d29922', margin: '0 0 8px 0', fontSize: '15px' }}>⚠ Qiskit Convention (3 qubits)</h4>
-                  <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px', lineHeight: '1.7' }}>
-                    In Qiskit: <code>q[0]</code> = Alice's message qubit |ψ⟩ (bottom), <code>q[1]</code> = Alice's Bell pair qubit (middle), <code>q[2]</code> = Bob's Bell pair qubit (top).<br />
-                    The statevector is stored as <code>|q[2]q[1]q[0]⟩</code> (most significant bit first).
-                  </p>
+                <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px', padding: '14px 18px', marginBottom: '24px' }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>Key insight:</strong>
+                  <span style={{ color: 'var(--text-secondary)', marginLeft: '8px' }}>No physical qubit travels from Alice to Bob. Only 2 classical bits are sent. The quantum state |ψ⟩ is <em>reconstructed</em> at Bob's side. Alice's original qubit is destroyed — the no-cloning theorem is preserved.</span>
                 </div>
 
                 {/* ── Roles ── */}
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '28px', marginBottom: '12px' }}>The Three Qubits</h3>
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '28px' }}>
+                <h3 style={{ fontSize: '18px', color: 'var(--text-primary)', marginTop: '8px', marginBottom: '12px' }}>The Three Qubits</h3>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '24px' }}>
                   {[
-                    { label: 'q₀  (|ψ⟩)', role: "Alice's unknown qubit to teleport", color: 'var(--accent-primary)' },
-                    { label: 'q₁  (Alice)', role: "Alice's half of the Bell pair", color: '#3fb950' },
-                    { label: 'q₂  (Bob)', role: "Bob's half of the Bell pair", color: '#d29922' },
+                    { label: 'Q  (|ψ⟩)', role: "Alice's qubit — the unknown state to teleport", color: 'var(--accent-primary)' },
+                    { label: 'A  (Alice)', role: "Alice's half of the Bell pair", color: 'var(--text-primary)' },
+                    { label: 'B  (Bob)', role: "Bob's half of the Bell pair — receives |ψ⟩", color: 'var(--text-secondary)' },
                   ].map(({ label, role, color }) => (
-                    <div key={label} style={{ flex: '1', minWidth: '160px', padding: '14px', background: 'rgba(255,255,255,0.04)', borderRadius: '10px', border: `1px solid ${color}55` }}>
-                      <div style={{ fontFamily: 'monospace', fontWeight: 'bold', color, marginBottom: '6px', fontSize: '15px' }}>{label}</div>
-                      <div style={{ color: 'var(--text-secondary)', fontSize: '13px' }}>{role}</div>
+                    <div key={label} style={{ flex: '1', minWidth: '150px', padding: '12px', background: 'rgba(255,255,255,0.04)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                      <div style={{ fontFamily: 'monospace', fontWeight: 'bold', color, marginBottom: '4px', fontSize: '14px' }}>{label}</div>
+                      <div style={{ color: 'var(--text-secondary)', fontSize: '12px' }}>{role}</div>
                     </div>
                   ))}
                 </div>
 
-                {/* ── Circuit ── */}
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '8px', marginBottom: '16px' }}>Teleportation Circuit</h3>
-                {/* 
-                  Columns: label(90) | phase1_wire(16) | phase1_gate(44) | phase2_wire(16) | phase2_gate(44) | phase3_wire(16) | phase3_gate(44) | wire(16) | M(44)
-                  We'll use a simpler 8-column grid 
-                */}
-                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 20px', margin: '16px 0', overflowX: 'auto' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '90px 16px 44px 16px 44px 16px 44px 16px 44px', minWidth: '500px', alignItems: 'center', rowGap: '0' }}>
+                {/* ── Circuit matching image style ── */}
+                <h3 style={{ fontSize: '18px', color: 'var(--text-primary)', marginTop: '8px', marginBottom: '12px' }}>Teleportation Circuit</h3>
+                <div style={{ background: 'rgba(0,0,0,0.35)', borderRadius: '12px', padding: '24px 20px', margin: '12px 0', overflowX: 'auto', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  {/*
+                    5 gate columns: CNOT(Q ctrl, A tgt) | H on Q | M on Q | X on B | Z on B
+                    Grid: label(80) w(14) g1(44) w(14) g2(44) w(14) g3(44) w(14) g4(44) w(14) g5(44)
+                  */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '80px 14px 44px 14px 44px 14px 44px 14px 44px 14px 44px', minWidth: '480px', alignItems: 'center' }}>
 
-                    {/* ─── q₀ (|ψ⟩) row ─── */}
-                    <span style={{ color: 'var(--accent-primary)', fontSize: '13px', fontFamily: 'monospace' }}>q₀ |ψ⟩</span>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
-                    {/* T1: identity (no gate on q₀ in phase 1) */}
-                    <div style={{ height: '2px', background: 'var(--accent-primary)', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
-                    {/* T2: CNOT control (q₀ is control, q₁ is target) */}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', position: 'relative', height: '44px' }}>
-                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'var(--accent-primary)', transform: 'translateY(-50%)' }} />
-                      <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 8px var(--accent-primary)', zIndex: 1, marginTop: '15px' }} />
-                      <div style={{ width: '2px', flex: 1, background: 'var(--accent-primary)' }} />
+                    {/* ── Q row (Alice's message qubit |ψ⟩) ── */}
+                    <span style={{ fontFamily: 'monospace', fontSize: '13px', color: 'var(--text-primary)' }}>Q |ψ⟩</span>
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* CNOT control ● with line going DOWN to A */}
+                    <div style={{ position: 'relative', width: '44px', height: '44px', justifySelf: 'center' }}>
+                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.5)', transform: 'translateY(-50%)' }} />
+                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translateX(-50%)', width: '2px', height: '22px', background: 'rgba(255,255,255,0.7)' }} />
+                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: '12px', height: '12px', borderRadius: '50%', background: 'rgba(255,255,255,0.9)', zIndex: 1 }} />
                     </div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
-                    {/* T3: H gate */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.08)', boxShadow: '0 0 8px var(--accent-primary)', justifySelf: 'center' }}>H</div>
-                    <div style={{ height: '2px', background: 'var(--accent-primary)' }} />
-                    {/* Measure */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>M</div>
-
-                    <div style={{ gridColumn: '1 / -1', height: '8px' }} />
-
-                    {/* ─── q₁ (Alice's Bell qubit) row ─── */}
-                    <span style={{ color: '#3fb950', fontSize: '13px', fontFamily: 'monospace' }}>q₁ Alice</span>
-                    <div style={{ height: '2px', background: '#3fb950' }} />
-                    {/* T1: H gate */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #3fb950', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#3fb950', background: 'rgba(63,185,80,0.08)', boxShadow: '0 0 8px #3fb950', justifySelf: 'center' }}>H</div>
-                    <div style={{ height: '2px', background: '#3fb950' }} />
-                    {/* T2: CNOT target (from q₀) */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #3fb950', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#3fb950', background: 'rgba(63,185,80,0.08)', boxShadow: '0 0 8px #3fb950', justifySelf: 'center' }}>⊕</div>
-                    <div style={{ height: '2px', background: '#3fb950' }} />
-                    {/* T3: identity */}
-                    <div style={{ height: '2px', background: '#3fb950', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: '#3fb950' }} />
-                    {/* Measure */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>M</div>
-
-                    <div style={{ gridColumn: '1 / -1', height: '8px' }} />
-
-                    {/* ─── q₂ (Bob) row ─── */}
-                    <span style={{ color: '#d29922', fontSize: '13px', fontFamily: 'monospace' }}>q₂ Bob</span>
-                    <div style={{ height: '2px', background: '#d29922' }} />
-                    {/* T1: CNOT target (from q₁ during Bell pair creation) */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>⊕</div>
-                    <div style={{ height: '2px', background: '#d29922' }} />
-                    {/* T2: identity */}
-                    <div style={{ height: '2px', background: '#d29922', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: '#d29922' }} />
-                    {/* T3: X/Z correction (classical control — shown as dashed) */}
-                    <div style={{ width: '44px', height: '44px', border: '2px dashed #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', fontSize: '11px', justifySelf: 'center', textAlign: 'center', lineHeight: '1.2' }}>X/Z</div>
-                    <div style={{ height: '2px', background: '#d29922' }} />
-                    {/* Output */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#d29922', fontSize: '11px', background: 'rgba(210,153,34,0.15)', justifySelf: 'center' }}>|ψ⟩</div>
-
-                  </div>
-
-                  {/* Phase labels */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '90px 16px 44px 16px 44px 16px 44px 16px 44px', minWidth: '500px', marginTop: '12px' }}>
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* H gate */}
+                    <div style={{ width: '44px', height: '44px', background: '#4a9eff', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#000', fontSize: '16px', justifySelf: 'center' }}>H</div>
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* Measurement M */}
+                    <div style={{ width: '44px', height: '44px', background: '#222', border: '2px solid #555', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#ccc', fontSize: '14px', justifySelf: 'center' }}>M</div>
+                    {/* classical wire → Z on Bob (indicated by dashed) */}
+                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.3)' }} />
+                    {/* blank (no gate on Q at X column) */}
+                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.3)' }} />
+                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.3)' }} />
+                    {/* blank at Z column */}
                     <div />
-                    <div /><div style={{ textAlign: 'center', fontSize: '11px', color: '#3fb950' }}>T=1<br/>Bell pair</div>
-                    <div /><div style={{ textAlign: 'center', fontSize: '11px', color: 'var(--accent-primary)' }}>T=2<br/>Bell meas.</div>
-                    <div /><div style={{ textAlign: 'center', fontSize: '11px', color: 'var(--accent-primary)' }}>T=3<br/>H+correct</div>
-                    <div /><div style={{ textAlign: 'center', fontSize: '11px', color: '#d29922' }}>Output</div>
+
+                    {/* spacer with CNOT connector */}
+                    <div />
+                    <div style={{ height: '8px' }} />
+                    <div style={{ height: '8px', display: 'flex', justifyContent: 'center' }}><div style={{ width: '2px', height: '100%', background: 'rgba(255,255,255,0.7)' }} /></div>
+                    <div style={{ height: '8px' }} />
+                    <div style={{ height: '8px' }} />
+                    <div style={{ height: '8px' }} />
+                    <div style={{ height: '8px' }} />
+                    <div style={{ height: '8px' }} />
+                    <div style={{ height: '8px' }} />
+                    <div style={{ height: '8px' }} />
+                    <div style={{ height: '8px' }} />
+
+                    {/* ── A row (Alice's Bell pair half) ── */}
+                    <span style={{ fontFamily: 'monospace', fontSize: '13px', color: 'var(--text-primary)' }}>A</span>
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* CNOT target ⊕ */}
+                    <div style={{ position: 'relative', width: '44px', height: '44px', justifySelf: 'center' }}>
+                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.5)', transform: 'translateY(-50%)' }} />
+                      <div style={{ position: 'relative', width: '44px', height: '44px', border: '2px solid rgba(255,255,255,0.8)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: 'rgba(255,255,255,0.9)' }}>⊕</div>
+                    </div>
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* identity — wire continues */}
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* Measurement M */}
+                    <div style={{ width: '44px', height: '44px', background: '#222', border: '2px solid #555', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#ccc', fontSize: '14px', justifySelf: 'center' }}>M</div>
+                    {/* classical wire → X on Bob */}
+                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.3)' }} />
+                    {/* blank at X column */}
+                    <div />
+                    <div style={{ height: '2px', borderTop: '2px dashed rgba(255,255,255,0.3)' }} />
+                    {/* blank at Z column */}
+                    <div />
+
+                    {/* Alice / Bob divider */}
+                    <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', margin: '14px 0 4px 0', gap: '10px' }}>
+                      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.15)' }} />
+                      <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', whiteSpace: 'nowrap', letterSpacing: '1px' }}>Alice ──── Bob</span>
+                      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.15)' }} />
+                    </div>
+
+                    {/* ── B row (Bob's Bell pair half) ── */}
+                    <span style={{ fontFamily: 'monospace', fontSize: '13px', color: 'var(--text-primary)' }}>B  |Φ⁺⟩</span>
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* identity — wire */}
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* identity */}
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* blank at M column */}
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* X gate (classically controlled by A's result) */}
+                    <div style={{ width: '44px', height: '44px', background: '#4a9eff', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#000', fontSize: '16px', justifySelf: 'center' }}>X</div>
+                    <div style={{ height: '2px', background: 'rgba(255,255,255,0.5)' }} />
+                    {/* Z gate (classically controlled by Q's result) */}
+                    <div style={{ width: '44px', height: '44px', background: '#4a9eff', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#000', fontSize: '16px', justifySelf: 'center' }}>Z</div>
+
                   </div>
 
-                  <div style={{ marginTop: '12px', padding: '10px 14px', background: 'rgba(255,255,255,0.04)', borderRadius: '8px', fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>
-                    Dashed X/Z = classically-controlled corrections based on Alice's 2-bit measurement result
+                  {/* Column labels */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '80px 14px 44px 14px 44px 14px 44px 14px 44px 14px 44px', minWidth: '480px', marginTop: '10px' }}>
+                    <div /><div />
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>CNOT</div>
+                    <div />
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>H</div>
+                    <div />
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>Measure</div>
+                    <div />
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>X corr.</div>
+                    <div />
+                    <div style={{ textAlign: 'center', fontSize: '10px', color: 'rgba(255,255,255,0.4)' }}>Z corr. → |ψ⟩</div>
+                  </div>
+                  <div style={{ marginTop: '10px', fontSize: '12px', color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace' }}>
+                    Dashed lines = classical bits sent from Alice. X applied if m_A=1. Z applied if m_Q=1.
                   </div>
                 </div>
 
                 {/* ── Step by Step ── */}
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Step-by-Step Protocol Analysis</h3>
+                <h3 style={{ fontSize: '18px', color: 'var(--text-primary)', marginTop: '28px', marginBottom: '16px' }}>Step-by-Step Protocol Analysis</h3>
                 {[
                   {
                     t: 'T=0', label: 'Initial State', color: 'var(--text-secondary)',
-                    state: '|ψ⟩ ⊗ |00⟩ = (α|0⟩+β|1⟩)|00⟩',
-                    desc: "q₀ holds the unknown state |ψ⟩=α|0⟩+β|1⟩ that Alice wants to send. q₁ and q₂ are both |0⟩.",
+                    state: '|ψ⟩_Q ⊗ |Φ⁺⟩_AB = 1/√2 (α|0⟩+β|1⟩)(|00⟩+|11⟩)',
+                    desc: 'Q holds |ψ⟩=α|0⟩+β|1⟩. A and B already share the Bell pair |Φ⁺⟩=1/√2(|00⟩+|11⟩). The full 3-qubit state is their tensor product.',
                   },
                   {
-                    t: 'T=1', label: 'Create Bell Pair (H on q₁, CNOT q₁→q₂)', color: '#3fb950',
-                    state: '(α|0⟩+β|1⟩) ⊗ 1/√2(|00⟩+|11⟩)',
-                    desc: 'Apply H to q₁, then CNOT with q₁ as control and q₂ as target. This entangles q₁ and q₂ into a Bell state. q₀ is untouched.',
+                    t: 'T=1', label: 'CNOT: Q (control) → A (target)', color: 'var(--accent-primary)',
+                    state: '1/√2 [α|000⟩ + α|011⟩ + β|110⟩ + β|101⟩]',
+                    desc: 'CNOT with Q as control and A as target. When Q=|1⟩, A is flipped. This entangles Q with the A-B Bell pair.',
                   },
                   {
-                    t: 'T=2', label: "Bell Measurement on Alice's side (CNOT q₀→q₁)", color: 'var(--accent-primary)',
-                    state: '1/2[|00⟩(α|0⟩+β|1⟩) + |01⟩(α|1⟩+β|0⟩) + |10⟩(α|0⟩−β|1⟩) + |11⟩(α|1⟩−β|0⟩)]',
-                    desc: 'Apply CNOT with q₀ as control, q₁ as target. This entangles the message qubit with the Bell pair.',
+                    t: 'T=2', label: 'H on Q', color: 'var(--accent-primary)',
+                    state: '1/2 [|00⟩(α|0⟩+β|1⟩) + |01⟩(α|1⟩+β|0⟩) + |10⟩(α|0⟩−β|1⟩) + |11⟩(α|1⟩−β|0⟩)]',
+                    desc: 'H on Q rotates it into the measurement basis. Now the full state can be written grouped by Alice\'s qubits (Q,A). Bob\'s qubit B is in a different state for each of the 4 QA outcomes.',
                   },
                   {
-                    t: 'T=3', label: 'H on q₀ then Measure q₀ and q₁', color: 'var(--accent-primary)',
-                    state: 'Measures give 2 classical bits: (m₀, m₁) ∈ {00, 01, 10, 11}',
-                    desc: "Apply H to q₀, then measure both q₀ and q₁. Alice gets 2 classical bits (m₀,m₁). She sends them to Bob over a classical channel. No quantum state is sent — only bits.",
+                    t: 'T=3', label: 'Alice measures Q and A → sends 2 classical bits (m_Q, m_A)', color: 'var(--accent-primary)',
+                    state: 'Result (m_Q, m_A) ∈ {00, 01, 10, 11} — each with probability 1/4',
+                    desc: 'Alice measures both Q and A. The measurement collapses Bob\'s qubit B into one of four possible states. Alice sends the 2-bit result to Bob over a classical channel (phone, internet, etc.)',
                   },
                   {
-                    t: 'T=4', label: "Bob's Correction", color: '#d29922',
-                    state: 'If m₁=1 → apply X. If m₀=1 → apply Z. Result: |ψ⟩',
-                    desc: 'Bob applies X gate if m₁=1, Z gate if m₀=1. After correction, q₂ is in exactly the state |ψ⟩ that Alice started with. Teleportation complete!',
+                    t: 'T=4', label: "Bob's Correction: apply X if m_A=1, then Z if m_Q=1", color: 'var(--text-secondary)',
+                    state: 'After correction: B = α|0⟩ + β|1⟩ = |ψ⟩ ✓',
+                    desc: 'Bob applies X if Alice measured m_A=1, and Z if m_Q=1. This corrects Bob\'s qubit to exactly |ψ⟩. The state is teleported — Alice\'s Q qubit is destroyed, and Bob\'s B qubit is now |ψ⟩.',
                   },
                 ].map(({ t, label, color, state, desc }) => (
-                  <div key={t} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: `1px solid ${color}33`, marginBottom: '12px' }}>
+                  <div key={t} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', marginBottom: '10px' }}>
                     <div style={{ width: '52px', flexShrink: 0, textAlign: 'center' }}>
                       <div style={{ background: color, color: '#000', borderRadius: '6px', padding: '4px 6px', fontSize: '11px', fontWeight: 'bold', fontFamily: 'monospace' }}>{t}</div>
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ color, fontWeight: 'bold', fontSize: '14px', marginBottom: '4px' }}>{label}</div>
-                      <div style={{ fontFamily: 'monospace', color: 'var(--text-primary)', fontSize: '13px', marginBottom: '6px', background: 'rgba(0,0,0,0.2)', padding: '6px 10px', borderRadius: '6px', display: 'inline-block', maxWidth: '100%', wordBreak: 'break-word' }}>{state}</div>
+                      <div style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '14px', marginBottom: '4px' }}>{label}</div>
+                      <div style={{ fontFamily: 'monospace', color: 'var(--accent-primary)', fontSize: '13px', marginBottom: '6px', background: 'rgba(0,0,0,0.2)', padding: '6px 10px', borderRadius: '6px', display: 'inline-block', maxWidth: '100%', wordBreak: 'break-word' }}>{state}</div>
                       <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: '6px 0 0 0', lineHeight: '1.6' }}>{desc}</p>
                     </div>
                   </div>
@@ -2547,29 +2548,32 @@ export const tutorialSessions: TutorialSession[] = [
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
                     <thead>
                       <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.15)' }}>
-                        <th style={{ textAlign: 'center', padding: '10px 14px', color: 'var(--text-primary)' }}>m₀ (q₀ result)</th>
-                        <th style={{ textAlign: 'center', padding: '10px 14px', color: 'var(--text-primary)' }}>m₁ (q₁ result)</th>
+                        <th style={{ textAlign: 'center', padding: '10px 14px', color: 'var(--text-primary)' }}>m_Q (Q result)</th>
+                        <th style={{ textAlign: 'center', padding: '10px 14px', color: 'var(--text-primary)' }}>m_A (A result)</th>
                         <th style={{ textAlign: 'center', padding: '10px 14px', color: 'var(--text-primary)' }}>Bob applies</th>
-                        <th style={{ textAlign: 'center', padding: '10px 14px', color: 'var(--text-primary)' }}>Bob's state before correction</th>
+                        <th style={{ textAlign: 'center', padding: '10px 14px', color: 'var(--text-primary)' }}>Bob's qubit B before correction</th>
                       </tr>
                     </thead>
                     <tbody>
                       {[
-                        ['0', '0', 'I (nothing)', 'α|0⟩ + β|1⟩'],
+                        ['0', '0', 'I (nothing)', 'α|0⟩ + β|1⟩  =  |ψ⟩'],
                         ['0', '1', 'X', 'α|1⟩ + β|0⟩'],
                         ['1', '0', 'Z', 'α|0⟩ − β|1⟩'],
-                        ['1', '1', 'XZ', 'α|1⟩ − β|0⟩'],
-                      ].map(([m0, m1, gate, state], i) => (
+                        ['1', '1', 'X then Z', 'α|1⟩ − β|0⟩'],
+                      ].map(([mq, ma, gate, bstate], i) => (
                         <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent' }}>
-                          <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: 'var(--accent-primary)' }}>{m0}</td>
-                          <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: '#3fb950' }}>{m1}</td>
-                          <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: '#d29922', fontWeight: 'bold' }}>{gate}</td>
-                          <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: 'var(--text-secondary)', fontSize: '13px' }}>{state}</td>
+                          <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: 'var(--accent-primary)' }}>{mq}</td>
+                          <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: 'var(--text-primary)' }}>{ma}</td>
+                          <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: '#4a9eff', fontWeight: 'bold' }}>{gate}</td>
+                          <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', color: 'var(--text-secondary)', fontSize: '13px' }}>{bstate}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
+                <p style={{ marginTop: '12px', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.7' }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>Rule:</strong> Apply <code>X</code> if m_A = 1, then apply <code>Z</code> if m_Q = 1. The order matters. In all four cases, after correction Bob's qubit becomes exactly |ψ⟩ = α|0⟩ + β|1⟩.
+                </p>
               </>
             ),
             practiceGoal: 'Trace the teleportation protocol and fill in the correction table from memory.',
