@@ -1152,35 +1152,30 @@ export const tutorialSessions: TutorialSession[] = [
                   
                   {/* Classical Gate */}
                   <div style={{ flex: '1', minWidth: '250px', textAlign: 'center' }}>
-                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Classical Logic Gate (e.g. AND)</h4>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Classical Logic Gate (NOT)</h4>
                     
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px', gap: '8px' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        <div style={{ fontSize: '14px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>1</div>
-                        <div style={{ fontSize: '14px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>0</div>
-                      </div>
+                      <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>0</div>
                       
-                      <div style={{ width: '20px', display: 'flex', flexDirection: 'column', gap: '20px', marginLeft: '4px' }}>
-                        <div style={{ height: '2px', background: 'var(--surface-border)' }}></div>
-                        <div style={{ height: '2px', background: 'var(--surface-border)' }}></div>
-                      </div>
+                      <div style={{ width: '20px', height: '2px', background: 'var(--surface-border)' }}></div>
                       
-                      <div style={{ width: '60px', height: '60px', borderRadius: '4px 30px 30px 4px', background: '#333', border: '2px solid #555', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '16px', fontWeight: 'bold', color: '#888' }}>
-                        AND
+                      <div style={{ width: '60px', height: '60px', borderRadius: '4px', background: '#333', border: '2px solid #555', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '16px', fontWeight: 'bold', color: '#888', position: 'relative' }}>
+                        NOT
+                        <div style={{ position: 'absolute', right: '-12px', top: '50%', marginTop: '-4px', width: '8px', height: '8px', borderRadius: '50%', border: '2px solid #555', background: '#333' }}></div>
                       </div>
 
-                      <div style={{ width: '20px', height: '2px', background: 'var(--surface-border)' }}></div>
-                      <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#888' }}>0</div>
+                      <div style={{ width: '20px', height: '2px', background: 'var(--surface-border)', marginLeft: '8px' }}></div>
+                      <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#888' }}>1</div>
                     </div>
                     
                     <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.6' }}>
-                      Irreversible: Two inputs become one output. Information is lost.
+                      Flips the state of a classical bit. It turns a 0 into a 1, and a 1 into a 0.
                     </p>
                   </div>
 
                   {/* Quantum Gate */}
                   <div style={{ flex: '1', minWidth: '250px', textAlign: 'center', borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '24px' }}>
-                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Quantum Gate (e.g. X)</h4>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '16px' }}>Quantum Gate (X Gate)</h4>
                     
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px' }}>
                       
@@ -1198,9 +1193,15 @@ export const tutorialSessions: TutorialSession[] = [
 
                     </div>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.6' }}>
-                      Reversible: The number of inputs equals outputs. You can always run it backward.
+                      The quantum equivalent of a NOT gate. It takes a qubit from one state to another.
                     </p>
                   </div>
+                </div>
+
+                <div style={{ padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '4px solid #fff', marginTop: '24px' }}>
+                  <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                    <strong>Analogy:</strong> Just as an airplane takes you from one city to another on the surface of the Earth, a quantum gate takes a qubit from one point to another on the surface of the Bloch sphere. The X gate, for example, is like flying from the North Pole (state |0⟩) directly to the South Pole (state |1⟩)!
+                  </p>
                 </div>
               </>
             ),
