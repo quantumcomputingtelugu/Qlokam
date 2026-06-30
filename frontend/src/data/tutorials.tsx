@@ -1838,9 +1838,9 @@ export const tutorialSessions: TutorialSession[] = [
             title: 'Quantum Gates Quiz',
             description: 'Test your mastery of single-qubit rotations, multi-qubit interactions, and entanglement!',
             difficulty: 'Intermediate',
-            type: 'quiz',
+            isFinalTest: true,
             prerequisiteId: 23,
-            quizPool: [
+            quizzes: [
               {
                 id: 'qg1',
                 question: 'What is the primary function of the Pauli-X gate?',
@@ -1850,7 +1850,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'It flips the computational basis states |0⟩ to |1⟩ and vice versa.',
                   'It exchanges the state of two qubits.'
                 ],
-                correctAnswer: 2,
+                correctAnswerIndex: 2,
                 explanation: 'The Pauli-X gate acts as the quantum equivalent of the classical NOT gate, flipping |0⟩ to |1⟩ and |1⟩ to |0⟩.'
               },
               {
@@ -1862,7 +1862,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'Pauli-Y Gate',
                   'S Gate'
                 ],
-                correctAnswer: 1,
+                correctAnswerIndex: 1,
                 explanation: 'The Pauli-Z gate applies a 180-degree rotation around the Z-axis, effectively flipping the phase of the |1⟩ state.'
               },
               {
@@ -1874,7 +1874,7 @@ export const tutorialSessions: TutorialSession[] = [
                   '[[0, -i], [i, 0]]',
                   '[[1, 0], [0, -1]]'
                 ],
-                correctAnswer: 2,
+                correctAnswerIndex: 2,
                 explanation: 'The Pauli-Y gate matrix contains imaginary numbers: [[0, -i], [i, 0]].'
               },
               {
@@ -1886,7 +1886,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'CNOT Gate',
                   'T Gate'
                 ],
-                correctAnswer: 1,
+                correctAnswerIndex: 1,
                 explanation: 'The Hadamard gate creates an equal superposition, transforming |0⟩ into 1/√2(|0⟩ + |1⟩).'
               },
               {
@@ -1898,7 +1898,7 @@ export const tutorialSessions: TutorialSession[] = [
                   '4x4',
                   '8x1'
                 ],
-                correctAnswer: 1,
+                correctAnswerIndex: 1,
                 explanation: 'A single qubit is a 2x1 vector. The tensor product of two 2x1 vectors results in a 4x1 vector.'
               },
               {
@@ -1910,7 +1910,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'Nothing happens; it remains unchanged.',
                   'It becomes entangled.'
                 ],
-                correctAnswer: 2,
+                correctAnswerIndex: 2,
                 explanation: 'The CNOT gate only applies the NOT operation to the target if the control qubit is strictly in the |1⟩ state.'
               },
               {
@@ -1922,7 +1922,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'It swaps the control and target roles of a CNOT gate.',
                   'It swaps a qubit with a classical bit.'
                 ],
-                correctAnswer: 1,
+                correctAnswerIndex: 1,
                 explanation: 'The SWAP gate literally exchanges the states of two qubits. What was in qubit 1 moves to qubit 2, and vice versa.'
               },
               {
@@ -1934,7 +1934,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'The process of measuring a qubit.',
                   'When a quantum gate fails to execute properly.'
                 ],
-                correctAnswer: 1,
+                correctAnswerIndex: 1,
                 explanation: 'Entanglement is when qubits become so correlated that measuring one instantly determines the state of the other.'
               },
               {
@@ -1946,7 +1946,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'Pauli-Z',
                   'Hadamard'
                 ],
-                correctAnswer: 2,
+                correctAnswerIndex: 2,
                 explanation: 'The S gate is a 90-degree (π/2) rotation around Z. Two S gates equal 180 degrees, which is exactly what the Pauli-Z gate does.'
               },
               {
@@ -1958,7 +1958,7 @@ export const tutorialSessions: TutorialSession[] = [
                   '45 degrees (π/4)',
                   '360 degrees (2π)'
                 ],
-                correctAnswer: 2,
+                correctAnswerIndex: 2,
                 explanation: 'The T gate is sometimes called the π/4 gate because it applies a 45-degree phase rotation.'
               },
               {
@@ -1970,7 +1970,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'CNOT on both, then Hadamard on Q2',
                   'Z gate then S gate'
                 ],
-                correctAnswer: 1,
+                correctAnswerIndex: 1,
                 explanation: 'Applying H to the first qubit creates superposition, and the subsequent CNOT spreads that superposition to create entanglement.'
               },
               {
@@ -1982,7 +1982,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'It leaves the qubit state completely unchanged.',
                   'It measures the qubit.'
                 ],
-                correctAnswer: 2,
+                correctAnswerIndex: 2,
                 explanation: 'The Identity matrix has 1s on the diagonal and 0s elsewhere. Multiplying any state by it returns the exact same state.'
               },
               {
@@ -1994,7 +1994,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'It is a 50/50 chance',
                   'It depends on the phase'
                 ],
-                correctAnswer: 1,
+                correctAnswerIndex: 1,
                 explanation: 'The Φ⁺ Bell state is 1/√2(|00⟩ + |11⟩). If the first qubit collapses to 1, the entire system collapses to |11⟩.'
               },
               {
@@ -2006,7 +2006,7 @@ export const tutorialSessions: TutorialSession[] = [
                   'Ry',
                   'Rz'
                 ],
-                correctAnswer: 1,
+                correctAnswerIndex: 1,
                 explanation: 'The Rx(θ) gate allows you to define a specific, continuous angle of rotation around the X-axis.'
               },
               {
@@ -2018,7 +2018,7 @@ export const tutorialSessions: TutorialSession[] = [
                   '3 bits',
                   '4 bits'
                 ],
-                correctAnswer: 1,
+                correctAnswerIndex: 1,
                 explanation: 'Superdense coding uses entanglement as a resource to pack 2 classical bits (00, 01, 10, or 11) into a single transmitted qubit.'
               }
             ]
