@@ -1840,9 +1840,17 @@ export const tutorialSessions: TutorialSession[] = [
             difficulty: 'Intermediate',
             isFinalTest: true,
             prerequisiteId: 23,
+            pointsAward: 1,
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px' }}>
+                  Ready to test what you&apos;ve learned? Answer the questions below to complete this module!
+                </p>
+              </>
+            ),
+            practiceGoal: 'Pass the quiz!',
             quizzes: [
               {
-                id: 'qg1',
                 question: 'What is the primary function of the Pauli-X gate?',
                 options: [
                   'It flips the phase of the qubit.',
@@ -1854,7 +1862,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The Pauli-X gate acts as the quantum equivalent of the classical NOT gate, flipping |0⟩ to |1⟩ and |1⟩ to |0⟩.'
               },
               {
-                id: 'qg2',
                 question: 'Which gate rotates the state by 180 degrees (π radians) around the Z-axis?',
                 options: [
                   'Hadamard Gate',
@@ -1866,7 +1873,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The Pauli-Z gate applies a 180-degree rotation around the Z-axis, effectively flipping the phase of the |1⟩ state.'
               },
               {
-                id: 'qg3',
                 question: 'What is the matrix representation of the Pauli-Y gate?',
                 options: [
                   '[[0, 1], [1, 0]]',
@@ -1878,7 +1884,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The Pauli-Y gate matrix contains imaginary numbers: [[0, -i], [i, 0]].'
               },
               {
-                id: 'qg4',
                 question: 'Which gate is most commonly used to put a qubit initialized in |0⟩ into an equal superposition?',
                 options: [
                   'Pauli-X Gate',
@@ -1890,7 +1895,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The Hadamard gate creates an equal superposition, transforming |0⟩ into 1/√2(|0⟩ + |1⟩).'
               },
               {
-                id: 'qg5',
                 question: 'When combining two qubits using the tensor product, what is the size of the resulting column vector?',
                 options: [
                   '2x1',
@@ -1902,7 +1906,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'A single qubit is a 2x1 vector. The tensor product of two 2x1 vectors results in a 4x1 vector.'
               },
               {
-                id: 'qg6',
                 question: 'In a CNOT gate, what happens to the target qubit if the control qubit is in the |0⟩ state?',
                 options: [
                   'It flips from |0⟩ to |1⟩.',
@@ -1914,7 +1917,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The CNOT gate only applies the NOT operation to the target if the control qubit is strictly in the |1⟩ state.'
               },
               {
-                id: 'qg7',
                 question: 'What does the SWAP gate do?',
                 options: [
                   'It swaps the phase of a single qubit.',
@@ -1926,7 +1928,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The SWAP gate literally exchanges the states of two qubits. What was in qubit 1 moves to qubit 2, and vice versa.'
               },
               {
-                id: 'qg8',
                 question: 'What is "Entanglement"?',
                 options: [
                   'When a qubit is in multiple states at once.',
@@ -1938,7 +1939,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'Entanglement is when qubits become so correlated that measuring one instantly determines the state of the other.'
               },
               {
-                id: 'qg9',
                 question: 'Applying the S gate (Phase gate) twice in a row is equivalent to applying which gate once?',
                 options: [
                   'Pauli-X',
@@ -1950,7 +1950,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The S gate is a 90-degree (π/2) rotation around Z. Two S gates equal 180 degrees, which is exactly what the Pauli-Z gate does.'
               },
               {
-                id: 'qg10',
                 question: 'The T gate rotates the quantum state around the Z-axis by what specific angle?',
                 options: [
                   '180 degrees (π)',
@@ -1962,7 +1961,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The T gate is sometimes called the π/4 gate because it applies a 45-degree phase rotation.'
               },
               {
-                id: 'qg11',
                 question: 'Which sequence of two gates is standard for creating a Bell State (entanglement) from the |00⟩ state?',
                 options: [
                   'X gate then Y gate',
@@ -1974,7 +1972,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'Applying H to the first qubit creates superposition, and the subsequent CNOT spreads that superposition to create entanglement.'
               },
               {
-                id: 'qg12',
                 question: 'What is the function of the Identity (I) gate?',
                 options: [
                   'It destroys the qubit.',
@@ -1986,7 +1983,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The Identity matrix has 1s on the diagonal and 0s elsewhere. Multiplying any state by it returns the exact same state.'
               },
               {
-                id: 'qg13',
                 question: 'If you have a perfectly entangled Bell state (Φ⁺) and you measure the first qubit as a "1", what will you measure the second qubit as?',
                 options: [
                   '0 (with 100% certainty)',
@@ -1998,7 +1994,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The Φ⁺ Bell state is 1/√2(|00⟩ + |11⟩). If the first qubit collapses to 1, the entire system collapses to |11⟩.'
               },
               {
-                id: 'qg14',
                 question: 'Which gate would you use if you want to rotate a qubit around the X-axis by an arbitrary custom angle (θ)?',
                 options: [
                   'Pauli-X',
@@ -2010,7 +2005,6 @@ export const tutorialSessions: TutorialSession[] = [
                 explanation: 'The Rx(θ) gate allows you to define a specific, continuous angle of rotation around the X-axis.'
               },
               {
-                id: 'qg15',
                 question: 'In the context of entanglement usefulness, how many classical bits of information can be transmitted using a single entangled qubit in Superdense Coding?',
                 options: [
                   '1 bit',
