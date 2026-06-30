@@ -26,11 +26,13 @@ const MatrixMultiplication = ({
   equation,
   matrixContent,
   resultContent,
+  inputContent = <>α<br/>β</>,
   resultColor = 'var(--accent-primary)'
 }: {
   equation: string;
   matrixContent: React.ReactNode;
   resultContent: React.ReactNode;
+  inputContent?: React.ReactNode;
   resultColor?: string;
 }) => (
   <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', fontSize: '14px', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>
@@ -45,7 +47,7 @@ const MatrixMultiplication = ({
       <div style={{ display: 'inline-block', position: 'relative', padding: '0 8px' }}>
         <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '4px', borderLeft: '1px solid var(--text-secondary)', borderTop: '1px solid var(--text-secondary)', borderBottom: '1px solid var(--text-secondary)' }}></div>
         <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '4px', borderRight: '1px solid var(--text-secondary)', borderTop: '1px solid var(--text-secondary)', borderBottom: '1px solid var(--text-secondary)' }}></div>
-        α<br/>β
+        {inputContent}
       </div>
       <span>=</span>
       <div style={{ display: 'inline-block', position: 'relative', padding: '0 8px' }}>
@@ -1663,15 +1665,96 @@ export const tutorialSessions: TutorialSession[] = [
             difficulty: 'Intermediate',
             lessonContent: (
               <>
+                <div style={{ padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', marginBottom: '24px' }}>
+                  <h3 style={{ color: 'var(--accent-primary)', marginBottom: '12px' }}>The Tensor Product (⊗)</h3>
+                  <p style={{ marginBottom: '12px' }}>
+                    Before we can operate on two qubits, we need to know how to combine their states. In quantum computing, we combine multiple qubits using the <strong>tensor product</strong>, denoted by the ⊗ symbol.
+                  </p>
+                  <p style={{ marginBottom: '12px' }}>
+                    If you have a qubit in state |0⟩ and another in state |1⟩, their combined state is written as |0⟩ ⊗ |1⟩, or simply <strong>|01⟩</strong>.
+                  </p>
+                  <p style={{ marginBottom: '12px' }}>
+                    Mathematically, if a single qubit is a 2x1 column vector, two qubits form a <strong>4x1</strong> column vector! The four rows correspond to the probabilities of measuring |00⟩, |01⟩, |10⟩, and |11⟩.
+                  </p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.2)', padding: '12px', borderRadius: '8px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>
+                    <div>|ψ⟩ =</div>
+                    <div style={{ display: 'inline-block', position: 'relative', padding: '0 8px' }}>
+                      <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '4px', borderLeft: '1px solid var(--text-secondary)', borderTop: '1px solid var(--text-secondary)', borderBottom: '1px solid var(--text-secondary)' }}></div>
+                      <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '4px', borderRight: '1px solid var(--text-secondary)', borderTop: '1px solid var(--text-secondary)', borderBottom: '1px solid var(--text-secondary)' }}></div>
+                      α<sub>00</sub><br/>α<sub>01</sub><br/>α<sub>10</sub><br/>α<sub>11</sub>
+                    </div>
+                  </div>
+                  <p style={{ marginTop: '12px', fontSize: '0.9em', color: 'var(--text-secondary)' }}>
+                    Because the state is a 4x1 vector, a gate that acts on two qubits must be a <strong>4x4 matrix</strong>.
+                  </p>
+                </div>
+
                 <p style={{ marginBottom: '16px' }}>
-                  Two-qubit gates allow qubits to interact with each other. The most famous is the <strong>CNOT (Controlled-NOT)</strong> gate.
+                  Two-qubit gates allow qubits to interact with each other. This interaction is the basis of quantum computing power.
                 </p>
-                <p style={{ marginBottom: '16px' }}>
-                  A CNOT gate has a <em>control</em> qubit and a <em>target</em> qubit. If the control qubit is |1⟩, it applies an X gate (NOT) to the target. If the control is |0⟩, it does nothing.
+                
+                <h3 style={{ marginTop: '24px', marginBottom: '12px', color: 'var(--text-primary)' }}>1. CNOT (Controlled-NOT) Gate</h3>
+                <p style={{ marginBottom: '12px' }}>
+                  The most famous 2-qubit gate. It has a <em>control</em> qubit and a <em>target</em> qubit. If the control qubit is |1⟩, it applies an X gate (NOT) to the target. If the control is |0⟩, it does nothing.
                 </p>
-                <p style={{ marginBottom: '16px' }}>
-                  Another common gate is the <strong>SWAP</strong> gate, which literally exchanges the states of two qubits.
+                <MatrixMultiplication 
+                  equation="CNOT|ψ⟩"
+                  inputContent={<>α<br/>β<br/>γ<br/>δ</>}
+                  matrixContent={
+                    <table style={{ borderSpacing: '8px 4px', textAlign: 'center' }}>
+                      <tbody>
+                        <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                        <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                        <tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                        <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                      </tbody>
+                    </table>
+                  }
+                  resultContent={<>α<br/>β<br/>δ<br/>γ</>}
+                  resultColor="#c084fc"
+                />
+
+                <h3 style={{ marginTop: '24px', marginBottom: '12px', color: 'var(--text-primary)' }}>2. SWAP Gate</h3>
+                <p style={{ marginBottom: '12px' }}>
+                  The SWAP gate simply exchanges the states of two qubits. What was in qubit 1 moves to qubit 2, and vice versa.
                 </p>
+                <MatrixMultiplication 
+                  equation="SWAP|ψ⟩"
+                  inputContent={<>α<br/>β<br/>γ<br/>δ</>}
+                  matrixContent={
+                    <table style={{ borderSpacing: '8px 4px', textAlign: 'center' }}>
+                      <tbody>
+                        <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                        <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                        <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                        <tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                      </tbody>
+                    </table>
+                  }
+                  resultContent={<>α<br/>γ<br/>β<br/>δ</>}
+                  resultColor="#fbbf24"
+                />
+
+                <h3 style={{ marginTop: '24px', marginBottom: '12px', color: 'var(--text-primary)' }}>3. CZ (Controlled-Z) Gate</h3>
+                <p style={{ marginBottom: '12px' }}>
+                  Applies a Z gate (phase flip) to the target qubit ONLY if the control qubit is |1⟩. This is heavily used in creating graph states and entanglement.
+                </p>
+                <MatrixMultiplication 
+                  equation="CZ|ψ⟩"
+                  inputContent={<>α<br/>β<br/>γ<br/>δ</>}
+                  matrixContent={
+                    <table style={{ borderSpacing: '8px 4px', textAlign: 'center' }}>
+                      <tbody>
+                        <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                        <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                        <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                        <tr><td>0</td><td>0</td><td>0</td><td>-1</td></tr>
+                      </tbody>
+                    </table>
+                  }
+                  resultContent={<>α<br/>β<br/>γ<br/>-δ</>}
+                  resultColor="#34d399"
+                />
               </>
             ),
             practiceGoal: 'Understand how qubits interact through controlled gates.',
