@@ -2048,7 +2048,7 @@ export const tutorialSessions: TutorialSession[] = [
         practiceGoal: 'Review the module overview and explore the Representation subtopic.',
         subModules: [
           {
-            id: 102,
+            id: 103,
             title: 'Representation',
             description: 'Understand how quantum circuits are visually represented using wires, gates, and measurement symbols.',
             difficulty: 'Intermediate',
