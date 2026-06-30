@@ -1198,11 +1198,6 @@ export const tutorialSessions: TutorialSession[] = [
                   </div>
                 </div>
 
-                <div style={{ padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '4px solid #fff', marginTop: '24px' }}>
-                  <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                    <strong>Analogy:</strong> Just as an airplane takes you from one city to another on the surface of the Earth, a quantum gate takes a qubit from one point to another on the surface of the Bloch sphere. The X gate, for example, is like flying from the North Pole (state |0⟩) directly to the South Pole (state |1⟩)!
-                  </p>
-                </div>
               </>
             ),
             practiceGoal: 'Understand the concept of a quantum gate and unitarity.',
@@ -1214,12 +1209,45 @@ export const tutorialSessions: TutorialSession[] = [
             difficulty: 'Beginner',
             lessonContent: (
               <>
-                <p style={{ marginBottom: '16px' }}>
-                  Single-qubit gates change the state of exactly one qubit at a time. Visually, you can think of them as rotations of the state vector on the Bloch sphere.
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  Single-qubit gates change the state of exactly one qubit at a time. Because qubits are represented as points on the surface of a sphere, any single-qubit gate mathematically corresponds to a <strong>rotation</strong> of the state vector around the X, Y, or Z axes.
                 </p>
-                <p style={{ marginBottom: '16px' }}>
-                  Because they represent rotations, any single-qubit gate can be constructed by combining basic rotations around the X, Y, and Z axes.
-                </p>
+
+                {/* Visual Info: Airplane on a Globe */}
+                <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', margin: '32px 0', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', alignItems: 'center' }}>
+                  <div style={{ flex: '1', minWidth: '250px' }}>
+                    <div style={{ padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', borderLeft: '4px solid #fff' }}>
+                      <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                        <strong>Analogy:</strong> Just as an airplane takes you from one city to another on the surface of the Earth, a single-qubit quantum gate takes a qubit from one point to another on the surface of the Bloch sphere. 
+                        <br/><br/>
+                        For example, the <strong>X gate</strong> is like flying from the North Pole (state <strong style={{ color: 'var(--text-primary)' }}>|0⟩</strong>) directly to the South Pole (state <strong style={{ color: 'var(--accent-primary)' }}>|1⟩</strong>)!
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div style={{ flex: '1', minWidth: '200px', display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '16px' }}>
+                    {/* CSS representation of a globe/Bloch sphere with a path */}
+                    <div style={{ position: 'relative', width: '120px', height: '120px', borderRadius: '50%', border: '2px solid rgba(69,243,255,0.3)', background: 'radial-gradient(circle at 30% 30%, rgba(69,243,255,0.1), transparent)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      {/* Equator & Meridian */}
+                      <div style={{ position: 'absolute', width: '100%', height: '40px', border: '1px dashed rgba(255,255,255,0.2)', borderRadius: '50%' }}></div>
+                      <div style={{ position: 'absolute', height: '100%', width: '40px', border: '1px dashed rgba(255,255,255,0.2)', borderRadius: '50%' }}></div>
+                      
+                      {/* North Pole |0> */}
+                      <div style={{ position: 'absolute', top: '-24px', color: 'var(--text-secondary)', fontWeight: 'bold' }}>|0⟩</div>
+                      <div style={{ position: 'absolute', top: '-4px', width: '8px', height: '8px', borderRadius: '50%', background: 'var(--text-primary)' }}></div>
+                      
+                      {/* South Pole |1> */}
+                      <div style={{ position: 'absolute', bottom: '-28px', color: 'var(--accent-primary)', fontWeight: 'bold' }}>|1⟩</div>
+                      <div style={{ position: 'absolute', bottom: '-4px', width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 10px var(--accent-primary)' }}></div>
+                      
+                      {/* Flight Path Arc */}
+                      <div style={{ position: 'absolute', left: '-20px', width: '80px', height: '120px', borderLeft: '3px dashed var(--accent-primary)', borderTopLeftRadius: '100px', borderBottomLeftRadius: '100px', borderTop: 'transparent', borderBottom: 'transparent', opacity: 0.8 }}>
+                        {/* Airplane marker (using a triangle) */}
+                        <div style={{ position: 'absolute', top: '50%', left: '-8.5px', marginTop: '-6px', width: '0', height: '0', borderTop: '6px solid transparent', borderBottom: '6px solid transparent', borderTopWidth: '8px', borderRight: '14px solid var(--accent-primary)', transform: 'rotate(-90deg)' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </>
             ),
             practiceGoal: 'Recognize that single-qubit gates are rotations on the Bloch sphere.',
