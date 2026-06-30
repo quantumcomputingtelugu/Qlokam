@@ -791,11 +791,12 @@ except Exception as e:
           </div>
         </div>
 
-        {/* Bottom Panel: Visualization and Code */}
-        <div className="responsive-flex" style={{ display: 'flex', gap: '16px', minHeight: '300px', minWidth: 0 }}>
-          
-          <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '300px' }}>
-            <h3 style={{ fontSize: '12px', marginBottom: '8px', color: 'var(--accent-primary)' }}>Python Code (Editable)</h3>
+        {/* Bottom Panel (Code & Results) */}
+      <div className="responsive-flex" style={{ display: 'flex', gap: '24px', flex: 1, minHeight: '300px' }}>
+        
+        {/* Code Editor */}
+        <div className="glass-panel" style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+          <h3 style={{ fontSize: '16px', marginBottom: '12px', color: 'var(--text-secondary)' }}>Generated Code (Editable)</h3>
             <div style={{ height: '300px', flexShrink: 0, overflow: 'hidden', borderRadius: '8px' }}>
               <Editor
                 height="100%"

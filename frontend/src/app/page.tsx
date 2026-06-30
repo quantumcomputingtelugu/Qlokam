@@ -8,7 +8,7 @@ export default function Home() {
       <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 80px)', textAlign: 'center', gap: '32px' }}>
       
       <div style={{ maxWidth: '800px', display: 'flex', flexDirection: 'column', gap: '24px', alignItems: 'center' }}>
-        <h1 style={{ fontSize: '64px', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '8px' }}>
+        <h1 className="hero-title" style={{ fontSize: '64px', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '8px' }}>
           Master Quantum Computing<br />
           <span className="text-gradient">By Writing Code</span>
         </h1>
@@ -17,7 +17,7 @@ export default function Home() {
           Learn the principles of quantum mechanics, practice your skills with LeetCode-style challenges, and compete globally.
         </p>
         
-        <div style={{ display: 'flex', gap: '16px', marginTop: '16px' }}>
+        <div className="hero-buttons" style={{ display: 'flex', gap: '16px', marginTop: '16px' }}>
           <Link href="/tutorials" className="btn-primary" style={{ display: 'inline-block', fontSize: '18px', padding: '14px 32px' }}>
             Start Learning
           </Link>

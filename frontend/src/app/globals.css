@@ -134,6 +134,12 @@ a {
   .responsive-flex {
     flex-direction: column !important;
     height: auto !important;
+    min-height: unset !important;
+  }
+  .responsive-flex > div {
+    min-height: unset !important;
+    height: auto !important;
+    max-height: none !important;
   }
   .responsive-sidebar {
     position: fixed !important;
@@ -176,8 +182,16 @@ a {
   .glass-panel {
     padding: 16px !important;
   }
-  h1 {
+  h1, .hero-title {
     font-size: 36px !important;
+  }
+  .hero-buttons {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .hero-buttons > * {
+    width: 100% !important;
+    text-align: center !important;
   }
   .nav-menu {
     gap: 12px !important;
