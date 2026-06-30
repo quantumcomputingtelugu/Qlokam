@@ -1104,6 +1104,171 @@ export const tutorialSessions: TutorialSession[] = [
           }
         ]
       }
+      ,{
+        id: 10,
+        title: 'Quantum Gates',
+        description: 'Learn how we manipulate qubits to perform computations.',
+        difficulty: 'Beginner',
+        lessonContent: (
+          <>
+            <p style={{ marginBottom: '16px' }}>
+              Just as classical computers use logic gates (AND, OR, NOT) to manipulate bits, quantum computers use <strong>Quantum Gates</strong> to manipulate qubits.
+            </p>
+            <p style={{ marginBottom: '16px' }}>
+              In this module, we will explore the fundamental gates used in quantum computing, how they rotate the state of a qubit on the Bloch sphere, and how they create complex phenomena like entanglement.
+            </p>
+            <div style={{ background: 'rgba(255,255,255,0.05)', padding: '24px', borderRadius: '12px', borderLeft: '4px solid var(--accent-primary)' }}>
+              <h4 style={{ margin: '0 0 12px 0', fontSize: '18px', color: 'white' }}>Topics Covered</h4>
+              <ul style={{ color: 'var(--text-secondary)', paddingLeft: '20px', lineHeight: '1.6' }}>
+                <li>What are gates?</li>
+                <li>Single Qubit Gates</li>
+                <li>Pauli Gates (X, Y, Z)</li>
+                <li>Phase Gates (S, T)</li>
+                <li>Rotation Gates (Rx, Ry, Rz)</li>
+                <li>2-Qubit Gates (CNOT, SWAP)</li>
+                <li>Entanglement</li>
+              </ul>
+            </div>
+          </>
+        ),
+        practiceGoal: 'Review the introduction and explore the subtopics in the sidebar.',
+        subModules: [
+          {
+            id: 11,
+            title: 'What are gates?',
+            description: 'Understanding quantum gates as operations on qubits.',
+            difficulty: 'Beginner',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px' }}>
+                  A quantum gate is a basic quantum circuit operating on a small number of qubits. They are the building blocks of quantum algorithms.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Mathematically, quantum gates are represented by <strong>Unitary Matrices</strong>. Because they are unitary, all quantum gates are reversible (except for measurement). If you apply a gate, there is always a way to apply an inverse gate to perfectly undo the operation.
+                </p>
+              </>
+            ),
+            practiceGoal: 'Understand the concept of a quantum gate and unitarity.',
+          },
+          {
+            id: 12,
+            title: 'Single Qubit Gates',
+            description: 'Introduction to gates that act on a single qubit.',
+            difficulty: 'Beginner',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px' }}>
+                  Single-qubit gates change the state of exactly one qubit at a time. Visually, you can think of them as rotations of the state vector on the Bloch sphere.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Because they represent rotations, any single-qubit gate can be constructed by combining basic rotations around the X, Y, and Z axes.
+                </p>
+              </>
+            ),
+            practiceGoal: 'Recognize that single-qubit gates are rotations on the Bloch sphere.',
+          },
+          {
+            id: 13,
+            title: 'Pauli Gates',
+            description: 'The fundamental X, Y, and Z gates.',
+            difficulty: 'Beginner',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px' }}>
+                  The Pauli gates are the most basic single-qubit operations:
+                </p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', lineHeight: '1.6' }}>
+                  <li><strong>Pauli-X (NOT Gate):</strong> Rotates the state 180 degrees around the X-axis. It flips |0⟩ to |1⟩ and |1⟩ to |0⟩, acting like a classical NOT gate.</li>
+                  <li><strong>Pauli-Y:</strong> Rotates the state 180 degrees around the Y-axis. It maps |0⟩ to i|1⟩ and |1⟩ to -i|0⟩.</li>
+                  <li><strong>Pauli-Z (Phase Flip):</strong> Rotates the state 180 degrees around the Z-axis. It leaves |0⟩ unchanged but flips the sign of |1⟩ to -|1⟩, changing the quantum phase.</li>
+                </ul>
+              </>
+            ),
+            practiceGoal: 'Learn the effects of the X, Y, and Z Pauli gates.',
+          },
+          {
+            id: 14,
+            title: 'Phase Gates',
+            description: 'The S and T phase shift gates.',
+            difficulty: 'Beginner',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px' }}>
+                  Phase gates rotate the state around the Z-axis by specific fractions of a circle:
+                </p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', lineHeight: '1.6' }}>
+                  <li><strong>S Gate (Phase Gate):</strong> Rotates the state by 90 degrees (π/2) around the Z-axis. Applying it twice equals a Pauli-Z gate.</li>
+                  <li><strong>T Gate:</strong> Rotates the state by 45 degrees (π/4) around the Z-axis. Applying it twice equals an S gate.</li>
+                </ul>
+              </>
+            ),
+            practiceGoal: 'Understand fractional Z-axis rotations.',
+          },
+          {
+            id: 15,
+            title: 'Rotation Gates',
+            description: 'Arbitrary angle rotations Rx, Ry, and Rz.',
+            difficulty: 'Intermediate',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px' }}>
+                  While Pauli and Phase gates represent fixed rotations, <strong>Rotation Gates</strong> allow you to rotate a qubit by an arbitrary angle θ:
+                </p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', lineHeight: '1.6' }}>
+                  <li><strong>Rx(θ):</strong> Rotates by θ around the X-axis.</li>
+                  <li><strong>Ry(θ):</strong> Rotates by θ around the Y-axis.</li>
+                  <li><strong>Rz(θ):</strong> Rotates by θ around the Z-axis.</li>
+                </ul>
+                <p>
+                  These are essential for fine-tuning states in algorithms like VQE (Variational Quantum Eigensolver).
+                </p>
+              </>
+            ),
+            practiceGoal: 'Learn about continuous rotation gates.',
+          },
+          {
+            id: 16,
+            title: '2-Qubit Gates',
+            description: 'Operations that involve two qubits, like CNOT and SWAP.',
+            difficulty: 'Intermediate',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px' }}>
+                  Two-qubit gates allow qubits to interact with each other. The most famous is the <strong>CNOT (Controlled-NOT)</strong> gate.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  A CNOT gate has a <em>control</em> qubit and a <em>target</em> qubit. If the control qubit is |1⟩, it applies an X gate (NOT) to the target. If the control is |0⟩, it does nothing.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Another common gate is the <strong>SWAP</strong> gate, which literally exchanges the states of two qubits.
+                </p>
+              </>
+            ),
+            practiceGoal: 'Understand how qubits interact through controlled gates.',
+          },
+          {
+            id: 17,
+            title: 'Entanglement',
+            description: 'Spooky action at a distance and Bell States.',
+            difficulty: 'Advanced',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px' }}>
+                  When a Hadamard gate is combined with a CNOT gate, they create <strong>Entanglement</strong>.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Entanglement is a unique quantum phenomenon where the state of two or more qubits becomes perfectly correlated. Measuring one qubit instantly dictates the state of the other, no matter how far apart they are. Einstein famously called this "spooky action at a distance."
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Entanglement is the core resource that makes quantum teleportation and quantum cryptography possible.
+                </p>
+              </>
+            ),
+            practiceGoal: 'Learn how to create an entangled pair of qubits.',
+          }
+        ]
+      }
+
     ]
   }
 ];
