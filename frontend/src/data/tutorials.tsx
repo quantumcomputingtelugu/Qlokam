@@ -2894,180 +2894,181 @@ export const tutorialSessions: TutorialSession[] = [
             description: 'Test your mastery of circuit representation, entanglement generation, teleportation mechanics, and superdense coding!',
             difficulty: 'Hard',
             isFinalTest: true,
+            prerequisiteId: 102,
             pointsAward: 2,
             lessonContent: (
               <>
                 <p style={{ marginBottom: '16px' }}>
-                  Ready to test your understanding of quantum circuits? This quiz features <strong>15 challenging questions</strong> covering circuit representation, entanglement, quantum teleportation, and superdense coding. Pass this quiz to complete the Quantum Circuits module!
+                  Ready to test your understanding of quantum circuits? This quiz features <strong>15 challenging circuit questions</strong> where you are given a circuit and must calculate the measurement probabilities of the outcomes. Pass this quiz to complete the Quantum Circuits module!
                 </p>
               </>
             ),
             practiceGoal: 'Pass the hard quiz!',
             quizzes: [
               {
-                question: 'If you start with two qubits in the state |+-⟩ and apply a CNOT gate where the first qubit (in state |+⟩) is the control and the second qubit (in state |-⟩) is the target, what is the resulting state?',
+                question: 'A 2-qubit circuit initialized to |00⟩ applies a Hadamard gate to qubit 0 (control), then a CNOT gate (control=0, target=1). What is the probability of measuring the system in the state |11⟩?',
                 options: [
-                  '|+-⟩',
-                  '|--⟩',
-                  '1/\u221a2(|00⟩ − |11⟩)',
-                  '1/\u221a2(|01⟩ − |10⟩)'
-                ],
-                correctAnswerIndex: 1,
-                explanation: 'By using the phase kickback effect, the CNOT gate swaps the amplitudes of the control qubit depending on the target qubit state. For a target in the state |-⟩, the control qubit |+⟩ undergoes a phase flip and becomes |-⟩, while the target remains unchanged. Thus, |+-⟩ becomes |--⟩.'
-              },
-              {
-                question: 'Why is quantum teleportation unable to transmit information faster than the speed of light?',
-                options: [
-                  'The quantum channel itself operates at the speed of light.',
-                  'Bob cannot reconstruct the teleported state without receiving Alice\'s classical measurement results, which must travel through a classical channel bounded by the speed of light.',
-                  'The No-Cloning Theorem enforces a delay on the measurement process.',
-                  'The entanglement between Alice and Bob decays if the classical information is not sent instantly.'
-                ],
-                correctAnswerIndex: 1,
-                explanation: 'Quantum teleportation requires Alice to send two classical bits of information to Bob so he can select the correct unitary operation (I, X, Z, or XZ) to reconstruct the state. Since classical bits cannot travel faster than light, quantum teleportation is strictly bounded by the speed of light.'
-              },
-              {
-                question: 'During the Teleportation protocol, if Alice\'s measurements yield m_Q = 1 and m_A = 0, what is the state of Bob\'s qubit B immediately after the measurement but BEFORE he applies any correction gates?',
-                options: [
-                  '\u03b1|0⟩ + \u03b2|1⟩',
-                  '\u03b1|1⟩ + \u03b2|0⟩',
-                  '\u03b1|0⟩ − \u03b2|1⟩',
-                  '\u03b1|1⟩ − \u03b2|0⟩'
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
                 ],
                 correctAnswerIndex: 2,
-                explanation: 'If Alice measures m_Q = 1 (Alice\'s message qubit) and m_A = 0 (Alice\'s Bell half), Bob\'s qubit collapses to \u03b1|0⟩ − \u03b2|1⟩. Bob corrects this by applying a Z gate (since m_Q = 1) to retrieve \u03b1|0⟩ + \u03b2|1⟩.'
+                explanation: 'Applying H to qubit 0 creates 1/\u221a2(|00⟩ + |10⟩). The CNOT (control=0, target=1) maps |10⟩ to |11⟩. The resulting state is the Bell state 1/\u221a2(|00⟩ + |11⟩). The probability of measuring |11⟩ is |1/\u221a2|^2 = 50%.'
               },
               {
-                question: 'In Superdense Coding, using the statevector convention |q_A q_B⟩, if Alice wants to transmit the classical message "01", what gate does she apply to her qubit q_A, and what is the resulting entangled state?',
+                question: 'A 2-qubit circuit is prepared in the state |+-⟩. If we apply a CNOT gate where the first qubit (control) is the control and the second qubit (target) is the target, what is the probability of measuring the system in the state |--⟩?',
                 options: [
-                  'She applies X, resulting in 1/\u221a2(|10⟩ + |01⟩).',
-                  'She applies Z, resulting in 1/\u221a2(|00⟩ − |11⟩).',
-                  'She applies XZ, resulting in 1/\u221a2(|10⟩ − |01⟩).',
-                  'She applies I, resulting in 1/\u221a2(|00⟩ + |11⟩).'
-                ],
-                correctAnswerIndex: 0,
-                explanation: 'To send "01", Alice applies an X gate (bit flip) to her qubit q_A. The initial shared Bell state 1/\u221a2(|00⟩ + |11⟩) transforms to 1/\u221a2(|10⟩ + |01⟩).'
-              },
-              {
-                question: 'In Superdense Coding, after Alice sends her qubit to Bob, Bob applies a CNOT gate (control q_A, target q_B) followed by an H gate on q_A. If Alice had encoded the message "10" (resulting in the state 1/\u221a2(|00⟩ − |11⟩)), what is the state of the two qubits immediately after Bob applies the CNOT gate but BEFORE the H gate?',
-                options: [
-                  '1/\u221a2(|00⟩ − |10⟩)',
-                  '1/\u221a2(|00⟩ − |01⟩)',
-                  '1/\u221a2(|11⟩ − |01⟩)',
-                  '1/\u221a2(|01⟩ − |10⟩)'
-                ],
-                correctAnswerIndex: 0,
-                explanation: 'Applying CNOT (control q_A, target q_B) to 1/\u221a2(|00⟩ − |11⟩) results in 1/\u221a2(|00⟩ − |10⟩) because the control qubit q_A is 1 in the second term, triggering a flip of q_B from 1 to 0.'
-              },
-              {
-                question: 'How does Quantum Teleportation bypass the No-Cloning Theorem, which states that an unknown quantum state cannot be copied?',
-                options: [
-                  'The protocol creates a copy but immediately scrambles it with noise.',
-                  'Alice\'s measurement collapses and destroys the original state of her qubit Q during the protocol, so the state is transferred rather than cloned.',
-                  'The Bell pair entanglement acts as a backup copy that is kept in a hidden state.',
-                  'The classical channel transmits the full quantum amplitudes \u03b1 and \u03b2, bypassing quantum state measurement.'
-                ],
-                correctAnswerIndex: 1,
-                explanation: 'During teleportation, Alice measures her qubits in the Bell basis, which collapses and destroys the original state |ψ⟩. Because the original state is destroyed, Bob\'s reconstructed state does not violate the No-Cloning Theorem — it is a transfer, not a copy.'
-              },
-              {
-                question: 'In the Bell state creation circuit (H on q_0, CNOT with control q_0 and target q_1), suppose the CNOT gate has a systematic error where it only performs a controlled phase-flip (CZ) instead of a controlled-not (CNOT). If we measure both qubits in the computational basis, what is the probability distribution of the outcomes?',
-                options: [
-                  '50% probability of |00⟩, 50% probability of |11⟩',
-                  '50% probability of |00⟩, 50% probability of |10⟩',
-                  '25% probability of each basis state (|00⟩, |01⟩, |10⟩, |11⟩)',
-                  '100% probability of |00⟩'
-                ],
-                correctAnswerIndex: 1,
-                explanation: 'H on q_0 creates 1/\u221a2(|00⟩ + |10⟩). The CZ gate flips the sign of the state if both qubits are |1⟩. Here, the target qubit is always |0⟩, so CZ acts as identity. The state remains 1/\u221a2(|00⟩ + |10⟩), yielding 50% |00⟩ and 50% |10⟩ upon measurement.'
-              },
-              {
-                question: 'In a quantum circuit, if gate A is drawn to the left of gate B on the same qubit wire, how are they applied mathematically to the state vector |ψ⟩?',
-                options: [
-                  'A B |ψ⟩',
-                  'B A |ψ⟩',
-                  'A ⊗ B |ψ⟩',
-                  'They are applied simultaneously, so the order does not matter.'
-                ],
-                correctAnswerIndex: 1,
-                explanation: 'Time flows from left to right in a circuit diagram, meaning gate A is applied first, followed by gate B. Mathematically, this is written as B(A|ψ⟩) = B A |ψ⟩.'
-              },
-              {
-                question: 'To teleport N independent unknown qubit states from Alice to Bob, what is the minimum quantity of pre-shared entangled Bell pairs and classical bits required?',
-                options: [
-                  'N Bell pairs and N classical bits',
-                  'N Bell pairs and 2N classical bits',
-                  '2N Bell pairs and N classical bits',
-                  '1 Bell pair and 2N classical bits'
-                ],
-                correctAnswerIndex: 1,
-                explanation: 'Each single qubit teleportation requires exactly 1 entangled Bell pair and 2 classical bits. Therefore, teleporting N qubits requires N Bell pairs and 2N classical bits.'
-              },
-              {
-                question: 'If Alice and Bob do NOT share any pre-existing entanglement, what is the maximum number of classical bits Alice can transmit to Bob by physically sending a single qubit?',
-                options: [
-                  '0 bits',
-                  '1 bit',
-                  '2 bits',
-                  'Unlimited bits, since a qubit has infinite points on the Bloch sphere'
-                ],
-                correctAnswerIndex: 1,
-                explanation: 'According to Holevo\'s Theorem, physically transmitting n qubits can carry at most n classical bits of information, unless the parties share pre-existing quantum entanglement.'
-              },
-              {
-                question: 'In our updated representation, if a CNOT gate is drawn with the target symbol ⊕ on the top wire and the control dot ● on the bottom wire, which statement is true?',
-                options: [
-                  'The bottom qubit\'s state is flipped if the top qubit is |1⟩.',
-                  'The top qubit\'s state is flipped if the bottom qubit is |1⟩.',
-                  'Both qubits are put into a superposition.',
-                  'The top qubit is measured and the result controls the bottom qubit.'
-                ],
-                correctAnswerIndex: 1,
-                explanation: 'The control dot ● indicates which qubit acts as the condition (control), and the target ⊕ indicates which qubit is flipped. Since ● is on the bottom and ⊕ is on the top, the top qubit is flipped when the bottom qubit is |1⟩.'
-              },
-              {
-                question: 'In Step T=2 of the Teleportation protocol, before Alice measures her qubits, the joint state of the system is grouped as: 1/2 [ |00⟩_QA (α|0⟩ + β|1⟩)_B + |01⟩_QA (α|1⟩ + β|0⟩)_B + |10⟩_QA (α|0⟩ − β|1⟩)_B + |11⟩_QA (α|1⟩ − β|0⟩)_B ]. If Alice measures her qubits Q and A and obtains the classical result "11", what state is Bob\'s qubit B projected into?',
-                options: [
-                  'α|0⟩ + β|1⟩',
-                  'α|1⟩ + β|0⟩',
-                  'α|0⟩ − β|1⟩',
-                  'α|1⟩ − β|0⟩'
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
                 ],
                 correctAnswerIndex: 3,
-                explanation: 'Alice\'s measurement of |11⟩_QA projects Bob\'s qubit B into the corresponding coefficient state, which is α|1⟩ − β|0⟩.'
+                explanation: 'By the phase kickback effect, when a CNOT is applied to a control in the |+⟩ state and target in the |-⟩ state, the target remains unchanged as |-⟩, and the control undergoes a phase flip, turning into |-⟩. The final state is |--⟩, yielding 100% probability of measuring |--⟩.'
               },
               {
-                question: 'In Superdense Coding, suppose Bob\'s H gate fails and acts as an Identity (does nothing) but the CNOT gate works perfectly. If Alice encodes the classical message "01" (applying X to q_A), what classical bits will Bob measure?',
+                question: 'A single qubit is initialized to |0⟩. We apply a Hadamard gate, followed by a Pauli-Z gate, followed by another Hadamard gate. What is the probability of measuring the state |1⟩?',
                 options: [
-                  '"01"',
-                  '"10"',
-                  '"11" with 50% probability, "00" with 50% probability',
-                  '"01" with 50% probability, "11" with 50% probability'
+                  '0%',
+                  '50%',
+                  '100%',
+                  '25%'
                 ],
-                correctAnswerIndex: 3,
-                explanation: 'Alice encodes "01", resulting in 1/\u221a2(|10⟩ + |01⟩). CNOT transforms this to 1/\u221a2(|11⟩ + |01⟩) = 1/\u221a2(|1⟩ + |0⟩)_A ⊗ |1⟩_B. Since the H gate fails, measuring q_A gives 0 or 1 with 50% probability, and measuring q_B gives 1 with 100% probability. The outcomes are "01" or "11" with 50% probability each.'
+                correctAnswerIndex: 2,
+                explanation: 'H maps |0⟩ to |+⟩. Z maps |+⟩ to |-⟩. The final H maps |-⟩ to |1⟩. Thus, measuring the state yields |1⟩ with 100% probability (this circuit performs H Z H = X, flipping the qubit).'
               },
               {
-                question: 'Which of the following 2-qubit states is NOT entangled?',
+                question: 'A 2-qubit circuit is initialized to |00⟩. We apply Hadamard gates to both qubits, and then apply a CNOT gate (control=0, target=1). What is the probability of measuring the state |01⟩?',
                 options: [
-                  '1/\u221a2(|00⟩ + |11⟩)',
-                  '1/\u221a2(|01⟩ − |10⟩)',
-                  '1/\u221a2(|00⟩ − |11⟩)',
-                  '1/2(|00⟩ + |01⟩ + |10⟩ + |11⟩)'
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
                 ],
-                correctAnswerIndex: 3,
-                explanation: 'The state 1/2(|00⟩ + |01⟩ + |10⟩ + |11⟩) factors cleanly into |++⟩ = 1/\u221a2(|0⟩+|1⟩) ⊗ 1/\u221a2(|0⟩+|1⟩). Since it is a separable product state, it is not entangled.'
+                correctAnswerIndex: 1,
+                explanation: 'Applying H to both qubits yields |++⟩ = 1/2(|00⟩ + |01⟩ + |10⟩ + |11⟩). CNOT (control=0, target=1) maps |10⟩ to |11⟩ and |11⟩ to |10⟩. The state remains 1/2(|00⟩ + |01⟩ + |11⟩ + |10⟩) = |++⟩. Thus, each basis state has a 25% probability of being measured.'
               },
               {
-                question: 'In a quantum circuit diagram, what is the significance of a double line (as seen at the top of the Superdense Coding circuit)?',
+                question: 'In a 2-qubit circuit initialized to |00⟩, we apply a Hadamard gate on qubit 0 (control) and a Pauli-X gate on qubit 1 (target). We then apply a CNOT gate. What is the probability of measuring the state |10⟩?',
                 options: [
-                  'It represents a classical bit wire carrying classical information.',
-                  'It represents a superconducting quantum bus with twice the coherence time.',
-                  'It represents a qubit wire that is undergoing active decoherence.',
-                  'It represents a multi-qubit entangled system.'
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
+                ],
+                correctAnswerIndex: 2,
+                explanation: 'After H on 0 and X on 1, the state is 1/\u221a2(|01⟩ + |11⟩). The CNOT maps |01⟩ to |01⟩ and |11⟩ to |10⟩. The final state is 1/\u221a2(|01⟩ + |10⟩). The probability of measuring |10⟩ is |1/\u221a2|^2 = 50%.'
+              },
+              {
+                question: 'In the Quantum Teleportation circuit, if Alice measures her qubits and obtains the outcome m_Q = 1 and m_A = 0, what is the probability that Bob measures his qubit B as |1⟩ BEFORE he applies any correction gates, assuming the state to teleport was |ψ⟩ = 1/\u221a2(|0⟩ + |1⟩)?',
+                options: [
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
+                ],
+                correctAnswerIndex: 2,
+                explanation: 'When Alice measures m_Q = 1, m_A = 0, Bob\'s qubit is projected into the state \u03b1|0⟩ − \u03b2|1⟩. Since the teleported state had \u03b1 = \u03b2 = 1/\u221a2, Bob\'s qubit is in state 1/\u221a2(|0⟩ − |1⟩). Measuring this gives 50% probability of |1⟩.'
+              },
+              {
+                question: 'In Superdense Coding, Alice encodes the classical message "01" (applying X to q_A). If Bob\'s CNOT gate fails and acts as an Identity gate instead, what is the probability that Bob measures the state |01⟩?',
+                options: [
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
+                ],
+                correctAnswerIndex: 1,
+                explanation: 'Alice encodes "01", transforming the Bell state to 1/\u221a2(|10⟩ + |01⟩). If Bob\'s CNOT does nothing, applying H on q_A results in 1/2(|00⟩ − |10⟩ + |01⟩ + |11⟩). The probability of measuring |01⟩ is (1/2)^2 = 25%.'
+              },
+              {
+                question: 'In the Bell state creation circuit (H on q_0, CNOT with control q_0 and target q_1), suppose the CNOT gate has a systematic error where it only performs a controlled phase-flip (CZ) instead of a CNOT. If we measure both qubits, what is the probability of measuring the state |10⟩?',
+                options: [
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
+                ],
+                correctAnswerIndex: 2,
+                explanation: 'H on q_0 creates 1/\u221a2(|00⟩ + |10⟩). The CZ gate flips the sign of the state if both qubits are |1⟩. Since qubit 1 is in state |0⟩, the CZ gate acts as Identity. The final state remains 1/\u221a2(|00⟩ + |10⟩), yielding 50% probability of measuring |10⟩.'
+              },
+              {
+                question: 'In Superdense Coding, Alice encodes the message "10" (applying Z to q_A). If Bob\'s H gate fails and acts as an Identity instead, what is the probability that Bob measures the state |11⟩ after a successful CNOT?',
+                options: [
+                  '0%',
+                  '50%',
+                  '100%',
+                  '25%'
                 ],
                 correctAnswerIndex: 0,
-                explanation: 'A double line in standard quantum circuit notation represents a classical channel or wire that carries classical bits of information (0 or 1).'
+                explanation: 'Alice applies Z to 1/\u221a2(|00⟩ + |11⟩) → 1/\u221a2(|00⟩ − |11⟩). Bob applies CNOT → 1/\u221a2(|00⟩ − |10⟩). Since the H gate fails, measuring yields |00⟩ and |10⟩ with 50% probability each. The probability of measuring |11⟩ is 0%.'
+              },
+              {
+                question: 'During Quantum Teleportation of the state |1⟩, Alice measures m_Q = 1 and m_A = 1. If Bob fails to apply the correction gates (applies Identity instead), what is the probability that Bob measures his qubit as |0⟩?',
+                options: [
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
+                ],
+                correctAnswerIndex: 3,
+                explanation: 'The state to teleport is |1⟩ (\u03b1=0, \u03b2=1). Alice\'s measurement of 11 projects Bob\'s qubit to \u03b1|1⟩ − \u03b2|0⟩ = -|0⟩. Without correction, measuring this state yields |0⟩ with 100% probability.'
+              },
+              {
+                question: 'A 2-qubit circuit initialized to |00⟩ applies an H gate to qubit 0, followed by an S gate (which maps |1⟩ to i|1⟩) to qubit 0, and then a CNOT gate (control=0, target=1). If we measure the system, what is the probability of measuring |11⟩?',
+                options: [
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
+                ],
+                correctAnswerIndex: 2,
+                explanation: 'H on 0 creates 1/\u221a2(|00⟩ + |10⟩). S on 0 maps it to 1/\u221a2(|00⟩ + i|10⟩). CNOT maps this to 1/\u221a2(|00⟩ + i|11⟩). The probability of measuring |11⟩ is |i/\u221a2|^2 = 50%.'
+              },
+              {
+                question: 'In Superdense Coding, Alice applies the XZ gate to her qubit to encode the message "11". If the circuit runs perfectly, what is the probability that Bob measures the state |11⟩ at the end?',
+                options: [
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
+                ],
+                correctAnswerIndex: 3,
+                explanation: 'Under perfect conditions, Superdense Coding has a 100% success rate. Encoding "11" maps the shared Bell state to |11⟩ after Bob\'s CNOT + H decoding, yielding 100% measurement probability.'
+              },
+              {
+                question: 'A circuit creates the Bell state 1/\u221a2(|00⟩ + |11⟩). We measure the first qubit and get the outcome 1. What is the probability that a subsequent measurement of the second qubit will yield the outcome 0?',
+                options: [
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
+                ],
+                correctAnswerIndex: 0,
+                explanation: 'The Bell state contains only |00⟩ and |11⟩ terms. Measuring the first qubit as 1 collapses the state to |11⟩. The second qubit is now guaranteed to collapse to 1, meaning the probability of measuring 0 is 0%.'
+              },
+              {
+                question: 'In a 2-qubit circuit starting in the state |01⟩, we apply three CNOT gates in sequence: CNOT(0,1), CNOT(1,0), and CNOT(0,1). What is the probability of measuring the system in the state |10⟩?',
+                options: [
+                  '0%',
+                  '25%',
+                  '50%',
+                  '100%'
+                ],
+                correctAnswerIndex: 3,
+                explanation: 'A sequence of three alternating CNOT gates acts as a SWAP gate, exchanging the states of the two qubits. The initial state |01⟩ is swapped to |10⟩, giving 100% probability of measuring |10⟩.'
+              },
+              {
+                question: 'In a 2-qubit circuit initialized to |01⟩, we apply two identical CNOT gates (control=0, target=1) in immediate succession. What is the probability of measuring |01⟩?',
+                options: [
+                  '0%',
+                  '50%',
+                  '100%',
+                  '25%'
+                ],
+                correctAnswerIndex: 2,
+                explanation: 'Since the CNOT gate is its own inverse (CNOT^2 = I), applying two identical CNOT gates in succession results in the identity operation. The state remains |01⟩, yielding 100% probability of measuring |01⟩.'
               }
             ]
           }
