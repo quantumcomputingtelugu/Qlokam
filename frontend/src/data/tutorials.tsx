@@ -1324,6 +1324,92 @@ export const tutorialSessions: TutorialSession[] = [
                     </div>
                   </div>
                 </div>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                  The <strong>Hadamard Gate (H)</strong> is one of the most important quantum gates. It is responsible for putting a qubit into an equal superposition of |0⟩ and |1⟩. Geometrically, it represents a 180-degree rotation around a diagonal axis exactly halfway between the X and Z axes!
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', margin: '32px 0' }}>
+                  
+                  {/* H Gate */}
+                  <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+                      <div style={{ flex: '2', minWidth: '200px' }}>
+                        <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '18px' }}>Hadamard (H) Gate</h4>
+                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                          Maps |0⟩ to |+⟩ = (|0⟩ + |1⟩)/√2 and |1⟩ to |-⟩ = (|0⟩ - |1⟩)/√2. Applying it twice returns the qubit to its original state.
+                        </p>
+                        <MatrixMultiplication equation="H|0⟩ = |+⟩" matrixContent={<>1/√2 &nbsp; 1/√2<br/>1/√2 &nbsp; -1/√2</>} resultContent={<>1/√2<br/>1/√2</>} resultColor="#00E5FF" />
+                      </div>
+                      <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
+                        <div style={{ fontSize: '24px', color: '#00E5FF', display: 'flex', alignItems: 'center' }}>
+                          <span style={{ marginRight: '12px' }}>H =</span>
+                          <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid #00E5FF', borderTop: '2px solid #00E5FF', borderBottom: '2px solid #00E5FF' }}></div>
+                            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid #00E5FF', borderTop: '2px solid #00E5FF', borderBottom: '2px solid #00E5FF' }}></div>
+                            <div style={{ fontSize: '16px', lineHeight: '1.4', textAlign: 'center' }}>1/√2 &nbsp; 1/√2<br/>1/√2 &nbsp; -1/√2</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <p style={{ marginBottom: '24px', color: 'var(--text-secondary)' }}>
+                  All single-qubit gates share a set of fundamental mathematical properties that dictate how quantum information behaves. Understanding these rules is crucial for building quantum algorithms!
+                </p>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+                  {/* Unitarity */}
+                  <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <h4 style={{ color: 'var(--accent-primary)', marginBottom: '12px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '24px' }}>U</span> Unitarity
+                    </h4>
+                    <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                      Quantum gates are represented by <strong>Unitary Matrices</strong> (U<sup>†</sup>U = I). This essentially means they preserve the length (norm) of the quantum state vector.
+                    </p>
+                  </div>
+
+                  {/* Probability Preservation */}
+                  <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <h4 style={{ color: '#ff6b6b', marginBottom: '12px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '24px' }}>%</span> Probability Preservation
+                    </h4>
+                    <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                      Because gates are unitary, the total sum of the probabilities of all possible outcomes always remains exactly 1 (100%). You never "lose" or "gain" probability during a gate operation.
+                    </p>
+                  </div>
+
+                  {/* Reversibility */}
+                  <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <h4 style={{ color: '#4CAF50', marginBottom: '12px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '24px' }}>↺</span> Reversibility
+                    </h4>
+                    <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                      Every quantum gate is perfectly reversible. If you apply a gate to a state, you can always apply its inverse (U<sup>†</sup>) to completely undo the operation and get the original state back.
+                    </p>
+                  </div>
+
+                  {/* Linearity */}
+                  <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <h4 style={{ color: '#ffb84d', marginBottom: '12px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '24px' }}>∑</span> Linearity
+                    </h4>
+                    <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                      Gates act linearly on superpositions. Applying a gate to (α|0⟩ + β|1⟩) is the exact same as applying it to |0⟩, applying it to |1⟩, and then adding those results together: α(U|0⟩) + β(U|1⟩).
+                    </p>
+                  </div>
+
+                  {/* Hermitian */}
+                  <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <h4 style={{ color: '#9c27b0', marginBottom: '12px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '24px' }}>H</span> Hermitian (Some Gates)
+                    </h4>
+                    <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                      Some gates (like the Pauli X, Y, Z and Hadamard) are their own inverses. This property is called being <strong>Hermitian</strong> (H = H<sup>†</sup>). Applying them twice in a row does absolutely nothing!
+                    </p>
+                  </div>
+                </div>
               </>
             ),
             practiceGoal: 'Recognize that single-qubit gates are rotations on the Bloch sphere.',
@@ -1569,113 +1655,6 @@ export const tutorialSessions: TutorialSession[] = [
               </>
             ),
             practiceGoal: 'Learn about continuous rotation gates.',
-          },
-          {
-            id: 215,
-            title: 'Hadamard Gate',
-            description: 'The gateway to superposition.',
-            difficulty: 'Beginner',
-            lessonContent: (
-              <>
-                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                  The <strong>Hadamard Gate (H)</strong> is one of the most important quantum gates. It is responsible for putting a qubit into an equal superposition of |0⟩ and |1⟩. Geometrically, it represents a 180-degree rotation around a diagonal axis exactly halfway between the X and Z axes!
-                </p>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', margin: '32px 0' }}>
-                  
-                  {/* H Gate */}
-                  <div style={{ padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-                      <div style={{ flex: '2', minWidth: '200px' }}>
-                        <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '18px' }}>Hadamard (H) Gate</h4>
-                        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                          Maps |0⟩ to |+⟩ = (|0⟩ + |1⟩)/√2 and |1⟩ to |-⟩ = (|0⟩ - |1⟩)/√2. Applying it twice returns the qubit to its original state.
-                        </p>
-                        <MatrixMultiplication equation="H|0⟩ = |+⟩" matrixContent={<>1/√2 &nbsp; 1/√2<br/>1/√2 &nbsp; -1/√2</>} resultContent={<>1/√2<br/>1/√2</>} resultColor="#00E5FF" />
-                      </div>
-                      <div style={{ flex: '1', minWidth: '150px', display: 'flex', justifyContent: 'center' }}>
-                        <div style={{ fontSize: '24px', color: '#00E5FF', display: 'flex', alignItems: 'center' }}>
-                          <span style={{ marginRight: '12px' }}>H =</span>
-                          <div style={{ display: 'inline-block', position: 'relative', padding: '0 12px' }}>
-                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '8px', borderLeft: '2px solid #00E5FF', borderTop: '2px solid #00E5FF', borderBottom: '2px solid #00E5FF' }}></div>
-                            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '8px', borderRight: '2px solid #00E5FF', borderTop: '2px solid #00E5FF', borderBottom: '2px solid #00E5FF' }}></div>
-                            <div style={{ fontSize: '16px', lineHeight: '1.4', textAlign: 'center' }}>1/√2 &nbsp; 1/√2<br/>1/√2 &nbsp; -1/√2</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </>
-            ),
-            practiceGoal: 'Understand how the Hadamard gate creates superposition.',
-          },
-          {
-            id: 216,
-            title: 'Gate Properties',
-            description: 'Core mathematical properties of single qubit gates.',
-            difficulty: 'Intermediate',
-            lessonContent: (
-              <>
-                <p style={{ marginBottom: '24px', color: 'var(--text-secondary)' }}>
-                  All single-qubit gates share a set of fundamental mathematical properties that dictate how quantum information behaves. Understanding these rules is crucial for building quantum algorithms!
-                </p>
-
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '32px' }}>
-                  {/* Unitarity */}
-                  <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <h4 style={{ color: 'var(--accent-primary)', marginBottom: '12px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '24px' }}>U</span> Unitarity
-                    </h4>
-                    <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                      Quantum gates are represented by <strong>Unitary Matrices</strong> (U<sup>†</sup>U = I). This essentially means they preserve the length (norm) of the quantum state vector.
-                    </p>
-                  </div>
-
-                  {/* Probability Preservation */}
-                  <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <h4 style={{ color: '#ff6b6b', marginBottom: '12px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '24px' }}>%</span> Probability Preservation
-                    </h4>
-                    <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                      Because gates are unitary, the total sum of the probabilities of all possible outcomes always remains exactly 1 (100%). You never "lose" or "gain" probability during a gate operation.
-                    </p>
-                  </div>
-
-                  {/* Reversibility */}
-                  <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <h4 style={{ color: '#4CAF50', marginBottom: '12px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '24px' }}>↺</span> Reversibility
-                    </h4>
-                    <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                      Every quantum gate is perfectly reversible. If you apply a gate to a state, you can always apply its inverse (U<sup>†</sup>) to completely undo the operation and get the original state back.
-                    </p>
-                  </div>
-
-                  {/* Linearity */}
-                  <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <h4 style={{ color: '#ffb84d', marginBottom: '12px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '24px' }}>∑</span> Linearity
-                    </h4>
-                    <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                      Gates act linearly on superpositions. Applying a gate to (α|0⟩ + β|1⟩) is the exact same as applying it to |0⟩, applying it to |1⟩, and then adding those results together: α(U|0⟩) + β(U|1⟩).
-                    </p>
-                  </div>
-
-                  {/* Hermitian */}
-                  <div style={{ padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <h4 style={{ color: '#9c27b0', marginBottom: '12px', fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '24px' }}>H</span> Hermitian (Some Gates)
-                    </h4>
-                    <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                      Some gates (like the Pauli X, Y, Z and Hadamard) are their own inverses. This property is called being <strong>Hermitian</strong> (H = H<sup>†</sup>). Applying them twice in a row does absolutely nothing!
-                    </p>
-                  </div>
-                </div>
-              </>
-            ),
-            practiceGoal: 'Recognize the fundamental mathematical rules of all single qubit gates.',
           },
           {
             id: 22,
