@@ -2610,10 +2610,10 @@ export const tutorialSessions: TutorialSession[] = [
 
                 {/* Qiskit note */}
                 <div style={{ background: 'rgba(210,153,34,0.03)', border: '1px solid rgba(210,153,34,0.2)', borderRadius: '10px', padding: '16px 20px', marginBottom: '24px' }}>
-                  <h4 style={{ color: '#d29922', margin: '0 0 8px 0', fontSize: '15px' }}>⚠ Qiskit Convention (2 qubits)</h4>
+                  <h4 style={{ color: '#d29922', margin: '0 0 8px 0', fontSize: '15px' }}>⚠ Convention Note</h4>
                   <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px', lineHeight: '1.7' }}>
-                    In Qiskit: <code>q[0]</code> = Alice's qubit (bottom), <code>q[1]</code> = Bob's qubit (top).<br />
-                    Statevector is read as <code>|q[1]q[0]⟩</code>. Measurement output bit string is <code>q[1]q[0]</code> from left to right.
+                    We represent Alice's qubit as <code>q_A</code> (top line) and Bob's qubit as <code>q_B</code> (bottom line). <br />
+                    The combined state is written as <code>|q_A q_B⟩</code> read from left to right.
                   </p>
                 </div>
 
@@ -2631,10 +2631,10 @@ export const tutorialSessions: TutorialSession[] = [
                     </thead>
                     <tbody>
                       {[
-                        ['00', 'I (identity)', '|Φ⁺⟩', '1/√2(|00⟩ + |11⟩)'],
-                        ['01', 'X (bit flip)', '|Ψ⁺⟩', '1/√2(|01⟩ + |10⟩)'],
-                        ['10', 'Z (phase flip)', '|Φ⁻⟩', '1/√2(|00⟩ − |11⟩)'],
-                        ['11', 'XZ (both)', '|Ψ⁻⟩', '1/√2(|01⟩ − |10⟩)'],
+                        ['00', 'I (identity)', '|Φ⁺⟩', '1/\u221a2(|00⟩ + |11⟩)'],
+                        ['01', 'X (bit flip)', '|Ψ⁺⟩', '1/\u221a2(|10⟩ + |01⟩)'],
+                        ['10', 'Z (phase flip)', '|Φ⁻⟩', '1/\u221a2(|00⟩ − |11⟩)'],
+                        ['11', 'XZ (both)', '|Ψ⁻⟩', '1/\u221a2(|10⟩ − |01⟩)'],
                       ].map(([msg, gate, bell, state], i) => (
                         <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent' }}>
                           <td style={{ padding: '10px 14px', textAlign: 'center', fontFamily: 'monospace', fontWeight: 'bold', color: 'var(--accent-primary)', fontSize: '16px' }}>{msg}</td>
@@ -2647,115 +2647,200 @@ export const tutorialSessions: TutorialSession[] = [
                   </table>
                 </div>
 
-                {/* ── Circuit for encoding "11" as example ── */}
-                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '8px', marginBottom: '8px' }}>Superdense Coding Circuit (example: send "11")</h3>
+                {/* ── Superdense Coding Circuit ── */}
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '8px', marginBottom: '8px' }}>Superdense Coding Circuit</h3>
                 <p style={{ marginBottom: '16px', fontSize: '14px', color: 'var(--text-secondary)' }}>
-                  The circuit has 3 phases: <span style={{ color: '#3fb950' }}>① Setup Bell pair</span> → <span style={{ color: 'var(--accent-primary)' }}>② Alice encodes</span> → <span style={{ color: '#d29922' }}>③ Bob decodes</span>.
+                  Alice encodes the classical bits <strong>a</strong> and <strong>b</strong> by applying gates, then transmits her qubit to Bob. Bob decodes the state using a CNOT and a Hadamard gate.
                 </p>
-                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 20px', margin: '16px 0', overflowX: 'auto', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  {/* 
-                    Columns: label(90) | w(14) | H(44) | w(14) | CNOT(44) | w(14) | encode(44) | w(14) | CNOT(44) | w(14) | H(44) | w(14) | M(44) 
-                    = 90 + 7*(14+44) = 90 + 406 = 496px min
-                  */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '90px 14px 44px 14px 44px 14px 44px 14px 44px 14px 44px 14px 44px', minWidth: '520px', alignItems: 'center' }}>
+                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 24px', margin: '16px 0', overflowX: 'auto', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '60px 80px 60px 60px 80px 60px 60px 60px',
+                    gridTemplateRows: '30px 30px 60px 60px 60px',
+                    minWidth: '520px',
+                    alignItems: 'center',
+                    position: 'relative'
+                  }}>
 
-                    {/* ── q₀ (Alice) row ── */}
-                    <span style={{ color: 'var(--accent-primary)', fontSize: '13px', fontFamily: 'monospace' }}>q₀ Alice</span>
-                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
-                    {/* Phase 1: H */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #2e7d32', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#2e7d32', background: 'rgba(46,125,50,0.05)', justifySelf: 'center' }}>H</div>
-                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
-                    {/* Phase 1: CNOT control */}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', position: 'relative', height: '44px' }}>
-                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(0,212,255,0.4)', transform: 'translateY(-50%)' }} />
-                      <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#2e7d32', zIndex: 1, marginTop: '16px' }} />
-                      <div style={{ width: '2px', flex: 1, background: '#2e7d32' }} />
+                    {/* Classical Wires at the top */}
+                    {/* Row 1: Classical bit a */}
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontFamily: 'monospace', justifySelf: 'center', gridRow: '1', gridColumn: '1' }}>a</span>
+                    <div style={{ gridRow: '1', gridColumn: '2 / 5', display: 'flex', alignItems: 'center', height: '100%' }}>
+                      <div style={{ height: '4px', borderTop: '1px solid rgba(255,255,255,0.4)', borderBottom: '1px solid rgba(255,255,255,0.4)', width: '100%' }} />
                     </div>
-                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
-                    {/* Phase 2: encode — X gate (for bit 01) then Z (for bit 10), here XZ for "11" */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.05)', justifySelf: 'center', fontSize: '12px' }}>XZ</div>
-                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
-                    {/* Phase 3: CNOT control */}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', position: 'relative', height: '44px' }}>
-                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(0,212,255,0.4)', transform: 'translateY(-50%)' }} />
-                      <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#b28215', zIndex: 1, marginTop: '16px' }} />
-                      <div style={{ width: '2px', flex: 1, background: '#b28215' }} />
+
+                    {/* Row 2: Classical bit b */}
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontFamily: 'monospace', justifySelf: 'center', gridRow: '2', gridColumn: '1' }}>b</span>
+                    <div style={{ gridRow: '2', gridColumn: '2 / 5', display: 'flex', alignItems: 'center', height: '100%' }}>
+                      <div style={{ height: '4px', borderTop: '1px solid rgba(255,255,255,0.4)', borderBottom: '1px solid rgba(255,255,255,0.4)', width: '100%' }} />
                     </div>
-                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
-                    {/* Phase 3: H */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#b28215', background: 'rgba(178,130,21,0.05)', justifySelf: 'center' }}>H</div>
-                    <div style={{ height: '2px', background: 'rgba(0,212,255,0.4)' }} />
-                    {/* Measure */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#b28215', background: 'rgba(178,130,21,0.05)', justifySelf: 'center' }}>M</div>
 
-                    <div style={{ gridColumn: '1 / -1', height: '8px' }} />
+                    {/* Curly Bracket (spans Row 3 to 5, Column 2) */}
+                    <div style={{ gridRow: '3 / 6', gridColumn: '2', height: '100%', position: 'relative', pointerEvents: 'none' }}>
+                      <div style={{
+                        position: 'absolute',
+                        left: '10px',
+                        top: '30px',
+                        bottom: '30px',
+                        width: '10px',
+                        border: '2px solid rgba(255,255,255,0.3)',
+                        borderRight: 'none',
+                        borderTopLeftRadius: '4px',
+                        borderBottomLeftRadius: '4px',
+                      }}>
+                        {/* Middle point of curly bracket */}
+                        <div style={{
+                          position: 'absolute',
+                          left: '-6px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          width: '6px',
+                          height: '2px',
+                          background: 'rgba(255,255,255,0.3)'
+                        }} />
+                      </div>
+                      <span style={{
+                        position: 'absolute',
+                        left: '-52px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        fontFamily: 'monospace',
+                        fontSize: '13px',
+                        color: 'var(--text-secondary)'
+                      }}>|β₀₀⟩</span>
+                    </div>
 
-                    {/* ── q₁ (Bob) row ── */}
-                    <span style={{ color: '#3fb950', fontSize: '13px', fontFamily: 'monospace' }}>q₁  Bob</span>
-                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
-                    {/* Phase 1: identity */}
-                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
-                    {/* Phase 1: CNOT target */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #2e7d32', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#2e7d32', background: 'rgba(46,125,50,0.05)', justifySelf: 'center' }}>⊕</div>
-                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
-                    {/* Phase 2: identity (Bob waits) */}
-                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
-                    {/* Phase 3: CNOT target */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#b28215', background: 'rgba(178,130,21,0.05)', justifySelf: 'center' }}>⊕</div>
-                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
-                    {/* Phase 3: identity */}
-                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)', justifySelf: 'stretch' }} />
-                    <div style={{ height: '2px', background: 'rgba(46,125,50,0.4)' }} />
-                    {/* Measure */}
-                    <div style={{ width: '44px', height: '44px', border: '2px solid #b28215', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#b28215', background: 'rgba(178,130,21,0.05)', justifySelf: 'center' }}>M</div>
+                    {/* ROW 3: Alice's qubit q_A before transmission */}
+                    {/* Wire start in Column 2 */}
+                    <div style={{ gridRow: '3', gridColumn: '2', width: '100%', height: '100%', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                      <div style={{ position: 'absolute', left: '20px', right: 0, height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                    </div>
 
-                  </div>
+                    {/* Z Gate (Column 3) */}
+                    <div style={{ gridRow: '3', gridColumn: '3', position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {/* Horizontal quantum wire */}
+                      <div style={{ position: 'absolute', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.3)', zIndex: 0 }} />
+                      {/* Vertical classical control line from a (Row 1) */}
+                      <div style={{ position: 'absolute', top: '-75px', bottom: '50%', width: '4px', borderLeft: '1px solid rgba(255,255,255,0.4)', borderRight: '1px solid rgba(255,255,255,0.4)', zIndex: 0 }} />
+                      {/* Gate Box */}
+                      <div style={{ zIndex: 1, width: '36px', height: '36px', border: '2px solid var(--text-secondary)', borderRadius: '4px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px', color: 'var(--text-secondary)' }}>Z</div>
+                    </div>
 
-                  {/* Phase labels */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '90px 14px 44px 14px 44px 14px 44px 14px 44px 14px 44px 14px 44px', minWidth: '520px', marginTop: '14px' }}>
-                    <div /><div />
-                    <div style={{ textAlign: 'center', fontSize: '11px', color: '#2e7d32', gridColumn: 'span 3' }}>① Setup Bell pair (H + CNOT)</div>
-                    <div /><div style={{ textAlign: 'center', fontSize: '11px', color: 'var(--accent-primary)' }}>② Encode</div>
-                    <div />
-                    <div style={{ textAlign: 'center', fontSize: '11px', color: '#b28215', gridColumn: 'span 3' }}>③ Bob decodes (CNOT + H)</div>
-                    <div /><div style={{ textAlign: 'center', fontSize: '11px', color: '#b28215' }}>Measure</div>
+                    {/* X Gate (Column 4) */}
+                    <div style={{ gridRow: '3', gridColumn: '4', position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {/* Horizontal quantum wire */}
+                      <div style={{ position: 'absolute', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.3)', zIndex: 0 }} />
+                      {/* Vertical classical control line from b (Row 2) */}
+                      <div style={{ position: 'absolute', top: '-45px', bottom: '50%', width: '4px', borderLeft: '1px solid rgba(255,255,255,0.4)', borderRight: '1px solid rgba(255,255,255,0.4)', zIndex: 0 }} />
+                      {/* Gate Box */}
+                      <div style={{ zIndex: 1, width: '36px', height: '36px', border: '2px solid var(--text-secondary)', borderRadius: '4px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px', color: 'var(--text-secondary)' }}>X</div>
+                    </div>
+
+                    {/* Transmission (Spans Row 3 to 4, Column 5) */}
+                    <div style={{ gridRow: '3 / 5', gridColumn: '5', position: 'relative', width: '100%', height: '100%', justifySelf: 'stretch' }}>
+                      <svg style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+                        <path
+                          d="M 0 30 L 15 30 L 65 90 L 80 90"
+                          fill="none"
+                          stroke="rgba(255,255,255,0.3)"
+                          strokeWidth="2"
+                        />
+                      </svg>
+                      {/* Label on the sloped line */}
+                      <span style={{ position: 'absolute', left: '20px', top: '35px', fontSize: '11px', color: 'var(--accent-primary)', transform: 'rotate(37deg)', transformOrigin: 'left top', background: 'rgba(0,0,0,0.6)', padding: '2px 4px', borderRadius: '4px' }}>Send Qubit</span>
+                    </div>
+
+                    {/* ROW 4: Bob's top input line (after transmission) */}
+                    {/* CNOT Control (Column 6) */}
+                    <div style={{ gridRow: '4', gridColumn: '6', position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {/* Horizontal quantum wire */}
+                      <div style={{ position: 'absolute', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                      {/* Control dot */}
+                      <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--text-secondary)', zIndex: 1 }} />
+                      {/* Vertical line down to target */}
+                      <div style={{ position: 'absolute', top: '50%', height: '60px', width: '2px', background: 'var(--text-secondary)' }} />
+                    </div>
+
+                    {/* H Gate (Column 7) */}
+                    <div style={{ gridRow: '4', gridColumn: '7', position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {/* Horizontal quantum wire */}
+                      <div style={{ position: 'absolute', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                      {/* Gate Box */}
+                      <div style={{ zIndex: 1, width: '36px', height: '36px', border: '2px solid var(--text-secondary)', borderRadius: '4px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '14px', color: 'var(--text-secondary)' }}>H</div>
+                    </div>
+
+                    {/* Output |a> (Column 8) */}
+                    <div style={{ gridRow: '4', gridColumn: '8', display: 'flex', alignItems: 'center', height: '100%' }}>
+                      <div style={{ width: '15px', height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                      <span style={{ fontFamily: 'monospace', fontSize: '13px', marginLeft: '6px', color: 'var(--accent-primary)' }}>|a⟩</span>
+                    </div>
+
+                    {/* ROW 5: Bob's bottom qubit q_B */}
+                    {/* Wire start in Column 2 */}
+                    <div style={{ gridRow: '5', gridColumn: '2', width: '100%', height: '100%', display: 'flex', alignItems: 'center', position: 'relative' }}>
+                      <div style={{ position: 'absolute', left: '20px', right: 0, height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                    </div>
+
+                    {/* Spacer wires for Columns 3, 4, 5 */}
+                    <div style={{ gridRow: '5', gridColumn: '3', display: 'flex', alignItems: 'center', height: '100%' }}><div style={{ height: '2px', background: 'rgba(255,255,255,0.3)', width: '100%' }} /></div>
+                    <div style={{ gridRow: '5', gridColumn: '4', display: 'flex', alignItems: 'center', height: '100%' }}><div style={{ height: '2px', background: 'rgba(255,255,255,0.3)', width: '100%' }} /></div>
+                    <div style={{ gridRow: '5', gridColumn: '5', display: 'flex', alignItems: 'center', height: '100%' }}><div style={{ height: '2px', background: 'rgba(255,255,255,0.3)', width: '100%' }} /></div>
+
+                    {/* CNOT Target (Column 6) */}
+                    <div style={{ gridRow: '5', gridColumn: '6', position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {/* Horizontal quantum wire */}
+                      <div style={{ position: 'absolute', left: 0, right: 0, height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                      {/* Target circle */}
+                      <div style={{ zIndex: 1, width: '22px', height: '22px', border: '2px solid var(--text-secondary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '15px', color: 'var(--text-secondary)', background: '#0d1117' }}>⊕</div>
+                    </div>
+
+                    {/* Spacer wire for Column 7 */}
+                    <div style={{ gridRow: '5', gridColumn: '7', display: 'flex', alignItems: 'center', height: '100%' }}><div style={{ height: '2px', background: 'rgba(255,255,255,0.3)', width: '100%' }} /></div>
+
+                    {/* Output |b> (Column 8) */}
+                    <div style={{ gridRow: '5', gridColumn: '8', display: 'flex', alignItems: 'center', height: '100%' }}>
+                      <div style={{ width: '15px', height: '2px', background: 'rgba(255,255,255,0.3)' }} />
+                      <span style={{ fontFamily: 'monospace', fontSize: '13px', marginLeft: '6px', color: 'var(--accent-primary)' }}>|b⟩</span>
+                    </div>
+
                   </div>
                 </div>
 
                 {/* ── Step by Step ── */}
                 <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Step-by-Step State Analysis (sending "11")</h3>
+                <p style={{ marginBottom: '16px', color: 'var(--text-secondary)', fontSize: '14px' }}>
+                  We track the 2-qubit state <strong>|q_A q_B⟩</strong> (where q_A is Alice's top qubit and q_B is Bob's bottom qubit) at each timestep T.
+                </p>
                 {[
                   {
                     t: 'T=0', label: 'Initial State', color: 'var(--text-secondary)',
-                    state: '|00⟩',
-                    desc: 'Alice (q₀) and Bob (q₁) both start in |0⟩. They share a quantum channel to create entanglement.',
+                    state: '|q_A q_B⟩ = |00⟩',
+                    desc: 'Alice (q_A) and Bob (q_B) both start in the ground state |0⟩.',
                   },
                   {
-                    t: 'T=1', label: 'H on q₀', color: '#2e7d32',
-                    state: '1/2(|00⟩ + |10⟩)',
-                    desc: 'H gate on Alice\'s qubit q₀ creates superposition. The combined state is a tensor product with Bob\'s |0⟩.',
+                    t: 'T=1', label: 'H on q_A', color: '#2e7d32',
+                    state: '1/\u221a2 (|00⟩ + |10⟩)',
+                    desc: 'Hadamard gate on q_A puts it into superposition: |0⟩ → 1/\u221a2(|0⟩+|1⟩). q_B remains |0⟩, giving the combined state 1/\u221a2(|00⟩+|10⟩).',
                   },
                   {
-                    t: 'T=2', label: 'CNOT (ctrl=q₀, tgt=q₁) → Bell pair shared', color: '#2e7d32',
-                    state: '|Φ⁺⟩ = 1/√2(|00⟩ + |11⟩)',
-                    desc: 'CNOT creates the Bell state. Now Alice and Bob share a maximally entangled pair. This setup happens BEFORE Alice knows the message.',
+                    t: 'T=2', label: 'CNOT (ctrl=q_A, tgt=q_B) → Bell State', color: '#2e7d32',
+                    state: '|\u03b2₀₀⟩ = 1/\u221a2 (|00⟩ + |11⟩)',
+                    desc: 'CNOT flips q_B whenever q_A=|1⟩. The |10⟩ term becomes |11⟩. They now share the maximally entangled state |\u03b2₀₀⟩.',
                   },
                   {
-                    t: 'T=3', label: 'Alice encodes "11" → applies XZ to q₀', color: 'var(--accent-primary)',
-                    state: '|Ψ⁻⟩ = 1/√2(|01⟩ − |10⟩)',
-                    desc: 'Alice applies Z first: |Φ⁺⟩ → |Φ⁻⟩ = 1/√2(|00⟩−|11⟩). Then X: → 1/√2(|01⟩−|10⟩) = |Ψ⁻⟩. She sends q₀ to Bob.',
+                    t: 'T=3', label: 'Alice encodes "11" → applies Z then X to q_A', color: 'var(--accent-primary)',
+                    state: '1/\u221a2 (|10⟩ − |01⟩)',
+                    desc: 'Alice applies Z (phase flip on 1): 1/\u221a2(|00⟩ − |11⟩). Then she applies X (flips q_A): 1/\u221a2(|10⟩ − |01⟩). Alice then sends q_A to Bob.',
                   },
                   {
-                    t: 'T=4', label: 'Bob applies CNOT (ctrl=q₀, tgt=q₁)', color: '#b28215',
-                    state: '1/√2(|01⟩ − |11⟩) = 1/√2(|0⟩ − |1⟩) ⊗ |1⟩ ... → after H on q₀: |11⟩',
-                    desc: 'Bob applies CNOT to disentangle, then H on q₀. This reverses the Bell pair creation and maps each Bell state to a unique computational basis state.',
+                    t: 'T=4', label: 'Bob applies CNOT (ctrl=q_A, tgt=q_B)', color: '#b28215',
+                    state: '1/\u221a2 (|11⟩ − |01⟩) = 1/\u221a2 (|1⟩ − |0⟩)_A ⊗ |1⟩_B',
+                    desc: 'Bob applies CNOT to Alice\'s qubit q_A and Bob\'s qubit q_B. The state is factored into Bob\'s qubit in state |1⟩ and Alice\'s qubit in superposition.',
                   },
                   {
-                    t: 'T=5', label: 'Bob measures both qubits', color: '#b28215',
-                    state: '|11⟩ → measures 1,1',
-                    desc: "Bob reads out |q₀q₁⟩ = |11⟩. He recovers Alice's original message: '11'. In Qiskit output order: bitstring '11' (q[1]q[0]).",
+                    t: 'T=5', label: 'Bob applies H on q_A', color: '#b28215',
+                    state: '-|11⟩  (measures as 1, 1)',
+                    desc: 'Bob applies H to q_A, transforming 1/\u221a2(|1⟩ − |0⟩) back to -|1⟩. When Bob measures both qubits, he gets 1 and 1, exactly recovering the bits a and b!',
                   },
                 ].map(({ t, label, color, state, desc }) => (
                   <div key={t} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px', border: `1px solid rgba(255,255,255,0.05)`, marginBottom: '12px' }}>
