@@ -36,6 +36,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: 'EsyWjyCuJG8jncU03UJatjGGDAkqYFah9YVlr9h__FI',
+  },
 };
 
 
