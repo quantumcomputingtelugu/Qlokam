@@ -891,24 +891,18 @@ export const tutorialSessions: TutorialSession[] = [
                 
                 <div style={{ display: 'flex', gap: '32px', margin: '32px 0', alignItems: 'center', flexWrap: 'wrap' }}>
                   <div style={{ flex: '1', display: 'flex', justifyContent: 'center', padding: '24px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', minWidth: '300px' }}>
-                    <svg width="100%" height="100%" viewBox="0 0 300 300" style={{ maxWidth: '300px', width: '100%', filter: 'drop-shadow(0 0 20px rgba(69,243,255,0.15))' }}>
+                    <svg width="100%" height="100%" viewBox="0 0 300 300" style={{ maxWidth: '300px', width: '100%', filter: 'drop-shadow(0 0 20px rgba(69,243,255,0.2))' }}>
                       <defs>
                         <radialGradient id="sphereGrad" cx="35%" cy="35%" r="65%">
-                          <stop offset="0%" stopColor="rgba(255, 255, 255, 0.15)" />
-                          <stop offset="50%" stopColor="rgba(69, 243, 255, 0.05)" />
-                          <stop offset="100%" stopColor="rgba(176, 38, 255, 0.2)" />
+                          <stop offset="0%" stopColor="rgba(255, 255, 255, 0.1)" />
+                          <stop offset="60%" stopColor="rgba(69, 243, 255, 0.05)" />
+                          <stop offset="100%" stopColor="rgba(69, 243, 255, 0.15)" />
                         </radialGradient>
-                        <marker id="arrowhead-z" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-                          <polygon points="0 0, 8 3, 0 6" fill="#4dabf7" />
+                        <marker id="arrowhead-axis" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                          <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.8)" />
                         </marker>
-                        <marker id="arrowhead-y" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-                          <polygon points="0 0, 8 3, 0 6" fill="#69db7c" />
-                        </marker>
-                        <marker id="arrowhead-x" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-                          <polygon points="0 0, 8 3, 0 6" fill="#ff8787" />
-                        </marker>
-                        <marker id="arrowhead-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-                          <polygon points="0 0, 8 3, 0 6" fill="#b026ff" />
+                        <marker id="arrowhead-vector" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                          <polygon points="0 0, 8 3, 0 6" fill="#45f3ff" />
                         </marker>
                       </defs>
                       
@@ -916,43 +910,43 @@ export const tutorialSessions: TutorialSession[] = [
                       <path d="M 50 150 A 100 35 0 0 1 250 150" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" strokeDasharray="4 4" />
                       
                       {/* Sphere outline with gradient */}
-                      <circle cx="150" cy="150" r="100" fill="url(#sphereGrad)" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
+                      <circle cx="150" cy="150" r="100" fill="url(#sphereGrad)" stroke="rgba(255,255,255,0.6)" strokeWidth="2" />
                       
                       {/* Front half of equator */}
                       <path d="M 50 150 A 100 35 0 0 0 250 150" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" strokeDasharray="4 4" />
                       
                       {/* Axes */}
                       {/* Z-axis */}
-                      <line x1="150" y1="260" x2="150" y2="30" stroke="#4dabf7" strokeWidth="1.5" markerEnd="url(#arrowhead-z)" />
+                      <line x1="150" y1="260" x2="150" y2="30" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" markerEnd="url(#arrowhead-axis)" />
                       
                       {/* Y-axis */}
-                      <line x1="150" y1="150" x2="280" y2="150" stroke="#69db7c" strokeWidth="1.5" markerEnd="url(#arrowhead-y)" />
+                      <line x1="150" y1="150" x2="280" y2="150" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" markerEnd="url(#arrowhead-axis)" />
                       
                       {/* X-axis */}
-                      <line x1="150" y1="150" x2="45" y2="200" stroke="#ff8787" strokeWidth="1.5" markerEnd="url(#arrowhead-x)" />
+                      <line x1="150" y1="150" x2="45" y2="200" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" markerEnd="url(#arrowhead-axis)" />
                     
                       {/* Projections */}
                       {/* Center to projection on equator */}
-                      <line x1="150" y1="150" x2="200" y2="175" stroke="rgba(255,255,255,0.5)" strokeWidth="1" strokeDasharray="3 3" />
+                      <line x1="150" y1="150" x2="200" y2="175" stroke="rgba(69,243,255,0.4)" strokeWidth="1" strokeDasharray="3 3" />
                       {/* Vector tip to projection */}
-                      <line x1="200" y1="80" x2="200" y2="175" stroke="rgba(255,255,255,0.5)" strokeWidth="1" strokeDasharray="3 3" />
+                      <line x1="200" y1="80" x2="200" y2="175" stroke="rgba(69,243,255,0.4)" strokeWidth="1" strokeDasharray="3 3" />
                       
                       {/* Angles */}
                       {/* Theta arc */}
-                      <path d="M 150 100 Q 165 100 175 115" fill="none" stroke="#fcc419" strokeWidth="1.5" />
+                      <path d="M 150 100 Q 165 100 175 115" fill="none" stroke="#45f3ff" strokeWidth="1.5" />
                       {/* Phi arc: from X-axis to projection */}
-                      <path d="M 85 180 Q 140 200 200 175" fill="none" stroke="#fcc419" strokeWidth="1.5" />
+                      <path d="M 85 180 Q 140 200 200 175" fill="none" stroke="#45f3ff" strokeWidth="1.5" />
                       
                       {/* State Vector |ψ⟩ */}
-                      <line x1="150" y1="150" x2="200" y2="80" stroke="#b026ff" strokeWidth="3" markerEnd="url(#arrowhead-purple)" />
+                      <line x1="150" y1="150" x2="200" y2="80" stroke="#45f3ff" strokeWidth="3" markerEnd="url(#arrowhead-vector)" />
                       
                       {/* Labels */}
-                      <text x="160" y="45" fill="#4dabf7" fontSize="20" fontWeight="bold">|0⟩</text>
-                      <text x="160" y="275" fill="#ff6b6b" fontSize="20" fontWeight="bold">|1⟩</text>
-                      <text x="210" y="75" fill="#b026ff" fontSize="20" fontWeight="bold">|ψ⟩</text>
+                      <text x="160" y="45" fill="rgba(255,255,255,0.9)" fontSize="20" fontWeight="bold">|0⟩</text>
+                      <text x="160" y="275" fill="rgba(255,255,255,0.9)" fontSize="20" fontWeight="bold">|1⟩</text>
+                      <text x="210" y="75" fill="#45f3ff" fontSize="20" fontWeight="bold">|ψ⟩</text>
                       
-                      <text x="160" y="90" fill="#fcc419" fontSize="20" fontStyle="italic" fontWeight="bold">θ</text>
-                      <text x="135" y="195" fill="#fcc419" fontSize="20" fontStyle="italic" fontWeight="bold">φ</text>
+                      <text x="160" y="90" fill="#45f3ff" fontSize="20" fontStyle="italic" fontWeight="bold">θ</text>
+                      <text x="135" y="195" fill="#45f3ff" fontSize="20" fontStyle="italic" fontWeight="bold">φ</text>
                     
                       <text x="5" y="225" fill="#fff" fontSize="14">|0⟩ + |1⟩</text>
                       <line x1="5" y1="230" x2="65" y2="230" stroke="#fff" strokeWidth="1" />
