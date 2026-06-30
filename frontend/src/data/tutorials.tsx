@@ -1766,15 +1766,69 @@ export const tutorialSessions: TutorialSession[] = [
             difficulty: 'Advanced',
             lessonContent: (
               <>
+                <h3 style={{ color: 'var(--accent-primary)', marginBottom: '12px' }}>What is Entanglement?</h3>
                 <p style={{ marginBottom: '16px' }}>
-                  When a Hadamard gate is combined with a CNOT gate, they create <strong>Entanglement</strong>.
+                  Entanglement is a unique quantum phenomenon where the state of two or more qubits becomes so perfectly correlated that they cannot be described independently. Measuring one qubit instantly determines the state of the other, no matter how far apart they are in the universe! Einstein famously called this "spooky action at a distance."
                 </p>
-                <p style={{ marginBottom: '16px' }}>
-                  Entanglement is a unique quantum phenomenon where the state of two or more qubits becomes perfectly correlated. Measuring one qubit instantly dictates the state of the other, no matter how far apart they are. Einstein famously called this "spooky action at a distance."
+
+                <h3 style={{ marginTop: '24px', marginBottom: '12px', color: 'var(--text-primary)' }}>Creating a Bell State (Matrix Math)</h3>
+                <p style={{ marginBottom: '12px' }}>
+                  The most common entangled state is the <strong>Bell State (Φ⁺)</strong>. We create it by starting with two qubits in the |00⟩ state, applying a <strong>Hadamard (H)</strong> gate to the first qubit, and then a <strong>CNOT</strong> gate.
                 </p>
-                <p style={{ marginBottom: '16px' }}>
-                  Entanglement is the core resource that makes quantum teleportation and quantum cryptography possible.
-                </p>
+
+                <div style={{ padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', marginBottom: '24px' }}>
+                  <h4 style={{ color: 'var(--text-primary)', marginBottom: '12px' }}>Step 1: Hadamard on Qubit 1</h4>
+                  <p style={{ marginBottom: '12px', fontSize: '0.9em', color: 'var(--text-secondary)' }}>
+                    Applying H to the first qubit changes the state from |00⟩ to a superposition of |00⟩ and |10⟩. <em>(Note: We omit the normalization factor 1/√2 from the matrices for visual simplicity)</em>.
+                  </p>
+                  <MatrixMultiplication 
+                    equation="(H ⊗ I)|00⟩"
+                    inputContent={<>1<br/>0<br/>0<br/>0</>}
+                    matrixContent={
+                      <table style={{ borderSpacing: '8px 4px', textAlign: 'center' }}>
+                        <tbody>
+                          <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+                          <tr><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                          <tr><td>1</td><td>0</td><td>-1</td><td>0</td></tr>
+                          <tr><td>0</td><td>1</td><td>0</td><td>-1</td></tr>
+                        </tbody>
+                      </table>
+                    }
+                    resultContent={<>1<br/>0<br/>1<br/>0</>}
+                    resultColor="#60a5fa"
+                  />
+                  
+                  <h4 style={{ marginTop: '24px', color: 'var(--text-primary)', marginBottom: '12px' }}>Step 2: CNOT on both</h4>
+                  <p style={{ marginBottom: '12px', fontSize: '0.9em', color: 'var(--text-secondary)' }}>
+                    Now we apply the CNOT matrix to our new state vector. CNOT flips the second qubit ONLY when the first qubit is 1.
+                  </p>
+                  <MatrixMultiplication 
+                    equation="CNOT|ψ⟩"
+                    inputContent={<>1<br/>0<br/>1<br/>0</>}
+                    matrixContent={
+                      <table style={{ borderSpacing: '8px 4px', textAlign: 'center' }}>
+                        <tbody>
+                          <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+                          <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                          <tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                          <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+                        </tbody>
+                      </table>
+                    }
+                    resultContent={<>1<br/>0<br/>0<br/>1</>}
+                    resultColor="#c084fc"
+                  />
+                  <p style={{ marginTop: '16px', color: 'var(--text-primary)' }}>
+                    <strong>Result:</strong> <code>1/√2 (|00⟩ + |11⟩)</code>. The state |01⟩ and |10⟩ have 0 probability. The two qubits are now perfectly entangled! If you measure Qubit 1 and get '0', you know with 100% certainty that Qubit 2 is also '0'.
+                  </p>
+                </div>
+
+                <h3 style={{ marginTop: '24px', marginBottom: '12px', color: 'var(--text-primary)' }}>Why is it Useful?</h3>
+                <ul style={{ listStyleType: 'disc', paddingLeft: '20px', marginBottom: '16px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                  <li style={{ marginBottom: '8px' }}><strong style={{ color: 'var(--text-primary)' }}>Quantum Teleportation:</strong> Entanglement acts as the "wire" to instantly transfer quantum information from one place to another.</li>
+                  <li style={{ marginBottom: '8px' }}><strong style={{ color: 'var(--text-primary)' }}>Quantum Cryptography (QKD):</strong> It allows for communication that is physically impossible to intercept without alerting the sender and receiver.</li>
+                  <li style={{ marginBottom: '8px' }}><strong style={{ color: 'var(--text-primary)' }}>Superdense Coding:</strong> Allows you to send two classical bits of information (00, 01, 10, or 11) using only a single entangled qubit!</li>
+                </ul>
               </>
             ),
             practiceGoal: 'Learn how to create an entangled pair of qubits.',
