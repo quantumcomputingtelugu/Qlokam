@@ -1007,65 +1007,98 @@ export const tutorialSessions: TutorialSession[] = [
             ),
             practiceGoal: 'Score a perfect 5/5 to earn a point!',
             quizzes: [
+              // Easy
               {
-                question: "What does 'qubit' stand for?",
-                options: ["Quality Bit", "Quantum Bit", "Quantized Byte", "Quadratic Bit"],
+                question: "What is the fundamental difference between a classical bit and a qubit?",
+                options: ["A classical bit can hold more data.", "A qubit can be 0, 1, or a combination of both simultaneously.", "A classical bit processes information faster.", "A qubit can only be exactly 0 or exactly 1."],
                 correctAnswerIndex: 1,
-                explanation: "Qubit stands for Quantum Bit, the basic unit of quantum information."
+                explanation: "Unlike a classical bit which is strictly binary, a qubit can exist in a superposition of both states."
               },
               {
-                question: "While a classical bit can be 0 or 1, a qubit can be in a state of 0, 1, or:",
-                options: ["Neither 0 nor 1", "A combination of both 0 and 1 simultaneously", "Only 2", "Negative 1"],
-                correctAnswerIndex: 1,
-                explanation: "A qubit can be in a superposition, which is a combination of both 0 and 1 simultaneously."
-              },
-              {
-                question: "What is the phenomenon called when a qubit exists in multiple states at once?",
-                options: ["Entanglement", "Interference", "Superposition", "Decoherence"],
-                correctAnswerIndex: 2,
-                explanation: "Superposition allows a quantum system to exist in multiple states simultaneously."
-              },
-              {
-                question: "What happens to a qubit in superposition when it is measured?",
-                options: ["It remains in superposition", "It disappears", "It collapses into a definite state (0 or 1)", "It turns into two qubits"],
-                correctAnswerIndex: 2,
-                explanation: "Measuring a qubit forces it to collapse into a definite classical state, either 0 or 1."
-              },
-              {
-                question: "In the coin toss analogy, what does the spinning coin represent?",
-                options: ["A classical bit", "A qubit in a definite state of 1", "A qubit in a state of superposition", "A measured qubit"],
+                question: "In the spinning coin analogy, what does the spinning coin represent?",
+                options: ["A measured qubit", "A classical bit", "A qubit in superposition", "A qubit undergoing decoherence"],
                 correctAnswerIndex: 2,
                 explanation: "A spinning coin is a blur of heads and tails, representing a qubit in superposition before it is measured."
               },
               {
-                question: "If 1 qubit can represent 2 states simultaneously, how many states can 3 qubits represent?",
-                options: ["3 states", "6 states", "8 states", "9 states"],
+                question: "What happens to a qubit in superposition when it is measured?",
+                options: ["It remains in superposition forever.", "It turns into two separate qubits.", "It instantly collapses into a definite state (0 or 1).", "It clones itself."],
                 correctAnswerIndex: 2,
-                explanation: "The number of states grows exponentially as 2^n. For 3 qubits, it's 2^3 = 8 states."
+                explanation: "Measuring a qubit forces it to make a decision and instantly collapse into a classical state."
               },
               {
-                question: "Why is superposition useful for quantum computing?",
-                options: ["It makes computers smaller", "It prevents computers from overheating", "It allows quantum computers to process a vast number of possibilities at once", "It stores more files on a hard drive"],
+                question: "Which part of the Bloch Sphere represents the classical state |1⟩?",
+                options: ["The absolute top (North Pole)", "The absolute bottom (South Pole)", "The exact center of the sphere", "Anywhere on the equator"],
+                correctAnswerIndex: 1,
+                explanation: "The South Pole of the Bloch sphere represents the state |1⟩, while the North Pole represents |0⟩."
+              },
+              {
+                question: "What is the process called when a quantum system loses its quantum behavior due to environmental noise?",
+                options: ["Coherence", "Superposition", "Decoherence", "Interference"],
                 correctAnswerIndex: 2,
-                explanation: "Superposition allows quantum computers to perform calculations on many possibilities simultaneously."
+                explanation: "Decoherence is when a qubit's delicate state is destroyed by interaction with the environment."
+              },
+              // Medium
+              {
+                question: "How many states can a system of n qubits represent simultaneously due to superposition?",
+                options: ["2 × n", "n²", "2^n", "Infinite"],
+                correctAnswerIndex: 2,
+                explanation: "Because of superposition, adding a qubit doubles the number of simultaneous states, leading to 2^n exponential growth."
               },
               {
-                question: "True or False: A classical bit can be in a state of superposition.",
-                options: ["True", "False"],
+                question: "In Dirac notation for a qubit (|ψ⟩ = α|0⟩ + β|1⟩), what do α and β represent?",
+                options: ["The physical coordinates of the qubit", "Probability amplitudes that are complex numbers", "The temperature of the quantum system", "The number of photons"],
                 correctAnswerIndex: 1,
-                explanation: "False. A classical bit can only be exactly 0 or exactly 1."
+                explanation: "α and β are complex probability amplitudes that determine the superposition."
               },
               {
-                question: "When a coin is resting flat on a table (Heads or Tails), it is most like:",
-                options: ["A qubit in superposition", "A classical bit", "An entangled state", "A quantum algorithm"],
+                question: "According to the Normalization Rule, what must the sum of the absolute squares of the amplitudes (|α|² + |β|²) equal?",
+                options: ["0", "1", "2^n", "100"],
                 correctAnswerIndex: 1,
-                explanation: "A resting coin is in a definite state (Heads or Tails), just like a classical bit (1 or 0)."
+                explanation: "Because probabilities must add up to 100% (or 1), |α|² + |β|² must strictly equal 1."
               },
               {
-                question: "The power of a quantum computer grows ________ as you add more qubits.",
-                options: ["Linearly", "Exponentially", "Logarithmically", "It does not grow"],
+                question: "Which wavelike property of qubits explains how quantum algorithms amplify the correct answer while canceling out wrong answers?",
+                options: ["No-Cloning Theorem", "Decoherence", "Interference", "Measurement Collapse"],
+                correctAnswerIndex: 2,
+                explanation: "Quantum algorithms use constructive and destructive interference to find the correct answer."
+              },
+              {
+                question: "What do points directly on the equator of the Bloch Sphere represent?",
+                options: ["A definite state of exactly |0⟩", "A definite state of exactly |1⟩", "An exact 50/50 superposition of |0⟩ and |1⟩", "A state that has fully decohered"],
+                correctAnswerIndex: 2,
+                explanation: "The equator is halfway between the poles, representing states with equal probabilities for 0 and 1."
+              },
+              // Hard
+              {
+                question: "If a qubit's state is represented on the Bloch sphere with a polar angle (θ) of 45° and an azimuthal angle (φ) of 90°, what is its quantum state according to the formula |ψ⟩ = cos(θ/2)|0⟩ + e^(iφ)sin(θ/2)|1⟩?",
+                options: ["cos(22.5°)|0⟩ + i sin(22.5°)|1⟩", "cos(45°)|0⟩ + sin(45°)|1⟩", "|0⟩ + i|1⟩ / √2", "cos(22.5°)|0⟩ + sin(22.5°)|1⟩"],
+                correctAnswerIndex: 0,
+                explanation: "Substituting θ = 45° and φ = 90°: θ/2 = 22.5°, and e^(i90°) = i. Thus the state is cos(22.5°)|0⟩ + i sin(22.5°)|1⟩."
+              },
+              {
+                question: "The No-Cloning Theorem forbids copying quantum states, which creates engineering hurdles but is a massive advantage for which field?",
+                options: ["Quantum Cryptography", "Classical Data Storage", "CPU Manufacturing", "Operating Systems"],
+                correctAnswerIndex: 0,
+                explanation: "In Quantum Cryptography, the inability to copy a state means an eavesdropper cannot intercept data without alerting the sender."
+              },
+              {
+                question: "Why are Dilution Refrigerators used to cool quantum chips to around 0.015 Kelvin?",
+                options: ["To speed up the clock rate of the processor", "To prevent decoherence caused by heat and environmental noise", "To make the qubits visible to the naked eye", "To increase the electrical resistance of the wires"],
                 correctAnswerIndex: 1,
-                explanation: "Because of superposition, adding a qubit doubles the number of simultaneous states, leading to exponential growth."
+                explanation: "Extreme cold is required to isolate qubits from environmental heat and noise, preventing decoherence."
+              },
+              {
+                question: "In the angular representation of a qubit on the Bloch Sphere, what does the azimuthal angle (φ) represent?",
+                options: ["The probability of measuring 0", "The quantum phase", "The total energy of the qubit", "The number of classical bits required to store the state"],
+                correctAnswerIndex: 1,
+                explanation: "The azimuthal angle φ circles the equator and represents the relative quantum phase between the |0⟩ and |1⟩ states."
+              },
+              {
+                question: "If a qubit's probability amplitude for state |0⟩ is α, what is the actual probability of measuring the qubit as 0?",
+                options: ["α", "1 - α", "|α|²", "α / 2"],
+                correctAnswerIndex: 2,
+                explanation: "The probability of measuring a state is the absolute square of its probability amplitude (|α|²)."
               }
             ]
           }
