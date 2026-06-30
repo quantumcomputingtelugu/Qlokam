@@ -2097,52 +2097,70 @@ export const tutorialSessions: TutorialSession[] = [
                   The simplest and most famous quantum circuit creates a <strong>Bell State</strong> — a maximally entangled pair of qubits. It uses just two gates: a <strong>Hadamard (H)</strong> on qubit 1, followed by a <strong>CNOT</strong> with qubit 1 as control and qubit 2 as target.
                 </p>
 
-                {/* Circuit Diagram */}
-                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 24px', margin: '20px 0', fontFamily: 'monospace', overflowX: 'auto' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', minWidth: '380px' }}>
+                {/* Circuit Diagram — grid-based for perfect column alignment */}
+                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 24px', margin: '20px 0', overflowX: 'auto' }}>
+                  {/*
+                    Grid columns (each row shares the same template):
+                    [label] [wire] [H/blank] [wire] [CNOT col] [wire] [M gate]
+                    Col widths: 90px  20px  44px  20px  44px  1fr  44px
+                  */}
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '90px 20px 44px 20px 44px 1fr 44px',
+                    rowGap: '0px',
+                    minWidth: '420px',
+                    alignItems: 'center',
+                  }}>
 
-                    {/* Row labels + circuit */}
-                    {/* Q1 row */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
-                      <span style={{ color: 'var(--text-secondary)', fontSize: '13px', width: '80px', flexShrink: 0 }}>q₁ |0⟩ ——</span>
-                      {/* wire before H */}
-                      <div style={{ height: '2px', width: '30px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
-                      {/* H gate */}
-                      <div style={{ width: '40px', height: '40px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.08)', boxShadow: '0 0 8px var(--accent-primary)', flexShrink: 0 }}>H</div>
-                      {/* wire after H */}
-                      <div style={{ height: '2px', width: '30px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
-                      {/* CNOT control dot */}
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-                        <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 8px var(--accent-primary)' }} />
-                        {/* vertical connector down */}
-                        <div style={{ width: '2px', height: '28px', background: 'var(--accent-primary)', marginTop: '0' }} />
-                      </div>
-                      {/* wire after CNOT */}
-                      <div style={{ height: '2px', flex: 1, background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
-                      {/* Measure */}
-                      <div style={{ width: '40px', height: '40px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', flexShrink: 0 }}>⊙</div>
+                    {/* ── Q1 ROW ── */}
+                    {/* Label */}
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontFamily: 'monospace', paddingRight: '8px' }}>q₁ |0⟩</span>
+                    {/* wire → H */}
+                    <div style={{ height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
+                    {/* H gate */}
+                    <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.08)', boxShadow: '0 0 8px var(--accent-primary)', justifySelf: 'center' }}>H</div>
+                    {/* wire H → CNOT */}
+                    <div style={{ height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
+                    {/* CNOT control: dot + vertical line going DOWN */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', position: 'relative', height: '44px' }}>
+                      {/* horizontal wire through control col on q1 */}
+                      <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)', transform: 'translateY(-50%)' }} />
+                      {/* dot */}
+                      <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 8px var(--accent-primary)', zIndex: 1, marginTop: '15px' }} />
+                      {/* vertical line going down (extends 44px below) */}
+                      <div style={{ width: '2px', flex: 1, background: 'var(--accent-primary)', marginTop: '0' }} />
                     </div>
+                    {/* wire CNOT → M */}
+                    <div style={{ height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
+                    {/* M gate */}
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>M</div>
 
-                    {/* Q2 row */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
-                      <span style={{ color: 'var(--text-secondary)', fontSize: '13px', width: '80px', flexShrink: 0 }}>q₂ |0⟩ ——</span>
-                      {/* wire before CNOT target (skip H width) */}
-                      <div style={{ height: '2px', width: '100px', background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
-                      {/* CNOT target ⊕ */}
-                      <div style={{ width: '40px', height: '40px', border: '2px solid #3fb950', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#3fb950', background: 'rgba(63,185,80,0.08)', boxShadow: '0 0 8px #3fb950', flexShrink: 0 }}>⊕</div>
-                      {/* wire after CNOT */}
-                      <div style={{ height: '2px', flex: 1, background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
-                      {/* Measure */}
-                      <div style={{ width: '40px', height: '40px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', flexShrink: 0 }}>⊙</div>
-                    </div>
+                    {/* ── SPACER ROW (gives the vertical CNOT line space) ── */}
+                    <div style={{ gridColumn: '1 / -1', height: '8px' }} />
+
+                    {/* ── Q2 ROW ── */}
+                    {/* Label */}
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '13px', fontFamily: 'monospace', paddingRight: '8px' }}>q₂ |0⟩</span>
+                    {/* wire → H col (blank gate) */}
+                    <div style={{ height: '2px', background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
+                    {/* blank (no gate here — identity) */}
+                    <div style={{ height: '2px', background: '#3fb950', boxShadow: '0 0 4px #3fb950', justifySelf: 'stretch' }} />
+                    {/* wire across gap */}
+                    <div style={{ height: '2px', background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
+                    {/* CNOT target ⊕ */}
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #3fb950', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#3fb950', background: 'rgba(63,185,80,0.08)', boxShadow: '0 0 8px #3fb950', justifySelf: 'center' }}>⊕</div>
+                    {/* wire ⊕ → M */}
+                    <div style={{ height: '2px', background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
+                    {/* M gate */}
+                    <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', justifySelf: 'center' }}>M</div>
 
                   </div>
 
                   {/* Legend */}
-                  <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', marginTop: '20px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '12px', color: 'var(--text-secondary)' }}>
+                  <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '12px', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>
                     <span><span style={{ color: 'var(--accent-primary)' }}>●</span> Control qubit (q₁)</span>
                     <span><span style={{ color: '#3fb950' }}>⊕</span> Target qubit / CNOT flip (q₂)</span>
-                    <span><span style={{ color: '#d29922' }}>⊙</span> Measurement → classical bit</span>
+                    <span style={{ color: '#d29922', fontWeight: 'bold' }}>M</span><span> Measurement → classical bit</span>
                   </div>
                 </div>
 
@@ -2153,7 +2171,7 @@ export const tutorialSessions: TutorialSession[] = [
                     { step: '1', label: 'Start from the left', desc: 'Qubits are initialized (usually to |0⟩). Each horizontal wire is one qubit.' },
                     { step: '2', label: 'Apply gates left → right', desc: 'Each gate box you encounter transforms the qubit. The order matters — gates do not commute in general.' },
                     { step: '3', label: 'Multi-qubit gates span rows', desc: 'A CNOT connects two wires with a vertical line — the dot (●) is the control, the circle-plus (⊕) is the target.' },
-                    { step: '4', label: 'Measure at the end', desc: 'A meter symbol (⊙) collapses the quantum state to a classical 0 or 1. Double wires carry classical bits after measurement.' },
+                    { step: '4', label: 'Measure at the end', desc: 'An M gate collapses the quantum state to a classical 0 or 1. Double wires carry classical bits after measurement.' },
                   ].map(({ step, label, desc }) => (
                     <div key={step} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.07)' }}>
                       <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '16px', color: '#000', flexShrink: 0, boxShadow: '0 0 10px var(--accent-primary)' }}>{step}</div>
@@ -2198,7 +2216,7 @@ export const tutorialSessions: TutorialSession[] = [
                         ['[X]', 'Pauli-X (NOT) gate', 'Flips |0⟩ ↔ |1⟩'],
                         ['●', 'CNOT control', 'Applies flip only when this qubit = |1⟩'],
                         ['⊕', 'CNOT target', 'Gets flipped by the control'],
-                        ['⊙', 'Measurement', 'Collapses qubit → classical 0 or 1'],
+                        ['[M]', 'Measurement gate', 'Collapses qubit → classical 0 or 1'],
                         ['═══', 'Classical wire', 'Carries classical bits after measurement'],
                       ].map(([sym, meaning, note], i) => (
                         <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent' }}>
@@ -2210,6 +2228,7 @@ export const tutorialSessions: TutorialSession[] = [
                     </tbody>
                   </table>
                 </div>
+
               </>
             ),
             practiceGoal: 'Read the Bell State circuit diagram above and match each symbol to its meaning in the quick-reference table.',
