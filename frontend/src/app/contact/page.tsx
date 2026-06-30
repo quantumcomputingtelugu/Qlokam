@@ -9,12 +9,7 @@ export default function ContactPage() {
     e.preventDefault();
     const form = e.currentTarget;
     
-    // Check if the user has replaced the endpoint
     const endpoint = form.action;
-    if (endpoint.includes('YOUR_FORMSPREE_ENDPOINT')) {
-      alert("Please configure your Formspree endpoint in src/app/contact/page.tsx");
-      return;
-    }
 
     try {
       const response = await fetch(endpoint, {
@@ -85,7 +80,7 @@ export default function ContactPage() {
 
       {/* REPLACE THE ACTION URL WITH YOUR FORMSPREE ENDPOINT */}
       <form 
-        action="YOUR_FORMSPREE_ENDPOINT" 
+        action="https://formspree.io/f/xwvdnyaq" 
         method="POST" 
         onSubmit={handleSubmit}
         style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
