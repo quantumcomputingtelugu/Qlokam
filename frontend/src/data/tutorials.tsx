@@ -2018,6 +2018,203 @@ export const tutorialSessions: TutorialSession[] = [
             ]
           }
         ]
+      },
+
+      {
+        id: 101,
+
+        title: 'Quantum Circuits',
+        description: 'Learn how quantum gates are combined into circuits to perform quantum computations.',
+        difficulty: 'Intermediate',
+        lessonContent: (
+          <>
+            <p style={{ marginBottom: '16px', fontSize: '18px', color: 'var(--text-secondary)' }}>
+              Welcome to <strong>Quantum Circuits</strong>! Now that you understand individual quantum gates, let's see how they are wired together to build powerful computations.
+            </p>
+            <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>What's Inside This Module</h3>
+            <ul style={{ paddingLeft: '20px', marginBottom: '32px', color: 'var(--text-secondary)' }}>
+              <li style={{ marginBottom: '12px' }}>
+                <strong style={{ color: 'var(--accent-primary)' }}>Representation:</strong> How quantum circuits are drawn and read — wires, gates, and measurement symbols.
+              </li>
+            </ul>
+            <div style={{ background: 'rgba(255,255,255,0.05)', padding: '24px', borderRadius: '12px', borderLeft: '4px solid var(--accent-primary)' }}>
+              <h4 style={{ margin: '0 0 12px 0', fontSize: '18px', color: 'white' }}>A circuit is a sequence of gates</h4>
+              <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                Just like classical logic circuits combine AND, OR, NOT gates to compute boolean functions, quantum circuits combine quantum gates (H, X, CNOT, …) to transform qubit states and ultimately produce a measurement outcome.
+              </p>
+            </div>
+          </>
+        ),
+        practiceGoal: 'Review the module overview and explore the Representation subtopic.',
+        subModules: [
+          {
+            id: 102,
+            title: 'Representation',
+            description: 'Understand how quantum circuits are visually represented using wires, gates, and measurement symbols.',
+            difficulty: 'Intermediate',
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: '16px' }}>
+                  A <strong>quantum circuit</strong> is a model for quantum computation. It describes a sequence of quantum operations (gates) applied to a set of qubits, read from <em>left to right</em> — just like reading a book.
+                </p>
+
+                {/* ── Core Elements ── */}
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '32px', marginBottom: '16px' }}>Core Elements of a Quantum Circuit</h3>
+
+                {/* Visual: Wire, Gate, Measure */}
+                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', margin: '24px 0' }}>
+                  {/* Wire */}
+                  <div style={{ flex: '1', minWidth: '160px', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', padding: '20px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50px', marginBottom: '12px' }}>
+                      <div style={{ width: '100px', height: '2px', background: 'var(--accent-primary)', boxShadow: '0 0 6px var(--accent-primary)' }} />
+                    </div>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '15px' }}>Wire (Qubit Line)</h4>
+                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>Each horizontal line represents one qubit. Time flows left → right.</p>
+                  </div>
+
+                  {/* Gate Box */}
+                  <div style={{ flex: '1', minWidth: '160px', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', padding: '20px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50px', marginBottom: '12px' }}>
+                      <div style={{ width: '44px', height: '44px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 'bold', color: 'var(--accent-primary)', boxShadow: '0 0 10px var(--accent-primary)' }}>H</div>
+                    </div>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '15px' }}>Gate (Operation)</h4>
+                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>A labeled box on a wire applies that gate to the qubit at that point in time.</p>
+                  </div>
+
+                  {/* Measurement */}
+                  <div style={{ flex: '1', minWidth: '160px', background: 'rgba(255,255,255,0.04)', borderRadius: '12px', padding: '20px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50px', marginBottom: '12px' }}>
+                      <div style={{ width: '44px', height: '44px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', color: '#d29922', boxShadow: '0 0 10px #d29922' }}>⊙</div>
+                    </div>
+                    <h4 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '15px' }}>Measurement (⊙)</h4>
+                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>A meter symbol collapses the qubit to a classical bit (0 or 1). Results go to a double wire.</p>
+                  </div>
+                </div>
+
+                {/* ── Full Circuit Example ── */}
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '36px', marginBottom: '16px' }}>Example: Bell State Circuit</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  The simplest and most famous quantum circuit creates a <strong>Bell State</strong> — a maximally entangled pair of qubits. It uses just two gates: a <strong>Hadamard (H)</strong> on qubit 1, followed by a <strong>CNOT</strong> with qubit 1 as control and qubit 2 as target.
+                </p>
+
+                {/* Circuit Diagram */}
+                <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', padding: '28px 24px', margin: '20px 0', fontFamily: 'monospace', overflowX: 'auto' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', minWidth: '380px' }}>
+
+                    {/* Row labels + circuit */}
+                    {/* Q1 row */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
+                      <span style={{ color: 'var(--text-secondary)', fontSize: '13px', width: '80px', flexShrink: 0 }}>q₁ |0⟩ ——</span>
+                      {/* wire before H */}
+                      <div style={{ height: '2px', width: '30px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
+                      {/* H gate */}
+                      <div style={{ width: '40px', height: '40px', border: '2px solid var(--accent-primary)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold', color: 'var(--accent-primary)', background: 'rgba(0,212,255,0.08)', boxShadow: '0 0 8px var(--accent-primary)', flexShrink: 0 }}>H</div>
+                      {/* wire after H */}
+                      <div style={{ height: '2px', width: '30px', background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
+                      {/* CNOT control dot */}
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                        <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: 'var(--accent-primary)', boxShadow: '0 0 8px var(--accent-primary)' }} />
+                        {/* vertical connector down */}
+                        <div style={{ width: '2px', height: '28px', background: 'var(--accent-primary)', marginTop: '0' }} />
+                      </div>
+                      {/* wire after CNOT */}
+                      <div style={{ height: '2px', flex: 1, background: 'var(--accent-primary)', boxShadow: '0 0 4px var(--accent-primary)' }} />
+                      {/* Measure */}
+                      <div style={{ width: '40px', height: '40px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', flexShrink: 0 }}>⊙</div>
+                    </div>
+
+                    {/* Q2 row */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
+                      <span style={{ color: 'var(--text-secondary)', fontSize: '13px', width: '80px', flexShrink: 0 }}>q₂ |0⟩ ——</span>
+                      {/* wire before CNOT target (skip H width) */}
+                      <div style={{ height: '2px', width: '100px', background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
+                      {/* CNOT target ⊕ */}
+                      <div style={{ width: '40px', height: '40px', border: '2px solid #3fb950', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: '#3fb950', background: 'rgba(63,185,80,0.08)', boxShadow: '0 0 8px #3fb950', flexShrink: 0 }}>⊕</div>
+                      {/* wire after CNOT */}
+                      <div style={{ height: '2px', flex: 1, background: '#3fb950', boxShadow: '0 0 4px #3fb950' }} />
+                      {/* Measure */}
+                      <div style={{ width: '40px', height: '40px', border: '2px solid #d29922', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', color: '#d29922', background: 'rgba(210,153,34,0.08)', boxShadow: '0 0 8px #d29922', flexShrink: 0 }}>⊙</div>
+                    </div>
+
+                  </div>
+
+                  {/* Legend */}
+                  <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', marginTop: '20px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '12px', color: 'var(--text-secondary)' }}>
+                    <span><span style={{ color: 'var(--accent-primary)' }}>●</span> Control qubit (q₁)</span>
+                    <span><span style={{ color: '#3fb950' }}>⊕</span> Target qubit / CNOT flip (q₂)</span>
+                    <span><span style={{ color: '#d29922' }}>⊙</span> Measurement → classical bit</span>
+                  </div>
+                </div>
+
+                {/* ── How to Read a Circuit ── */}
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '36px', marginBottom: '16px' }}>How to Read a Quantum Circuit</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {[
+                    { step: '1', label: 'Start from the left', desc: 'Qubits are initialized (usually to |0⟩). Each horizontal wire is one qubit.' },
+                    { step: '2', label: 'Apply gates left → right', desc: 'Each gate box you encounter transforms the qubit. The order matters — gates do not commute in general.' },
+                    { step: '3', label: 'Multi-qubit gates span rows', desc: 'A CNOT connects two wires with a vertical line — the dot (●) is the control, the circle-plus (⊕) is the target.' },
+                    { step: '4', label: 'Measure at the end', desc: 'A meter symbol (⊙) collapses the quantum state to a classical 0 or 1. Double wires carry classical bits after measurement.' },
+                  ].map(({ step, label, desc }) => (
+                    <div key={step} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.07)' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--accent-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '16px', color: '#000', flexShrink: 0, boxShadow: '0 0 10px var(--accent-primary)' }}>{step}</div>
+                      <div>
+                        <strong style={{ color: 'var(--text-primary)' }}>{label}</strong>
+                        <p style={{ margin: '4px 0 0 0', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.6' }}>{desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* ── Circuit vs Matrix ── */}
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '36px', marginBottom: '16px' }}>Circuit Notation vs. Matrix Math</h3>
+                <p style={{ marginBottom: '16px' }}>
+                  Every circuit diagram has an equivalent matrix representation. Gates applied in sequence correspond to <strong>matrix multiplication</strong> (right to left in math notation).
+                </p>
+                <div style={{ background: 'rgba(0,0,0,0.25)', borderRadius: '10px', padding: '20px', fontFamily: 'monospace', fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                  <div style={{ marginBottom: '8px', color: 'var(--text-primary)' }}>Bell State circuit ↔ Matrix equation:</div>
+                  <div style={{ color: 'var(--accent-primary)', lineHeight: '2' }}>
+                    |Φ⁺⟩ = CNOT · (H ⊗ I) · |00⟩
+                  </div>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '12px', marginTop: '8px' }}>
+                    Read right to left: first apply H⊗I (H on q₁, Identity on q₂), then apply CNOT.
+                  </div>
+                </div>
+
+                {/* ── Key Symbols ── */}
+                <h3 style={{ fontSize: '20px', color: 'var(--text-primary)', marginTop: '36px', marginBottom: '16px' }}>Quick Reference: Common Circuit Symbols</h3>
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.15)' }}>
+                        <th style={{ textAlign: 'left', padding: '10px 14px', color: 'var(--text-primary)' }}>Symbol</th>
+                        <th style={{ textAlign: 'left', padding: '10px 14px', color: 'var(--text-primary)' }}>Meaning</th>
+                        <th style={{ textAlign: 'left', padding: '10px 14px', color: 'var(--text-primary)' }}>Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        ['───', 'Wire / qubit line', 'Time flows left to right'],
+                        ['[H]', 'Hadamard gate', 'Creates superposition'],
+                        ['[X]', 'Pauli-X (NOT) gate', 'Flips |0⟩ ↔ |1⟩'],
+                        ['●', 'CNOT control', 'Applies flip only when this qubit = |1⟩'],
+                        ['⊕', 'CNOT target', 'Gets flipped by the control'],
+                        ['⊙', 'Measurement', 'Collapses qubit → classical 0 or 1'],
+                        ['═══', 'Classical wire', 'Carries classical bits after measurement'],
+                      ].map(([sym, meaning, note], i) => (
+                        <tr key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent' }}>
+                          <td style={{ padding: '10px 14px', color: 'var(--accent-primary)', fontFamily: 'monospace', fontWeight: 'bold' }}>{sym}</td>
+                          <td style={{ padding: '10px 14px', color: 'var(--text-primary)' }}>{meaning}</td>
+                          <td style={{ padding: '10px 14px', color: 'var(--text-secondary)' }}>{note}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            ),
+            practiceGoal: 'Read the Bell State circuit diagram above and match each symbol to its meaning in the quick-reference table.',
+          }
+        ]
       }
 
     ]
