@@ -1105,7 +1105,7 @@ export const tutorialSessions: TutorialSession[] = [
         ]
       }
       ,{
-        id: 10,
+        id: 16,
         title: 'Quantum Gates',
         description: 'Learn how we manipulate qubits to perform computations.',
         difficulty: 'Beginner',
@@ -1134,7 +1134,7 @@ export const tutorialSessions: TutorialSession[] = [
         practiceGoal: 'Review the introduction and explore the subtopics in the sidebar.',
         subModules: [
           {
-            id: 11,
+            id: 17,
             title: 'What are gates?',
             description: 'Understanding quantum gates as operations on qubits.',
             difficulty: 'Beginner',
@@ -1207,7 +1207,7 @@ export const tutorialSessions: TutorialSession[] = [
             practiceGoal: 'Understand the concept of a quantum gate and unitarity.',
           },
           {
-            id: 12,
+            id: 18,
             title: 'Single Qubit Gates',
             description: 'Introduction to gates that act on a single qubit.',
             difficulty: 'Beginner',
@@ -1224,7 +1224,7 @@ export const tutorialSessions: TutorialSession[] = [
             practiceGoal: 'Recognize that single-qubit gates are rotations on the Bloch sphere.',
           },
           {
-            id: 13,
+            id: 19,
             title: 'Pauli Gates',
             description: 'The fundamental X, Y, and Z gates.',
             difficulty: 'Beginner',
@@ -1243,7 +1243,7 @@ export const tutorialSessions: TutorialSession[] = [
             practiceGoal: 'Learn the effects of the X, Y, and Z Pauli gates.',
           },
           {
-            id: 14,
+            id: 20,
             title: 'Phase Gates',
             description: 'The S and T phase shift gates.',
             difficulty: 'Beginner',
@@ -1261,7 +1261,7 @@ export const tutorialSessions: TutorialSession[] = [
             practiceGoal: 'Understand fractional Z-axis rotations.',
           },
           {
-            id: 15,
+            id: 21,
             title: 'Rotation Gates',
             description: 'Arbitrary angle rotations Rx, Ry, and Rz.',
             difficulty: 'Intermediate',
@@ -1283,7 +1283,7 @@ export const tutorialSessions: TutorialSession[] = [
             practiceGoal: 'Learn about continuous rotation gates.',
           },
           {
-            id: 16,
+            id: 22,
             title: '2-Qubit Gates',
             description: 'Operations that involve two qubits, like CNOT and SWAP.',
             difficulty: 'Intermediate',
@@ -1303,7 +1303,7 @@ export const tutorialSessions: TutorialSession[] = [
             practiceGoal: 'Understand how qubits interact through controlled gates.',
           },
           {
-            id: 17,
+            id: 23,
             title: 'Entanglement',
             description: 'Spooky action at a distance and Bell States.',
             difficulty: 'Advanced',
