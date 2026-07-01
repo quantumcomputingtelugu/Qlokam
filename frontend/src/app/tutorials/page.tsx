@@ -150,13 +150,25 @@ export default function TutorialsPage() {
         if (answer) {
           const expected = q.expectedProbs || {};
           let isCorrect = true;
+          
+          const expectedLen = Object.keys(expected)[0]?.length || 0;
+          const trimmedAnswer: Record<string, number> = {};
+          if (expectedLen > 0) {
+            for (const [k, v] of Object.entries(answer as Record<string, number>)) {
+              const trimmedK = k.slice(-expectedLen);
+              trimmedAnswer[trimmedK] = (trimmedAnswer[trimmedK] || 0) + v;
+            }
+          } else {
+            Object.assign(trimmedAnswer, answer);
+          }
+
           const keys = new Set([
             ...Object.keys(expected),
-            ...Object.keys(answer),
+            ...Object.keys(trimmedAnswer),
           ]);
           for (const k of Array.from(keys)) {
             const exp = expected[k] || 0;
-            const act = answer[k] || 0;
+            const act = trimmedAnswer[k] || 0;
             if (Math.abs(exp - act) > 0.05) {
               isCorrect = false;
               break;
