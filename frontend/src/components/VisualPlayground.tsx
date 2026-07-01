@@ -933,7 +933,9 @@ except Exception as e:
                 minWidth: "max-content",
               }}
             >
-              {grid.map((row, qIdx) => (
+              {[...grid].reverse().map((row, revIdx) => {
+                const qIdx = numQubits - 1 - revIdx;
+                return (
                 <div
                   key={qIdx}
                   style={{ display: "flex", alignItems: "center" }}
@@ -985,7 +987,7 @@ except Exception as e:
                         cxDist = target - qIdx;
                         cxLineHeight = Math.abs(cxDist) * 36; // 32px height + 4px gap
                         cxLineTop =
-                          cxDist > 0 ? "50%" : `calc(50% - ${cxLineHeight}px)`;
+                          cxDist < 0 ? "50%" : `calc(50% - ${cxLineHeight}px)`;
                       }
 
                       const isPendingCol = pendingTwoQubit?.sIdx === sIdx;
@@ -1355,7 +1357,8 @@ except Exception as e:
                     )}
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
 
             <div
