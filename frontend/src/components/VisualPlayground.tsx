@@ -4,6 +4,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { auth, db } from "@/lib/firebase";
+import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 import Editor from "@monaco-editor/react";
 import {
   Chart as ChartJS,
@@ -126,6 +129,7 @@ export default function VisualPlayground({
     sIdx: number;
   } | null>(null);
   const [angleInputValue, setAngleInputValue] = useState("pi/2");
+  const [dailyBonusToast, setDailyBonusToast] = useState<string | null>(null);
 
   const [code, setCode] = useState("");
   const [isTyping, setIsTyping] = useState(false); // Source of truth flag
@@ -636,6 +640,35 @@ except Exception as e:
     const handler = setTimeout(() => {
       if (code && !code.includes("# Drag gates")) {
         executeCircuit(false);
+        // Daily playground bonus: +1 rating once per day
+        const grantDailyPlaygroundBonus = async () => {
+          try {
+            if (!auth || !db) return;
+            const currentUser = auth.currentUser;
+            if (!currentUser) return;
+            const today = new Date().toISOString().split("T")[0];
+            const docRef = doc(db, "users", currentUser.uid);
+            const docSnap = await getDoc(docRef);
+            if (!docSnap.exists()) return;
+            const data = docSnap.data();
+            if (data.lastPlaygroundDate === today) return; // already earned today
+            const newRating = (data.rating || 0) + 1;
+            await updateDoc(docRef, {
+              rating: newRating,
+              lastPlaygroundDate: today,
+              ratingHistory: arrayUnion({
+                reason: "Daily Playground Build",
+                points: 1,
+                timestamp: new Date().toISOString(),
+              }),
+            });
+            setDailyBonusToast("🧪 +1 Daily Playground Bonus!");
+            setTimeout(() => setDailyBonusToast(null), 3500);
+          } catch (e) {
+            // silently fail
+          }
+        };
+        grantDailyPlaygroundBonus();
       } else {
         setProbabilities({ ["0".repeat(numQubits)]: 1.0 });
       }
@@ -1697,6 +1730,29 @@ except Exception as e:
               </span>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Daily Bonus Toast */}
+      {dailyBonusToast && (
+        <div style={{
+          position: "fixed",
+          bottom: "32px",
+          right: "32px",
+          background: "linear-gradient(135deg, #d29922, #f0c060)",
+          color: "#000",
+          padding: "14px 24px",
+          borderRadius: "12px",
+          fontWeight: "bold",
+          fontSize: "16px",
+          boxShadow: "0 4px 24px rgba(210,153,34,0.5)",
+          zIndex: 99999,
+          animation: "scaleIn 0.3s ease-out",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}>
+          {dailyBonusToast}
         </div>
       )}
     </div>

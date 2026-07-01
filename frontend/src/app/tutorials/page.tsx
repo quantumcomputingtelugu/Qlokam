@@ -43,6 +43,7 @@ export default function TutorialsPage() {
   const [badges, setBadges] = useState<string[]>([]);
   const [earnedBadge, setEarnedBadge] = useState<string | null>(null);
   const [earnedPoints, setEarnedPoints] = useState<number | null>(null);
+  const [dailyLoginToast, setDailyLoginToast] = useState(false);
 
   const [adLoading, setAdLoading] = useState<"hint" | "skip" | null>(null);
   const [hintUnlocked, setHintUnlocked] = useState(false);
@@ -294,6 +295,24 @@ export default function TutorialsPage() {
             if (data.badges) setBadges(data.badges);
             if (data.quizAttemptsData)
               setQuizAttemptsData(data.quizAttemptsData);
+
+            // Daily login bonus: +1 rating once per day
+            const today = new Date().toISOString().split("T")[0];
+            if (data.lastLoginDate !== today) {
+              const newRating = (data.rating || 0) + 1;
+              await setDoc(docRef, {
+                lastLoginDate: today,
+                rating: newRating,
+                ratingHistory: arrayUnion({
+                  reason: "Daily Login",
+                  points: 1,
+                  timestamp: new Date().toISOString(),
+                }),
+              }, { merge: true });
+              setRating(newRating);
+              setDailyLoginToast(true);
+              setTimeout(() => setDailyLoginToast(false), 3500);
+            }
           }
         } catch (e) {
           console.error("Error fetching progress", e);
@@ -1508,6 +1527,29 @@ export default function TutorialsPage() {
               Awesome!
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Daily Login Bonus Toast */}
+      {dailyLoginToast && (
+        <div style={{
+          position: "fixed",
+          bottom: "32px",
+          right: "32px",
+          background: "linear-gradient(135deg, #d29922, #f0c060)",
+          color: "#000",
+          padding: "14px 24px",
+          borderRadius: "12px",
+          fontWeight: "bold",
+          fontSize: "16px",
+          boxShadow: "0 4px 24px rgba(210,153,34,0.5)",
+          zIndex: 99999,
+          animation: "scaleIn 0.3s ease-out",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}>
+          🌟 +1 Daily Login Bonus!
         </div>
       )}
     </div>
