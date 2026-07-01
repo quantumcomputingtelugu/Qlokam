@@ -598,7 +598,7 @@ except Exception as e:
           const parsed = JSON.parse(match[1]);
           // Backward compatibility if backend doesn't return dict with probs
           if (parsed.probs) {
-            setProbabilities(parsed.probs);
+            setProbabilities(parsed.theoretical_probs || parsed.probs);
             if (parsed.bloch && Object.keys(parsed.bloch).length > 0) {
               // We will store bloch vectors in a state variable (we need to add this)
               setBlochVectors(parsed.bloch);

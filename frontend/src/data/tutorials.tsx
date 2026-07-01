@@ -10094,11 +10094,11 @@ export const tutorialSessions: TutorialSession[] = [
               {
                 type: "circuit",
                 question:
-                  'Alice wants to send the message "01" to Bob using Superdense Coding. Assuming they already share the Bell state |Φ+⟩, build the encoding part of the circuit for Alice on q0. (Note: "01" means apply Z).',
+                  'Alice wants to send the message "01" to Bob using Superdense Coding. First, create the Bell state |Φ+⟩ on q0 and q1. Then, build the encoding part for Alice on q0 to send "01" (Note: "01" means apply Z).',
                 expectedOutputsText: "Output: Measure q0 (Alice) and q1 (Bob).",
                 expectedProbs: { "00": 0.5, "11": 0.5 },
                 explanation:
-                  'To encode "01", Alice applies a Z gate to her qubit (q0). If you measure the entangled pair after this, you will still get 50% 00 and 50% 11, but the phase is flipped to |00⟩ - |11⟩.',
+                  'First, H on q0 and CNOT(q0, q1) creates the Bell state. To encode "01", Alice applies a Z gate to her qubit (q0). If you measure the entangled pair after this, you will still get 50% 00 and 50% 11, but the phase is flipped to |00⟩ - |11⟩.',
               },
               {
                 type: "circuit",
@@ -10117,11 +10117,11 @@ export const tutorialSessions: TutorialSession[] = [
               {
                 type: "circuit",
                 question:
-                  'Superdense Coding Decoding: Bob receives q0 from Alice. They share q0 and q1 in the state 1/√2(|01⟩ + |10⟩). Build Bob\'s decoding circuit to retrieve the message "10".',
+                  'Superdense Coding Decoding: Bob receives q0 from Alice. First, prepare their shared state 1/√2(|01⟩ + |10⟩) on q0 and q1 (Hint: X on q1, H on q0, CX from q0 to q1). Then, build Bob\'s decoding circuit to retrieve the message "10".',
                 expectedOutputsText: "Output: Measure q0 and q1.",
                 expectedProbs: { "10": 1.0 },
                 explanation:
-                  'Bob applies CNOT(q0, q1) followed by H(q0). This disentangles the state and yields "10" with 100% probability.',
+                  'After preparing the state, Bob applies CNOT(q0, q1) followed by H(q0). This disentangles the state and yields "10" with 100% probability.',
               },
               {
                 type: "circuit",
