@@ -106,6 +106,16 @@ export default function TutorialsPage() {
         setWarningMessage(`You are locked out of the exam. Please try again in ${hoursLeft} hours.`);
         return;
       }
+
+      const confirmStart = window.confirm(
+        "Are you sure you want to start the Final Exam?\n\n" +
+        "RULES:\n" +
+        "1. You must score at least 15/20 to pass.\n" +
+        "2. Do NOT switch tabs or minimize the browser, or you will automatically fail.\n" +
+        "3. Failing the exam results in a 24-hour lockout.\n\n" +
+        "Click OK to begin."
+      );
+      if (!confirmStart) return;
     }
 
     const today = new Date().toISOString().split("T")[0];
