@@ -10180,6 +10180,7 @@ export const tutorialSessions: TutorialSession[] = [
       {
         id: 108,
         title: "Final Exam: Quantum Computing Basics",
+        prerequisiteId: 107,
         description: "The ultimate test of your quantum knowledge! Complete this 20-question exam to earn your Easy badge and 20 XP.",
         difficulty: "Hard",
         isFinalTest: true,
