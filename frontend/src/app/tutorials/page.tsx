@@ -8,6 +8,8 @@ import { doc, getDoc, setDoc, arrayUnion } from "firebase/firestore";
 import VisualPlayground from "@/components/VisualPlayground";
 import { tutorialSessions, getAllTutorials } from "@/data/tutorials";
 import AdBanner from "@/components/AdBanner";
+import WarningModal from "@/components/WarningModal";
+
 
 export default function TutorialsPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -39,6 +41,7 @@ export default function TutorialsPage() {
     >
   >({});
 
+  const [warningMessage, setWarningMessage] = useState<string | null>(null);
   const [examLockUntil, setExamLockUntil] = useState<number | null>(null);
   const [rating, setRating] = useState(0);
   const [badges, setBadges] = useState<string[]>([]);
@@ -65,7 +68,7 @@ export default function TutorialsPage() {
         setShowQuizResults(true);
         const lockTime = Date.now() + 24 * 60 * 60 * 1000;
         setExamLockUntil(lockTime);
-        alert("Anti-Cheat Warning: You switched tabs during the exam. You have been awarded 0 marks and are locked out for 24 hours.");
+        setWarningMessage("Anti-Cheat Warning: You switched tabs during the exam. You have been awarded 0 marks and are locked out for 24 hours.");
         if (user && db) {
           try {
             const docRef = doc(db, "users", user.uid);
@@ -100,7 +103,7 @@ export default function TutorialsPage() {
     if (activeTutorial.id === 108) {
       if (examLockUntil && Date.now() < examLockUntil) {
         const hoursLeft = Math.ceil((examLockUntil - Date.now()) / (1000 * 60 * 60));
-        alert(`You are locked out of the exam. Please try again in ${hoursLeft} hours.`);
+        setWarningMessage(`You are locked out of the exam. Please try again in ${hoursLeft} hours.`);
         return;
       }
     }
@@ -119,8 +122,8 @@ export default function TutorialsPage() {
       currentSeen = [];
     }
 
-    if (currentCount >= 3) {
-      alert("You have reached the daily limit of 3 attempts for this quiz.");
+    if (activeTutorial.id !== 108 && currentCount >= 3) {
+      setWarningMessage("You have reached the daily limit of 3 attempts for this quiz.");
       return;
     }
 
@@ -253,7 +256,7 @@ export default function TutorialsPage() {
     if (isExam && score < 15) {
       const lockTime = Date.now() + 24 * 60 * 60 * 1000;
       setExamLockUntil(lockTime);
-      alert(`You scored ${score}/20. You need at least 15 to pass. You are locked out for 24 hours.`);
+      setWarningMessage(`You scored ${score}/20. You need at least 15 to pass. You are locked out for 24 hours.`);
       try {
         const docRef = doc(db, "users", user.uid);
         await setDoc(docRef, { examLockUntil: lockTime }, { merge: true });
@@ -1600,6 +1603,7 @@ export default function TutorialsPage() {
           🌟 +1 Daily Login Bonus!
         </div>
       )}
+      {warningMessage && <WarningModal message={warningMessage} onClose={() => setWarningMessage(null)} />}
     </div>
   );
 }
