@@ -10177,6 +10177,169 @@ export const tutorialSessions: TutorialSession[] = [
           },
         ],
       },
+      {
+        id: 108,
+        title: "Final Exam: Quantum Computing Basics",
+        description: "The ultimate test of your quantum knowledge! Complete this 20-question exam to earn your Easy badge and 20 XP.",
+        difficulty: "Hard",
+        isFinalTest: true,
+        badgeAward: "Easy",
+        pointsAward: 20,
+        lessonContent: (
+          <>
+            <p style={{ marginBottom: "16px" }}>
+              Welcome to the Final Exam! This test consists of 10 Multiple Choice Questions and 10 Circuit Building tasks.
+              <br/><br/>
+              <b>Anti-Cheat Active:</b> Do not switch tabs during this exam. Doing so will result in an automatic failure.
+              <br/><br/>
+              <b>Cooldown:</b> If you fail the exam, you will be locked out for 24 hours. Good luck!
+            </p>
+          </>
+        ),
+        practiceGoal: "Pass the final exam with at least 15/20!",
+        quizzes: [
+          {
+            type: "mcq",
+            question: "Dummy MCQ Question 1?",
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswerIndex: 0,
+            explanation: "Dummy explanation for MCQ 1"
+          },
+          {
+            type: "mcq",
+            question: "Dummy MCQ Question 2?",
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswerIndex: 0,
+            explanation: "Dummy explanation for MCQ 2"
+          },
+          {
+            type: "mcq",
+            question: "Dummy MCQ Question 3?",
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswerIndex: 0,
+            explanation: "Dummy explanation for MCQ 3"
+          },
+          {
+            type: "mcq",
+            question: "Dummy MCQ Question 4?",
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswerIndex: 0,
+            explanation: "Dummy explanation for MCQ 4"
+          },
+          {
+            type: "mcq",
+            question: "Dummy MCQ Question 5?",
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswerIndex: 0,
+            explanation: "Dummy explanation for MCQ 5"
+          },
+          {
+            type: "mcq",
+            question: "Dummy MCQ Question 6?",
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswerIndex: 0,
+            explanation: "Dummy explanation for MCQ 6"
+          },
+          {
+            type: "mcq",
+            question: "Dummy MCQ Question 7?",
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswerIndex: 0,
+            explanation: "Dummy explanation for MCQ 7"
+          },
+          {
+            type: "mcq",
+            question: "Dummy MCQ Question 8?",
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswerIndex: 0,
+            explanation: "Dummy explanation for MCQ 8"
+          },
+          {
+            type: "mcq",
+            question: "Dummy MCQ Question 9?",
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswerIndex: 0,
+            explanation: "Dummy explanation for MCQ 9"
+          },
+          {
+            type: "mcq",
+            question: "Dummy MCQ Question 10?",
+            options: ["Option A", "Option B", "Option C", "Option D"],
+            correctAnswerIndex: 0,
+            explanation: "Dummy explanation for MCQ 10"
+          },
+          {
+            type: "circuit",
+            question: "Dummy Circuit Question 1? Build a circuit to match the output probabilities.",
+            expectedOutputsText: "Output: Measure q0.",
+            expectedProbs: { "0": 0.5, "1": 0.5 },
+            explanation: "Dummy explanation for Circuit 1"
+          },
+          {
+            type: "circuit",
+            question: "Dummy Circuit Question 2? Build a circuit to match the output probabilities.",
+            expectedOutputsText: "Output: Measure q0.",
+            expectedProbs: { "0": 0.5, "1": 0.5 },
+            explanation: "Dummy explanation for Circuit 2"
+          },
+          {
+            type: "circuit",
+            question: "Dummy Circuit Question 3? Build a circuit to match the output probabilities.",
+            expectedOutputsText: "Output: Measure q0.",
+            expectedProbs: { "0": 0.5, "1": 0.5 },
+            explanation: "Dummy explanation for Circuit 3"
+          },
+          {
+            type: "circuit",
+            question: "Dummy Circuit Question 4? Build a circuit to match the output probabilities.",
+            expectedOutputsText: "Output: Measure q0.",
+            expectedProbs: { "0": 0.5, "1": 0.5 },
+            explanation: "Dummy explanation for Circuit 4"
+          },
+          {
+            type: "circuit",
+            question: "Dummy Circuit Question 5? Build a circuit to match the output probabilities.",
+            expectedOutputsText: "Output: Measure q0.",
+            expectedProbs: { "0": 0.5, "1": 0.5 },
+            explanation: "Dummy explanation for Circuit 5"
+          },
+          {
+            type: "circuit",
+            question: "Dummy Circuit Question 6? Build a circuit to match the output probabilities.",
+            expectedOutputsText: "Output: Measure q0.",
+            expectedProbs: { "0": 0.5, "1": 0.5 },
+            explanation: "Dummy explanation for Circuit 6"
+          },
+          {
+            type: "circuit",
+            question: "Dummy Circuit Question 7? Build a circuit to match the output probabilities.",
+            expectedOutputsText: "Output: Measure q0.",
+            expectedProbs: { "0": 0.5, "1": 0.5 },
+            explanation: "Dummy explanation for Circuit 7"
+          },
+          {
+            type: "circuit",
+            question: "Dummy Circuit Question 8? Build a circuit to match the output probabilities.",
+            expectedOutputsText: "Output: Measure q0.",
+            expectedProbs: { "0": 0.5, "1": 0.5 },
+            explanation: "Dummy explanation for Circuit 8"
+          },
+          {
+            type: "circuit",
+            question: "Dummy Circuit Question 9? Build a circuit to match the output probabilities.",
+            expectedOutputsText: "Output: Measure q0.",
+            expectedProbs: { "0": 0.5, "1": 0.5 },
+            explanation: "Dummy explanation for Circuit 9"
+          },
+          {
+            type: "circuit",
+            question: "Dummy Circuit Question 10? Build a circuit to match the output probabilities.",
+            expectedOutputsText: "Output: Measure q0.",
+            expectedProbs: { "0": 0.5, "1": 0.5 },
+            explanation: "Dummy explanation for Circuit 10"
+          },
+        ]
+      },
     ],
   },
 ];

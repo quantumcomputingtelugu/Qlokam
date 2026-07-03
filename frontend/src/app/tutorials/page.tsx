@@ -39,6 +39,7 @@ export default function TutorialsPage() {
     >
   >({});
 
+  const [examLockUntil, setExamLockUntil] = useState<number | null>(null);
   const [rating, setRating] = useState(0);
   const [badges, setBadges] = useState<string[]>([]);
   const [earnedBadge, setEarnedBadge] = useState<string | null>(null);
@@ -56,6 +57,29 @@ export default function TutorialsPage() {
     allTutorials.find((t) => t.id === activeTutorialId) || allTutorials[0];
   const isCompleted = completedTutorials.includes(activeTutorial.id);
 
+
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (document.hidden && quizStarted && activeTutorial.id === 108 && !showQuizResults) {
+        setQuizScore(0);
+        setShowQuizResults(true);
+        const lockTime = Date.now() + 24 * 60 * 60 * 1000;
+        setExamLockUntil(lockTime);
+        alert("Anti-Cheat Warning: You switched tabs during the exam. You have been awarded 0 marks and are locked out for 24 hours.");
+        if (user && db) {
+          try {
+            const docRef = doc(db, "users", user.uid);
+            await setDoc(docRef, { examLockUntil: lockTime }, { merge: true });
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [quizStarted, activeTutorial.id, showQuizResults, user]);
+
   const handleTabChange = (tab: "lesson" | "quiz" | "practice") => {
     setActiveTab(tab);
     setQuizStarted(false);
@@ -72,6 +96,14 @@ export default function TutorialsPage() {
 
   const handleStartQuiz = () => {
     if (!activeTutorial.quizzes) return;
+
+    if (activeTutorial.id === 108) {
+      if (examLockUntil && Date.now() < examLockUntil) {
+        const hoursLeft = Math.ceil((examLockUntil - Date.now()) / (1000 * 60 * 60));
+        alert(`You are locked out of the exam. Please try again in ${hoursLeft} hours.`);
+        return;
+      }
+    }
 
     const today = new Date().toISOString().split("T")[0];
     const attemptData = quizAttemptsData[activeTutorial.id] || {
@@ -100,7 +132,9 @@ export default function TutorialsPage() {
       .map((q, i) => (q.type === "circuit" ? i : -1))
       .filter((i) => i !== -1);
 
-    if (
+    if (activeTutorial.id === 108) {
+      subset = activeTutorial.quizzes.map((_, i) => i);
+    } else if (
       mcqIndices.length >= 2 &&
       circuitIndices.length >= 3 &&
       activeTutorial.id === 107
@@ -213,8 +247,21 @@ export default function TutorialsPage() {
     let updatedRating = rating;
     let earnedThisTime = 0;
 
-    // Award point if perfect score
-    if (score === 5 && activeTutorial.pointsAward) {
+    const isExam = activeTutorial.id === 108;
+    const requiredScore = isExam ? 15 : activeQuizSubset.length;
+
+    if (isExam && score < 15) {
+      const lockTime = Date.now() + 24 * 60 * 60 * 1000;
+      setExamLockUntil(lockTime);
+      alert(`You scored ${score}/20. You need at least 15 to pass. You are locked out for 24 hours.`);
+      try {
+        const docRef = doc(db, "users", user.uid);
+        await setDoc(docRef, { examLockUntil: lockTime }, { merge: true });
+      } catch (e) {}
+    }
+
+    // Award point if passing score
+    if (score >= requiredScore && activeTutorial.pointsAward) {
       if (!completedTutorials.includes(activeTutorialId)) {
         updatedRating += activeTutorial.pointsAward;
         earnedThisTime = activeTutorial.pointsAward;
@@ -226,7 +273,7 @@ export default function TutorialsPage() {
     }
 
     const newCompleted =
-      score === 5 && !completedTutorials.includes(activeTutorialId)
+      score >= requiredScore && !completedTutorials.includes(activeTutorialId)
         ? [...completedTutorials, activeTutorialId]
         : completedTutorials;
     setCompletedTutorials(newCompleted);
@@ -295,6 +342,7 @@ export default function TutorialsPage() {
             if (data.badges) setBadges(data.badges);
             if (data.quizAttemptsData)
               setQuizAttemptsData(data.quizAttemptsData);
+            if (data.examLockUntil) setExamLockUntil(data.examLockUntil);
 
             // Daily login bonus: +1 rating once per day
             const today = new Date().toISOString().split("T")[0];
