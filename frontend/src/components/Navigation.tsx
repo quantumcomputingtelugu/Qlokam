@@ -132,7 +132,7 @@ export default function Navigation() {
                   <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                 </svg>
                 {(!hasSeenSeasonReset || !hasSeenContestAlert) && (
-                  <span style={{ position: 'absolute', top: '-2px', right: '0px', width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', border: '2px solid var(--background-elevated)' }}></span>
+                  <span style={{ position: 'absolute', top: '-2px', right: '0px', width: '8px', height: '8px', backgroundColor: '#ff4d4d', borderRadius: '50%', border: '2px solid var(--background-elevated)' }}></span>
                 )}
 
                 {showNotifications && (
@@ -155,7 +155,7 @@ export default function Navigation() {
                         onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                          <span style={{ width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', opacity: hasSeenContestAlert ? 0 : 1 }}></span>
+                          <span style={{ width: '8px', height: '8px', backgroundColor: '#ff4d4d', borderRadius: '50%', opacity: hasSeenContestAlert ? 0 : 1 }}></span>
                           <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>Upcoming Contest!</span>
                         </div>
                         <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)', paddingLeft: '16px' }}>
