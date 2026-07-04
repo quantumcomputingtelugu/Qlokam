@@ -21,6 +21,7 @@ export default function Navigation() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [hasSeenSeasonReset, setHasSeenSeasonReset] = useState(false);
   const [hasSeenContestAlert, setHasSeenContestAlert] = useState(false);
+  const [hideContestMessage, setHideContestMessage] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -121,7 +122,7 @@ export default function Navigation() {
                       setHasSeenSeasonReset(true);
                     }
                     if (!hasSeenContestAlert) {
-                      localStorage.setItem('seenContestAlert', 'true');
+                      localStorage.setItem('seenContestAlert', Date.now().toString());
                       setHasSeenContestAlert(true);
                     }
                   }
