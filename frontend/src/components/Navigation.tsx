@@ -20,6 +20,7 @@ export default function Navigation() {
   const [showUsernameModal, setShowUsernameModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [hasSeenSeasonReset, setHasSeenSeasonReset] = useState(false);
+  const [hasSeenContestAlert, setHasSeenContestAlert] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -100,6 +101,9 @@ export default function Navigation() {
           <Link href="/arena" className="nav-link" style={{ fontWeight: 500, color: pathname?.startsWith('/arena') ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Arena</Link>
         )}
         <Link href="/playground" className="nav-link" style={{ fontWeight: 500, color: pathname === '/playground' ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Playground</Link>
+        {Date.now() >= 1783251000000 && (
+          <Link href="/contests" className="nav-link" style={{ fontWeight: 500, color: pathname === '/contests' ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Contests</Link>
+        )}
         <a href="mailto:quantumcomputingtelugu@gmail.com?subject=Qlokam%20Feedback" className="nav-link" style={{ fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.2s' }}>Feedback</a>
         
         {!loading && (
@@ -111,9 +115,15 @@ export default function Navigation() {
                   e.stopPropagation();
                   const willShow = !showNotifications;
                   setShowNotifications(willShow);
-                  if (willShow && !hasSeenSeasonReset) {
-                    localStorage.setItem('seenSeasonReset', 'true');
-                    setHasSeenSeasonReset(true);
+                  if (willShow) {
+                    if (!hasSeenSeasonReset) {
+                      localStorage.setItem('seenSeasonReset', 'true');
+                      setHasSeenSeasonReset(true);
+                    }
+                    if (!hasSeenContestAlert) {
+                      localStorage.setItem('seenContestAlert', 'true');
+                      setHasSeenContestAlert(true);
+                    }
                   }
                 }}
               >
@@ -121,7 +131,7 @@ export default function Navigation() {
                   <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                   <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                 </svg>
-                {!hasSeenSeasonReset && (
+                {(!hasSeenSeasonReset || !hasSeenContestAlert) && (
                   <span style={{ position: 'absolute', top: '-2px', right: '0px', width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', border: '2px solid var(--background-elevated)' }}></span>
                 )}
 
@@ -131,7 +141,29 @@ export default function Navigation() {
                       <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 600 }}>Notifications</h3>
                     </div>
                     
-                    <div 
+                                        <div 
+                        style={{ 
+                          padding: '12px', 
+                          borderRadius: '8px', 
+                          background: 'rgba(255, 255, 255, 0.03)', 
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          cursor: 'default',
+                          transition: 'background 0.2s',
+                          marginBottom: '8px'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                          <span style={{ width: '8px', height: '8px', backgroundColor: 'var(--accent-color)', borderRadius: '50%', opacity: hasSeenContestAlert ? 0 : 1 }}></span>
+                          <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>Upcoming Contest!</span>
+                        </div>
+                        <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)', paddingLeft: '16px' }}>
+                          Get ready! A new Easy Contest will take place tomorrow from 5:00 PM to 5:30 PM. The link will appear here automatically when it starts.
+                        </p>
+                      </div>
+
+<div 
                         style={{ 
                           padding: '12px', 
                           borderRadius: '8px', 
