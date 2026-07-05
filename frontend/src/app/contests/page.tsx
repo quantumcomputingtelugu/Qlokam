@@ -382,6 +382,8 @@ export default function ContestsPage() {
                       style={{
                         padding: "16px",
                         textAlign: "left",
+                        whiteSpace: "pre-wrap",
+                        fontFamily: "monospace",
                         background: selectedAnswers[currentQuestionIndex] === optIdx ? "rgba(0, 255, 255, 0.1)" : "var(--bg-primary)",
                         border: `1px solid ${selectedAnswers[currentQuestionIndex] === optIdx ? "var(--accent-primary)" : "var(--surface-border)"}`,
                         color: "var(--text-primary)",

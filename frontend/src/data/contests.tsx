@@ -31,12 +31,12 @@ export const contests: Contest[] = [
       {
         type: "mcq",
         difficulty: "easy",
-        question: "Consider a 3-qubit circuit with a depth of 5: H on q0, followed by CNOT(control: q0, target: q1), followed by X on q2, followed by CNOT(control: q1, target: q2), followed by Z on q0. What is the equivalent unitary operator for the entire circuit? (Assume time goes left to right, matrix multiplication goes right to left)",
+        question: "Consider a 3-qubit circuit with a depth of 5: H on q0, followed by CNOT(control: q0, target: q1), followed by X on q2, followed by CNOT(control: q1, target: q2), followed by Z on q0. What is the equivalent unitary operator matrix for the entire circuit? (Assume time goes left to right, matrix multiplication goes right to left)",
         options: [
-          "(Z ⊗ I ⊗ I) · CX_{1,2} · (I ⊗ I ⊗ X) · CX_{0,1} · (H ⊗ I ⊗ I)",
-          "(I ⊗ I ⊗ Z) · CX_{0,1} · (X ⊗ I ⊗ I) · CX_{1,2} · (I ⊗ I ⊗ H)",
-          "(H ⊗ I ⊗ I) · CX_{0,1} · (I ⊗ I ⊗ X) · CX_{1,2} · (Z ⊗ I ⊗ I)",
-          "(Z ⊗ H ⊗ X) · CX_{0,1} · CX_{1,2}"
+          "[\n [0.0, 0.0, 0.0, 0.0, 0.71, 0.71, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.71, 0.71],\n [0.0, 0.0, 0.71, 0.71, 0.0, 0.0, 0.0, 0.0],\n [-0.71, 0.71, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\n [0.71, 0.71, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, -0.71, 0.71, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.71, 0.71],\n [0.0, 0.0, 0.0, 0.0, -0.71, 0.71, 0.0, 0.0]\n]",
+          "[\n [0.71, 0.71, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, 0.71, -0.71, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.71, 0.71, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.71, -0.71],\n [0.0, 0.0, 0.0, 0.0, -0.71, -0.71, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.71, 0.71],\n [-0.71, -0.71, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, -0.71, 0.71, 0.0, 0.0, 0.0, 0.0]\n]",
+          "[\n [0.0, 0.0, 0.71, 0.71, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.71, -0.71],\n [0.71, 0.71, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.71, 0.71, 0.0, 0.0],\n [-0.71, 0.71, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, -0.71, 0.71, 0.0, 0.0],\n [0.0, 0.0, -0.71, 0.71, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.71, -0.71]\n]",
+          "[\n [0.0, 0.0, 0.0, 0.0, 0.71, -0.71, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.71, 0.71],\n [0.71, -0.71, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, 0.71, 0.71, 0.0, 0.0, 0.0, 0.0],\n [0.71, 0.71, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, 0.71, -0.71, 0.0, 0.0, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.71, 0.71, 0.0, 0.0],\n [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.71, -0.71]\n]"
         ],
         correctAnswerIndex: 0,
       },
