@@ -135,9 +135,27 @@ export default function VisualPlayground({
   const [isTyping, setIsTyping] = useState(false); // Source of truth flag
   const typeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Reset state when problem changes
+  // Load or reset state when problem changes
   useEffect(() => {
     if (arenaMode && arenaProblemId) {
+      const saved = localStorage.getItem(`quverse_grid_${arenaProblemId}`);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.grid && parsed.numQubits) {
+            setGrid(parsed.grid);
+            setNumQubits(parsed.numQubits);
+            setProbabilities({});
+            setBlochVectors({});
+            setMeasuredVals({});
+            setErrorMsg("");
+            setPendingTwoQubit(null);
+            setAnglePrompt(null);
+            return;
+          }
+        } catch (e) {}
+      }
+      
       setGrid(
         Array(3)
           .fill([])
@@ -153,6 +171,13 @@ export default function VisualPlayground({
       setAnglePrompt(null);
     }
   }, [arenaProblemId, arenaMode]);
+
+  // Save state when grid changes
+  useEffect(() => {
+    if (arenaMode && arenaProblemId) {
+      localStorage.setItem(`quverse_grid_${arenaProblemId}`, JSON.stringify({ grid, numQubits }));
+    }
+  }, [grid, numQubits, arenaProblemId, arenaMode]);
 
   const addQubit = () => {
     if (numQubits >= 16) {
