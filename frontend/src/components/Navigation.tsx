@@ -29,6 +29,9 @@ export default function Navigation() {
     if (typeof window !== 'undefined') {
       const seen = localStorage.getItem('seenSeasonReset');
       if (seen) setHasSeenSeasonReset(true);
+      
+      const seenContest = localStorage.getItem('seenContestAlert');
+      if (seenContest) setHasSeenContestAlert(true);
     }
   }, []);
 
@@ -253,8 +256,8 @@ export default function Navigation() {
           }
         `}} />
         <div>
-          <h4 style={{ margin: 0, color: 'var(--text-primary)', marginBottom: '4px' }}>New Notifications</h4>
-          <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '14px' }}>You have unread updates. Check the bell icon!</p>
+          <h4 style={{ margin: 0, color: 'var(--text-primary)', marginBottom: '4px' }}>Upcoming Contest!</h4>
+          <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '14px', maxWidth: '300px' }}>Get ready! A new Easy Contest will take place today from 5:00 PM to 5:30 PM. The link will appear here automatically when it starts.</p>
         </div>
         <button 
           onClick={() => setToastDismissed(true)}
