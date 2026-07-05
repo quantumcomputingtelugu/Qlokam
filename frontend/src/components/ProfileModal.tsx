@@ -179,6 +179,17 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
                   </button>
                 </div>
 
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', background: 'rgba(255,255,255,0.03)', padding: '12px 16px', borderRadius: '12px', border: '1px solid var(--surface-border)' }}>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px', fontWeight: 'bold' }}>Contest Rating Rewards</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 24px', fontSize: '13px' }}>
+                    <span style={{ color: 'var(--text-primary)' }}>Easy: <strong style={{ color: '#3fb950' }}>+20</strong></span>
+                    <span style={{ color: 'var(--text-primary)' }}>Medium: <strong style={{ color: '#d29922' }}>+40</strong></span>
+                    <span style={{ color: 'var(--text-primary)' }}>Hard: <strong style={{ color: '#f85149' }}>+50</strong></span>
+                    <span style={{ color: 'var(--text-primary)' }}>Very Hard: <strong style={{ color: '#a371f7' }}>+70</strong></span>
+                    <span style={{ color: 'var(--text-primary)' }}>Master: <strong style={{ color: '#58a6ff' }}>+100</strong></span>
+                  </div>
+                </div>
+
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                   {['Easy', 'Medium', 'Hard', 'Very Hard', 'Master'].map((b) => {
                     const count = profileData.badges.filter(badge => badge === b).length;
