@@ -160,7 +160,7 @@ export default function Navigation() {
                           <span style={{ fontWeight: 600, fontSize: '14px', color: 'var(--text-primary)' }}>Upcoming Contest!</span>
                         </div>
                         <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-secondary)', paddingLeft: '16px' }}>
-                          Get ready! A new Easy Contest will take place tomorrow from 5:00 PM to 5:30 PM. The link will appear here automatically when it starts.
+                          Get ready! A new Easy Contest will take place today from 5:00 PM to 5:30 PM. The link will appear here automatically when it starts.
                         </p>
                       </div>
 
