@@ -615,20 +615,20 @@ except Exception as e:
           } else {
             setProbabilities(parsed);
           }
-          if (isSubmit && onSubmit) {
+          if (onSubmit) {
             onSubmit(parsed.theoretical_probs || parsed.probs || parsed);
           }
         } else {
           setErrorMsg("Could not parse output.");
-          if (isSubmit && onSubmit) onSubmit({});
+          if (onSubmit) onSubmit({});
         }
       } else {
         setErrorMsg(data.error || "Execution failed");
-        if (isSubmit && onSubmit) onSubmit({});
+        if (onSubmit) onSubmit({});
       }
     } catch (err: unknown) {
       setErrorMsg("Backend connection failed.");
-      if (isSubmit && onSubmit) onSubmit({});
+      if (onSubmit) onSubmit({});
     }
     setIsExecuting(false);
   };
