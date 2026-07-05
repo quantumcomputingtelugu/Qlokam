@@ -61,15 +61,21 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
     fetchProfile();
   }, [user]);
 
-  const completedCourses = tutorialSessions.filter(session => 
-    session.modules.length > 0 && session.modules.every(m => profileData.completedTutorials.includes(m.id))
-  );
+  const completedCourses = tutorialSessions.filter(session => {
+    if (session.modules.length === 0) return false;
+    const finalTestModule = session.modules.find(m => m.isFinalTest);
+    if (finalTestModule && profileData.completedTutorials.includes(finalTestModule.id)) {
+      return true;
+    }
+    return session.modules.every(m => profileData.completedTutorials.includes(m.id));
+  });
 
-  const inProgressCourses = tutorialSessions.filter(session => 
-    session.modules.length > 0 && 
-    session.modules.some(m => profileData.completedTutorials.includes(m.id)) &&
-    !session.modules.every(m => profileData.completedTutorials.includes(m.id))
-  );
+  const inProgressCourses = tutorialSessions.filter(session => {
+    if (session.modules.length === 0) return false;
+    const isCompleted = completedCourses.includes(session);
+    const hasStarted = session.modules.some(m => profileData.completedTutorials.includes(m.id));
+    return hasStarted && !isCompleted;
+  });
 
   const solvedProblemTitles = profileData.solvedArenaProblems
     .map(id => arenaProblems.find(p => p.id === id)?.title)
