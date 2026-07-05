@@ -404,7 +404,6 @@ export default function ContestsPage() {
               {currentQuestionIndex < activeContest.questions.length - 1 ? (
                 <button
                   className="btn-primary"
-                  disabled={selectedAnswers[currentQuestionIndex] === undefined}
                   onClick={() => setCurrentQuestionIndex(prev => prev + 1)}
                   style={{ padding: "12px 32px" }}
                 >
