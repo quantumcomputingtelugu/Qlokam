@@ -770,7 +770,12 @@ except Exception as e:
         </select>
 
         {arenaMode ? (
-          <div style={{ display: "flex", gap: "12px" }}>
+          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+            {submitStatus === "success" && (
+              <span style={{ color: "#4caf50", fontWeight: "bold", fontSize: "14px" }}>
+                Saved ✓
+              </span>
+            )}
             <button
               className="btn-secondary"
               onClick={() => executeCircuit(false)}
