@@ -3,7 +3,7 @@ import { User } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { tutorialSessions } from '@/data/tutorials';
-import { arenaProblems } from '@/data/arena';
+import { getArenaProblems } from '@/data/arena';
 import UsernameModal from './UsernameModal';
 
 interface ProfileModalProps {
@@ -78,7 +78,7 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
   });
 
   const solvedProblemTitles = profileData.solvedArenaProblems
-    .map(id => arenaProblems.find(p => p.id === id)?.title)
+    .map(id => getArenaProblems().find(p => p.id === id)?.title)
     .filter(Boolean) as string[];
 
   return (

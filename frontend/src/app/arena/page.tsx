@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import VisualPlayground from '@/components/VisualPlayground';
-import { arenaProblems, ArenaProblem } from '@/data/arena';
+import { getArenaProblems, ArenaProblem } from '@/data/arena';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, getDoc, setDoc, arrayUnion } from 'firebase/firestore';
@@ -93,7 +93,7 @@ export default function ArenaPage() {
     setSubmitStatus('idle');
   };
 
-  const activeProblem = arenaProblems.find(p => p.id === activeProblemId);
+  const activeProblem = getArenaProblems().find(p => p.id === activeProblemId);
   const isSolved = activeProblem ? solvedProblems.includes(activeProblem.id) : false;
 
   const handleSubmit = async (probs: Record<string, number>) => {
@@ -211,7 +211,7 @@ export default function ArenaPage() {
           
           <div className="glass-panel" style={{ padding: '24px' }}>
             <h3 style={{ fontSize: '18px', marginBottom: '16px', color: 'var(--text-primary)' }}>Progress</h3>
-            <p style={{ color: 'var(--text-secondary)' }}>Solved: <strong style={{color: 'var(--success)'}}>{solvedProblems.length}</strong> / {arenaProblems.length}</p>
+            <p style={{ color: 'var(--text-secondary)' }}>Solved: <strong style={{color: 'var(--success)'}}>{solvedProblems.length}</strong> / {getArenaProblems().length}</p>
           </div>
           
           <AdBanner dataAdSlot="arena_sidebar_1" />
@@ -269,7 +269,7 @@ export default function ArenaPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {arenaProblems.map(p => {
+                  {getArenaProblems().map(p => {
                     const solved = solvedProblems.includes(p.id);
                     return (
                       <tr 
