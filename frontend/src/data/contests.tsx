@@ -31,26 +31,26 @@ export const contests: Contest[] = [
       {
         type: "mcq",
         difficulty: "easy",
-        question: "Consider a 3-qubit circuit with a depth of 5: H(q0) -> CNOT(q0 as control, q1 as target) -> X(q2) -> CNOT(q1 as control, q2 as target) -> Z(q0). If the initial state is |000>, what is the final state vector equivalent of this unitary circuit?",
+        question: "Consider a 3-qubit circuit with a depth of 5: H on q0, followed by CNOT(control: q0, target: q1), followed by X on q2, followed by CNOT(control: q1, target: q2), followed by Z on q0. What is the equivalent unitary operator for the entire circuit? (Assume time goes left to right, matrix multiplication goes right to left)",
         options: [
-          "(|001> - |110>) / √2",
-          "(|011> + |100>) / √2",
-          "(|000> + |111>) / √2",
-          "(|101> - |010>) / √2"
+          "(Z ⊗ I ⊗ I) · CX_{1,2} · (I ⊗ I ⊗ X) · CX_{0,1} · (H ⊗ I ⊗ I)",
+          "(I ⊗ I ⊗ Z) · CX_{0,1} · (X ⊗ I ⊗ I) · CX_{1,2} · (I ⊗ I ⊗ H)",
+          "(H ⊗ I ⊗ I) · CX_{0,1} · (I ⊗ I ⊗ X) · CX_{1,2} · (Z ⊗ I ⊗ I)",
+          "(Z ⊗ H ⊗ X) · CX_{0,1} · CX_{1,2}"
         ],
         correctAnswerIndex: 0,
       },
       {
         type: "mcq",
         difficulty: "easy",
-        question: "Which of the following problems are known to be NP-Hard (or harder)? 1. Quantum Circuit Synthesis, 2. Travelling Salesman Problem, 3. Knapsack Problem, 4. Non-local Games.",
+        question: "Which of the following problems is generally classified as NP-Hard (or harder), whereas the others (TSP, Knapsack) are famously NP-Complete? 1. Quantum Circuit Synthesis, 2. Travelling Salesman Problem, 3. Knapsack Problem",
         options: [
+          "1 only",
           "2 and 3 only",
-          "1, 2, and 3 only",
-          "All of them (1, 2, 3, and 4)",
-          "2, 3, and 4 only"
+          "1, 2, and 3",
+          "None of the above"
         ],
-        correctAnswerIndex: 2,
+        correctAnswerIndex: 0,
       },
       {
         type: "circuit",
@@ -62,9 +62,9 @@ export const contests: Contest[] = [
       {
         type: "circuit",
         difficulty: "easy",
-        question: "The CHSH game demonstrates quantum non-locality. To win optimally, Alice and Bob must share a Bell state. Build the circuit to prepare the standard Bell state |Φ+> = (|00> + |11>)/√2 on q0 and q1.",
-        expectedOutputsText: "Expected: |00> and |11> with equal probability.",
-        expectedProbs: { "00": 0.5, "11": 0.5 },
+        question: "Implement the Superdense Coding protocol to transmit the classical message '11'. Prepare a Bell state |Φ+> on q0 and q1, apply the necessary encoding gates on q0 to send '11' (X and Z), and finally apply the decoding operations on q0 and q1 (CX then H).",
+        expectedOutputsText: "Expected output: |11> with 100% probability.",
+        expectedProbs: { "11": 1.0 },
       },
       {
         type: "circuit",
