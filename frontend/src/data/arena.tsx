@@ -22,7 +22,7 @@ export const getArenaProblems = (): ArenaProblem[] => {
       contest.questions.forEach((q, index) => {
         if (q.type === 'circuit' && q.expectedProbs) {
           let diff: ArenaProblem['difficulty'] = 'Easy';
-          let pts = 20;
+          let pts = 1;
           if (q.difficulty === 'medium') {
             diff = 'Medium';
             pts = 40;
