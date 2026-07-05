@@ -102,7 +102,7 @@ export default function Navigation() {
           <Link href="/arena" className="nav-link" style={{ fontWeight: 500, color: pathname?.startsWith('/arena') ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Arena</Link>
         )}
         <Link href="/playground" className="nav-link" style={{ fontWeight: 500, color: pathname === '/playground' ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Playground</Link>
-        {Date.now() >= 1783251000000 && (
+        {true /* TESTING */ && (
           <Link href="/contests" className="nav-link" style={{ fontWeight: 500, color: pathname === '/contests' ? 'var(--text-primary)' : 'var(--text-secondary)', transition: 'color 0.2s' }}>Contests</Link>
         )}
         <a href="mailto:quantumcomputingtelugu@gmail.com?subject=Qlokam%20Feedback" className="nav-link" style={{ fontWeight: 500, color: 'var(--text-secondary)', transition: 'color 0.2s' }}>Feedback</a>

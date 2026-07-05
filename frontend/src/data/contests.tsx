@@ -24,8 +24,8 @@ export const contests: Contest[] = [
     id: "easy-contest-1",
     title: "Easy Contest",
     description: "Welcome to the Easy Contest! Complete 5 questions (2 MCQs, 3 Circuits) within 10 minutes to rank on the leaderboard and earn huge rating boosts.",
-    startTime: 1783251000000,
-    endTime: 1783252800000,
+    startTime: Date.now() - 100000,
+    endTime: Date.now() + 3 * 24 * 60 * 60 * 1000,
     timeLimitMinutes: 10,
     questions: [
       {
