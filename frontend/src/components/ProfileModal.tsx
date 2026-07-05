@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { tutorialSessions } from '@/data/tutorials';
 import { getArenaProblems } from '@/data/arena';
+import { contests } from '@/data/contests';
 import UsernameModal from './UsernameModal';
 
 interface ProfileModalProps {
@@ -13,6 +14,8 @@ interface ProfileModalProps {
 
 export default function ProfileModal({ user, onClose }: ProfileModalProps) {
   const [loading, setLoading] = useState(true);
+  const [contestHistory, setContestHistory] = useState<any[]>([]);
+  const [expandedContest, setExpandedContest] = useState<string | null>(null);
   const [profileData, setProfileData] = useState<{
     username: string | null;
     rating: number;
@@ -40,6 +43,12 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
       try {
         const docRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(docRef);
+        // Fetch contest entries
+        const q = query(collection(db, 'contest_entries'), where('userId', '==', user.uid));
+        const qs = await getDocs(q);
+        const entries = qs.docs.map(d => d.data());
+        setContestHistory(entries.sort((a, b) => b.timestamp - a.timestamp));
+
         if (docSnap.exists()) {
           const data = docSnap.data();
           setProfileData({
@@ -258,6 +267,70 @@ export default function ProfileModal({ user, onClose }: ProfileModalProps) {
                       <li key={course.id}>{course.sessionName}</li>
                     ))}
                   </ul>
+                )}
+              </div>
+
+              {/* Contest History */}
+              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--surface-border)', borderRadius: '12px', padding: '24px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--text-primary)' }}>Contest History</h3>
+                  <span style={{ background: 'rgba(210, 153, 34, 0.2)', color: '#d29922', padding: '4px 12px', borderRadius: '12px', fontWeight: 'bold', fontSize: '14px' }}>
+                    {contestHistory.length}
+                  </span>
+                </div>
+                {contestHistory.length === 0 ? (
+                  <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px' }}>You haven't participated in any contests yet.</p>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {contestHistory.map(entry => {
+                      const contestDef = contests.find(c => c.id === entry.contestId);
+                      const isExpanded = expandedContest === entry.contestId;
+                      
+                      return (
+                        <div key={entry.contestId} style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '8px', border: '1px solid var(--surface-border)' }}>
+                          <div 
+                            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', cursor: 'pointer' }}
+                            onClick={() => setExpandedContest(isExpanded ? null : entry.contestId)}
+                          >
+                            <div>
+                              <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--text-primary)', marginBottom: '4px' }}>
+                                {contestDef?.title || entry.contestId}
+                              </div>
+                              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                                Score: {entry.score} | Time: {Math.floor(entry.timeTaken / 60)}m {entry.timeTaken % 60}s
+                              </div>
+                            </div>
+                            <div style={{ fontSize: '14px', color: 'var(--accent-primary)' }}>
+                              {isExpanded ? 'Hide Answers' : 'View Answers'}
+                            </div>
+                          </div>
+                          
+                          {isExpanded && contestDef && (
+                            <div style={{ padding: '16px', borderTop: '1px solid var(--surface-border)', background: 'rgba(255,255,255,0.01)' }}>
+                              <h4 style={{ margin: '0 0 12px 0', color: 'var(--text-primary)' }}>Contest Questions & Answers</h4>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                {contestDef.questions.map((q, idx) => (
+                                  <div key={idx} style={{ padding: '12px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px' }}>
+                                    <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                                      <strong>Q{idx + 1}:</strong> {q.question}
+                                    </div>
+                                    <div style={{ fontSize: '14px', color: '#3fb950', background: 'rgba(63, 185, 80, 0.1)', padding: '8px', borderRadius: '4px' }}>
+                                      <strong>Answer: </strong>
+                                      {q.type === 'mcq' && q.options && q.correctAnswerIndex !== undefined 
+                                        ? q.options[q.correctAnswerIndex]
+                                        : q.expectedOutputsText 
+                                          ? q.expectedOutputsText 
+                                          : JSON.stringify(q.expectedProbs)}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
               </div>
 
