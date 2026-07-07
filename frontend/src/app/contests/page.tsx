@@ -41,6 +41,10 @@ export default function ContestsPage() {
   const [warningMessage, setWarningMessage] = useState<string | null>(null);
   const [startTime, setStartTime] = useState<number>(0);
 
+  // calculate now safely
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => { setNow(Date.now()); }, []);
+
   useEffect(() => {
     if (!auth || !db) {
       setLoadingUser(false);
@@ -277,9 +281,6 @@ export default function ContestsPage() {
     return <div style={{ padding: "40px", color: "var(--text-primary)" }}>Please log in to participate in contests.</div>;
   }
 
-  // calculate now safely
-  const [now, setNow] = useState(Date.now());
-  useEffect(() => { setNow(Date.now()); }, []);
   const contestEnded = now > activeContest.endTime;
 
   return (
