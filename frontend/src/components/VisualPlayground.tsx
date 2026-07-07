@@ -86,6 +86,9 @@ interface VisualPlaygroundProps {
   onSubmit?: (probs: Record<string, number>) => void;
   submitStatus?: "idle" | "verifying" | "success" | "failed";
   disableSubmit?: boolean;
+  inlineMode?: boolean;
+  initialNumQubits?: number;
+  initialGates?: string[][];
 }
 
 export default function VisualPlayground({
@@ -94,13 +97,16 @@ export default function VisualPlayground({
   onSubmit,
   submitStatus = "idle",
   disableSubmit = false,
+  inlineMode = false,
+  initialNumQubits = 3,
+  initialGates,
 }: VisualPlaygroundProps = {}) {
   const [language, setLanguage] = useState<"qiskit" | "cirq">("qiskit");
-  const [numQubits, setNumQubits] = useState(3);
+  const [numQubits, setNumQubits] = useState(initialNumQubits);
   const [grid, setGrid] = useState<string[][]>(
-    Array(3)
+    initialGates || Array(initialNumQubits)
       .fill([])
-      .map(() => Array(NUM_STEPS).fill("")),
+      .map(() => Array(NUM_STEPS).fill(""))
   );
   const [draggedGate, setDraggedGate] = useState<string | null>(null);
   const [selectedGate, setSelectedGate] = useState<string | null>(null);
@@ -137,7 +143,7 @@ export default function VisualPlayground({
 
   // Load or reset state when problem changes
   useEffect(() => {
-    if (arenaMode && arenaProblemId) {
+    if (!inlineMode && arenaMode && arenaProblemId) {
       const saved = localStorage.getItem(`quverse_grid_${arenaProblemId}`);
       if (saved) {
         try {
@@ -174,7 +180,7 @@ export default function VisualPlayground({
 
   // Save state when grid changes
   useEffect(() => {
-    if (arenaMode && arenaProblemId) {
+    if (!inlineMode && arenaMode && arenaProblemId) {
       localStorage.setItem(`quverse_grid_${arenaProblemId}`, JSON.stringify({ grid, numQubits }));
     }
   }, [grid, numQubits, arenaProblemId, arenaMode]);
@@ -660,7 +666,7 @@ except Exception as e:
 
   // Auto-run when typing/dragging (only outside Arena Mode)
   useEffect(() => {
-    if (arenaMode) return;
+    if (arenaMode && !inlineMode) return;
 
     const handler = setTimeout(() => {
       if (code && !code.includes("# Drag gates")) {

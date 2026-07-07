@@ -277,7 +277,9 @@ export default function ContestsPage() {
     return <div style={{ padding: "40px", color: "var(--text-primary)" }}>Please log in to participate in contests.</div>;
   }
 
-  const now = Date.now();
+  // calculate now safely
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => { setNow(Date.now()); }, []);
   const contestEnded = now > activeContest.endTime;
 
   return (
