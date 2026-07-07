@@ -1,0 +1,301 @@
+                            style={{
+                              padding: "10px 14px",
+                              color: "var(--text-secondary)",
+                            }}
+                          >
+                            {note}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            ),
+            practiceGoal:
+              "Read the Bell State circuit diagram above and match each symbol to its meaning in the quick-reference table.",
+          },
+
+          /* ═══════════════════════════════════════════════════
+             SUBTOPIC: ENTANGLEMENT CIRCUIT
+          ═══════════════════════════════════════════════════ */
+          {
+            id: 104,
+            title: "Entanglement Circuit",
+            description:
+              "Build and analyze the Bell State circuit that creates a maximally entangled pair of qubits.",
+            difficulty: "Intermediate",
+            lessonContent: (
+              <>
+                <p style={{ marginBottom: "16px" }}>
+                  <strong>Entanglement</strong> is the quantum phenomenon where
+                  two qubits become so correlated that measuring one{" "}
+                  <em>instantly</em> determines the state of the other — no
+                  matter how far apart they are. The simplest way to create
+                  entanglement is the <strong>Bell State circuit</strong>.
+                </p>
+
+                {/* ── Bell State Circuit ── */}
+                <h3
+                  style={{
+                    fontSize: "20px",
+                    color: "var(--text-primary)",
+                    marginTop: "28px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  Bell State Circuit
+                </h3>
+                <div
+                  style={{
+                    background: "rgba(0,0,0,0.3)",
+                    borderRadius: "12px",
+                    padding: "28px 24px",
+                    margin: "16px 0",
+                    overflowX: "auto",
+                    border: "1px solid rgba(255,255,255,0.05)",
+                  }}
+                >
+                  {/*
+                    Grid: label(90) wire(20) H/blank(44) wire(20) CNOT(44) wire(1fr) M(44)
+                    q₁ on TOP = target ⊕   |   q₀ on BOTTOM = H + control ●
+                  */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "90px 20px 44px 20px 44px 1fr 44px",
+                      minWidth: "420px",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* ── q₁ row (TOP — target) ── */}
+                    <span
+                      style={{
+                        color: "var(--text-secondary)",
+                        fontSize: "13px",
+                        fontFamily: "monospace",
+                      }}
+                    >
+                      q₁ |0⟩
+                    </span>
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "var(--text-secondary)",
+                      }}
+                    />
+                    {/* No gate in H column */}
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "var(--text-secondary)",
+                        justifySelf: "stretch",
+                      }}
+                    />
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "var(--text-secondary)",
+                      }}
+                    />
+                    {/* CNOT target ⊕ with line going DOWN to q₀ */}
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "44px",
+                        height: "44px",
+                        justifySelf: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: 0,
+                          right: 0,
+                          height: "2px",
+                          background: "var(--text-secondary)",
+                          transform: "translateY(-50%)",
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "2px",
+                          height: "22px",
+                          background: "var(--accent-primary)",
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: "relative",
+                          width: "44px",
+                          height: "44px",
+                          border: "2px solid var(--text-secondary)",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "20px",
+                          color: "var(--text-secondary)",
+                          background: "rgba(255,255,255,0.05)",
+                        }}
+                      >
+                        ⊕
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "var(--text-secondary)",
+                      }}
+                    />
+                    <div
+                      style={{
+                        width: "44px",
+                        height: "44px",
+                        border: "2px solid #b28215",
+                        borderRadius: "6px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        color: "#b28215",
+                        background: "rgba(178,130,21,0.08)",
+                        justifySelf: "center",
+                      }}
+                    >
+                      M
+                    </div>
+
+                    {/* Spacer with CNOT vertical connector */}
+                    <div />
+                    <div />
+                    <div />
+                    <div />
+                    <div
+                      style={{
+                        height: "8px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "2px",
+                          height: "100%",
+                          background: "var(--accent-primary)",
+                        }}
+                      />
+                    </div>
+                    <div />
+                    <div />
+
+                    {/* ── q₀ row (BOTTOM — H + control) ── */}
+                    <span
+                      style={{
+                        color: "var(--text-secondary)",
+                        fontSize: "13px",
+                        fontFamily: "monospace",
+                      }}
+                    >
+                      q₀ |0⟩
+                    </span>
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "rgba(0,212,255,0.4)",
+                      }}
+                    />
+                    {/* H gate */}
+                    <div
+                      style={{
+                        width: "44px",
+                        height: "44px",
+                        border: "2px solid var(--accent-primary)",
+                        borderRadius: "6px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        color: "var(--accent-primary)",
+                        background: "rgba(0,212,255,0.05)",
+                        justifySelf: "center",
+                      }}
+                    >
+                      H
+                    </div>
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "rgba(0,212,255,0.4)",
+                      }}
+                    />
+                    {/* CNOT control ● with line going UP */}
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "44px",
+                        height: "44px",
+                        justifySelf: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: 0,
+                          right: 0,
+                          height: "2px",
+                          background: "rgba(0,212,255,0.4)",
+                          transform: "translateY(-50%)",
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "2px",
+                          height: "22px",
+                          background: "rgba(0,212,255,0.4)",
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%,-50%)",
+                          width: "12px",
+                          height: "12px",
+                          borderRadius: "50%",
+                          background: "var(--accent-primary)",
+                          zIndex: 1,
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "rgba(0,212,255,0.4)",
+                      }}
+                    />
+                    <div
+                      style={{
+                        width: "44px",
+                        height: "44px",
+                        border: "2px solid #b28215",
+                        borderRadius: "6px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        color: "#b28215",
+                        background: "rgba(178,130,21,0.08)",
+                        justifySelf: "center",

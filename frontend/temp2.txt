@@ -1,0 +1,101 @@
+                        boxShadow: "0 0 4px #3fb950",
+                      }}
+                    />
+                    {/* blank (no gate here — identity) */}
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "#3fb950",
+                        boxShadow: "0 0 4px #3fb950",
+                        justifySelf: "stretch",
+                      }}
+                    />
+                    {/* wire across gap */}
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "#3fb950",
+                        boxShadow: "0 0 4px #3fb950",
+                      }}
+                    />
+                    {/* CNOT target ⊕ */}
+                    <div
+                      style={{
+                        width: "44px",
+                        height: "44px",
+                        border: "2px solid #3fb950",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "20px",
+                        color: "#3fb950",
+                        background: "rgba(63,185,80,0.08)",
+                        boxShadow: "0 0 8px #3fb950",
+                        justifySelf: "center",
+                      }}
+                    >
+                      ⊕
+                    </div>
+                    {/* wire ⊕ → M */}
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "#3fb950",
+                        boxShadow: "0 0 4px #3fb950",
+                      }}
+                    />
+                    {/* M gate */}
+                    <div
+                      style={{
+====
+                {/* ── Circuit matching image style ── */}
+                <h3
+                  style={{
+                    fontSize: "18px",
+                    color: "var(--text-primary)",
+                    marginTop: "8px",
+                    marginBottom: "12px",
+                  }}
+                >
+                  Teleportation Circuit
+                </h3>
+                <div
+                  style={{
+                    background: "rgba(0,0,0,0.35)",
+                    borderRadius: "12px",
+                    padding: "24px 20px",
+                    margin: "12px 0",
+                    overflowX: "auto",
+                    border: "1px solid rgba(255,255,255,0.05)",
+                  }}
+                >
+                  {/*
+                    5 gate columns: CNOT(Q ctrl, A tgt) | H on Q | M on Q | X on B | Z on B
+                    Grid: label(80) w(14) g1(44) w(14) g2(44) w(14) g3(44) w(14) g4(44) w(14) g5(44)
+                  */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "80px 14px 44px 14px 44px 14px 44px 14px 44px 14px 44px",
+                      minWidth: "480px",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* ── Q row (Alice's message qubit |ψ⟩) ── */}
+                    <span
+                      style={{
+                        fontFamily: "monospace",
+                        fontSize: "13px",
+                        color: "var(--text-primary)",
+                      }}
+                    >
+                      Q |ψ⟩
+                    </span>
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "rgba(255,255,255,0.3)",
+                      }}
+                    />
