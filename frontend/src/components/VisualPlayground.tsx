@@ -809,10 +809,11 @@ except Exception as e:
       </div>
 
       <div
+        className={inlineMode ? "responsive-flex" : ""}
         style={{
           display: "flex",
           gap: "24px",
-          flexDirection: "column",
+          flexDirection: inlineMode ? "row" : "column",
           flex: 1,
           minWidth: 0,
         }}
@@ -823,6 +824,7 @@ except Exception as e:
             display: "flex",
             flexDirection: "column",
             gap: "16px",
+            flex: inlineMode ? "1.5" : "unset",
             minWidth: 0,
           }}
         >
@@ -1461,10 +1463,11 @@ except Exception as e:
 
         {/* Bottom Panel (Code & Results) */}
         <div
-          className="responsive-flex"
-          style={{ display: "flex", gap: "24px", flex: 1, minHeight: "300px" }}
+          className={inlineMode ? "" : "responsive-flex"}
+          style={{ display: "flex", flexDirection: inlineMode ? "column" : "row", gap: "24px", flex: 1, minHeight: "300px" }}
         >
           {/* Code Editor */}
+          {!inlineMode && (
           <div
             className="glass-panel"
             style={{
@@ -1508,6 +1511,7 @@ except Exception as e:
               />
             </div>
           </div>
+          )}
 
           <div
             className="glass-panel"
