@@ -505,7 +505,7 @@ try:
     theoretical_probs = {}
     for k, v in probs.items():
         if v > 1e-5:
-            theoretical_probs[k] = float(v)
+            theoretical_probs[k[::-1]] = float(v)
 
     bloch_vectors = {}
     try:
@@ -567,9 +567,7 @@ try:
     for i, p in enumerate(probs):
         if p > 1e-5:
             bin_str = format(i, f'0{${numQubits}}b')
-            # Default reverse to match Qiskit
-            rev_bin_str = bin_str[::-1]
-            theoretical_probs[rev_bin_str] = float(p)
+            theoretical_probs[bin_str] = float(p)
             
     bloch_vectors = {}
     try:
