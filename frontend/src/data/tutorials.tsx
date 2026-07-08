@@ -8566,8 +8566,8 @@ export const tutorialSessions: TutorialSession[] = [
     ],
   },
   {
-    id: "fundamental-algorithms",
-    sessionName: "Fundamental Quantum Algorithms",
+    id: "medium-course",
+    sessionName: "Medium Course: Fundamental Algorithms",
     badge: "Medium",
     modules: [
       {
@@ -8582,12 +8582,59 @@ export const tutorialSessions: TutorialSession[] = [
               Grover's algorithm provides a quadratic speedup over classical algorithms for searching an unstructured database. It uses amplitude amplification to increase the probability of measuring the correct state.
             </p>
             <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-              <i>(More subtopics and content will be added here soon.)</i>
+              <i>(Content pending from user.)</i>
             </p>
           </div>
         ),
         practiceGoal: "Explore the core concepts of amplitude amplification.",
-        quizzes: []
+        quizzes: [],
+        subModules: [
+          {
+            id: 2011,
+            title: "Query Model",
+            description: "Introduction to the quantum query model.",
+            difficulty: "Intermediate",
+            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            practiceGoal: "Understand how query complexity works in quantum circuits.",
+            quizzes: []
+          },
+          {
+            id: 2012,
+            title: "Deutsch Algorithm",
+            description: "Learn Deutsch's algorithm.",
+            difficulty: "Intermediate",
+            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            practiceGoal: "Implement Deutsch's algorithm.",
+            quizzes: []
+          },
+          {
+            id: 2013,
+            title: "Deutsch-Jozsa Algorithm",
+            description: "Learn the Deutsch-Jozsa algorithm.",
+            difficulty: "Intermediate",
+            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            practiceGoal: "Implement the Deutsch-Jozsa algorithm.",
+            quizzes: []
+          },
+          {
+            id: 2014,
+            title: "Grover-1",
+            description: "First part of Grover's algorithm.",
+            difficulty: "Intermediate",
+            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            practiceGoal: "Understand the Oracle in Grover's algorithm.",
+            quizzes: []
+          },
+          {
+            id: 2015,
+            title: "Grover-2",
+            description: "Second part of Grover's algorithm.",
+            difficulty: "Intermediate",
+            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            practiceGoal: "Understand Amplitude Amplification.",
+            quizzes: []
+          }
+        ]
       },
       {
         id: 202,
@@ -8601,12 +8648,41 @@ export const tutorialSessions: TutorialSession[] = [
               Shor's algorithm can factorise large numbers exponentially faster than the best known classical algorithms by mapping the factoring problem to a period-finding problem using the Quantum Fourier Transform.
             </p>
             <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-              <i>(More subtopics and content will be added here soon.)</i>
+              <i>(Content pending from user.)</i>
             </p>
           </div>
         ),
         practiceGoal: "Understand period finding and the Quantum Fourier Transform.",
-        quizzes: []
+        quizzes: [],
+        subModules: [
+          {
+            id: 2021,
+            title: "Problem",
+            description: "The integer factorization problem.",
+            difficulty: "Advanced",
+            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            practiceGoal: "Understand the factoring problem.",
+            quizzes: []
+          },
+          {
+            id: 2022,
+            title: "Phase Estimation",
+            description: "Quantum Phase Estimation.",
+            difficulty: "Advanced",
+            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            practiceGoal: "Implement Phase Estimation.",
+            quizzes: []
+          },
+          {
+            id: 2023,
+            title: "Shor Algo",
+            description: "The complete Shor's algorithm.",
+            difficulty: "Advanced",
+            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            practiceGoal: "Put it all together in Shor's algorithm.",
+            quizzes: []
+          }
+        ]
       }
     ]
   },
