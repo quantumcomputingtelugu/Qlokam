@@ -479,8 +479,51 @@ export default function TutorialsPage() {
   };
 
   return (
-    <div
-      className="container responsive-flex"
+    <>
+
+      {/* Top Navigation for Courses */}
+      <div style={{ 
+        width: "100%", 
+        borderBottom: "1px solid var(--surface-border)",
+        background: "rgba(0,0,0,0.2)"
+      }}>
+        <div style={{
+          width: "100%", 
+          maxWidth: "1400px", 
+          margin: "0 auto", 
+          padding: "16px 24px", 
+          display: "flex", 
+          gap: "12px", 
+          overflowX: "auto",
+          alignItems: "center"
+        }}>
+          {tutorialSessions.map((session) => (
+            <button
+              key={session.id}
+              onClick={() => setActiveCourseId(session.id)}
+              style={{
+                padding: "8px 20px",
+                borderRadius: "24px",
+                whiteSpace: "nowrap",
+                background: activeCourseId === session.id ? "var(--accent-primary)" : "rgba(255,255,255,0.05)",
+                color: activeCourseId === session.id ? "#000" : "var(--text-secondary)",
+                border: "1px solid",
+                borderColor: activeCourseId === session.id ? "var(--accent-primary)" : "rgba(255,255,255,0.1)",
+                cursor: "pointer",
+                fontWeight: activeCourseId === session.id ? "bold" : "normal",
+                fontSize: "15px",
+                transition: "all 0.2s ease"
+              }}
+            >
+              {session.sessionName}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div
+        className="container responsive-flex"
+
       style={{
         paddingTop: "24px",
         display: "flex",
@@ -538,48 +581,6 @@ export default function TutorialsPage() {
 
         {isSidebarOpen && (
           <>
-            {/* Horizontal Scroll for Courses */}
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "8px",
-                paddingBottom: "12px",
-                marginBottom: "16px",
-                borderBottom: "1px solid var(--surface-border)",
-              }}
-            >
-              {tutorialSessions.map((session) => (
-                <button
-                  key={session.id}
-                  onClick={() => {
-                    setActiveCourseId(session.id);
-                  }}
-                  style={{
-                    padding: "8px 16px",
-                    borderRadius: "20px",
-                    whiteSpace: "nowrap",
-                    background:
-                      activeCourseId === session.id
-                        ? "var(--accent-primary)"
-                        : "rgba(255,255,255,0.05)",
-                    color:
-                      activeCourseId === session.id
-                        ? "#000"
-                        : "var(--text-secondary)",
-                    border: "none",
-                    cursor: "pointer",
-                    fontWeight:
-                      activeCourseId === session.id ? "bold" : "normal",
-                    fontSize: "14px",
-                    transition: "all 0.2s",
-                  }}
-                >
-                  {session.sessionName}
-                </button>
-              ))}
-            </div>
-
             <div
               style={{ display: "flex", flexDirection: "column", gap: "8px" }}
             >
@@ -1639,5 +1640,6 @@ export default function TutorialsPage() {
       )}
       {warningMessage && <WarningModal message={warningMessage} onClose={() => setWarningMessage(null)} />}
     </div>
+    </>
   );
 }

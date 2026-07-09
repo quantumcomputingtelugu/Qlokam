@@ -8567,7 +8567,7 @@ export const tutorialSessions: TutorialSession[] = [
   },
   {
     id: "medium-course",
-    sessionName: "Medium Course: Fundamental Algorithms",
+    sessionName: "Fundamental Algorithms",
     badge: "Medium",
     modules: [
       {
