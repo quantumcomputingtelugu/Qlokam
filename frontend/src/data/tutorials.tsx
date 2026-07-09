@@ -8601,7 +8601,7 @@ export const tutorialSessions: TutorialSession[] = [
                   {String.raw`In classical computing, we analyze algorithm complexity by counting the total number of basic operations (gates) required. However, for many quantum algorithms, we use the `}<strong>Quantum Query Model</strong>{String.raw`.`}
                 </p>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Here, the algorithm's cost is strictly the number of times it evaluates a function \( f(x) \), usually provided as a "black box" called an `}<strong>Oracle</strong>{String.raw`. The goal is to determine some global property of \( f \) (like whether it is constant or balanced) or find a specific input \( x \) that satisfies \( f(x) = 1 \), using the fewest possible queries.`}
+                  {String.raw`In this model, we do `}<strong>not</strong>{String.raw` know the internal workings of a function \( f(x) \). It is provided to us purely as a "black box" called an `}<strong>Oracle</strong>{String.raw`. We can only learn about the function by giving it inputs and taking its outputs. The algorithm's cost is strictly the number of times it queries this oracle to determine some global property of \( f \) (like whether it is constant or balanced) or to find a specific input, using the fewest possible queries.`}
                 </p>
                 <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>{String.raw`The Oracle Operator \( U_f \)`}</h4>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
