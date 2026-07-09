@@ -1,0 +1,40 @@
+                            textAlign: "center",
+                              fontFamily: "monospace",
+                              color: "var(--text-secondary)",
+                              fontSize: "13px",
+                            }}
+                          >
+                            {state}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* ── Superdense Coding Circuit ── */}
+                <h3
+                  style={{
+                    fontSize: "20px",
+                    color: "var(--text-primary)",
+                    marginTop: "8px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  Superdense Coding Circuit
+                </h3>
+                <p
+                  style={{
+                    marginBottom: "16px",
+                    fontSize: "14px",
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  Alice encodes the classical bits <strong>a</strong> and{" "}
+                  <strong>b</strong> by applying gates, then transmits her qubit
+                  to Bob. Bob decodes the state using a CNOT and a Hadamard
+                  gate.
+                </p>
+                <div className="my-6">
+                  <div style={{ pointerEvents: "auto", opacity: 1, minHeight: "400px" }}>
+                    <

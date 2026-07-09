@@ -1,0 +1,114 @@
+                </p>
+
+                {/* ── Bell State Circuit ── */}
+                <h3
+                  style={{
+                    fontSize: "20px",
+                    color: "var(--text-primary)",
+                    marginTop: "28px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  Bell State Circuit
+                </h3>
+                <div
+                  style={{
+                    background: "rgba(0,0,0,0.3)",
+                    borderRadius: "12px",
+                    padding: "28px 24px",
+                    margin: "16px 0",
+                    overflowX: "auto",
+                    border: "1px solid rgba(255,255,255,0.05)",
+                  }}
+                >
+                  {/*
+                    Grid: label(90) wire(20) H/blank(44) wire(20) CNOT(44) wire(1fr) M(44)
+                    q₁ on TOP = target ⊕   |   q₀ on BOTTOM = H + control ●
+                  */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "90px 20px 44px 20px 44px 1fr 44px",
+                      minWidth: "420px",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* ── q₁ row (TOP — target) ── */}
+                    <span
+                      style={{
+                        color: "var(--text-secondary)",
+                        fontSize: "13px",
+
+
+--- SKIP ---
+
+                      style={{
+                        width: "44px",
+                        height: "44px",
+                        border: "2px solid var(--accent-primary)",
+                        borderRadius: "6px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        color: "var(--accent-primary)",
+                        background: "rgba(0,212,255,0.05)",
+                        justifySelf: "center",
+                      }}
+                    >
+                      H
+                    </div>
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "rgba(0,212,255,0.4)",
+                      }}
+                    />
+                    {/* CNOT control ● with line going UP */}
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "44px",
+                        height: "44px",
+                        justifySelf: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: 0,
+                          right: 0,
+                          height: "2px",
+                          background: "rgba(0,212,255,0.4)",
+                          transform: "translateY(-50%)",
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "2px",
+                          height: "22px",
+                          background: "rgba(0,212,255,0.4)",
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%,-50%)",
+                          width: "12px",
+                          height: "12px",
+                          borderRadius: "50%",
+                          background: "var(--accent-primary)",
+                          zIndex: 1,
+                        }}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        height: "2px",

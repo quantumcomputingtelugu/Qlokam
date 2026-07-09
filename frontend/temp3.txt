@@ -1,0 +1,91 @@
+                  }}
+                >
+                  Bell State Circuit
+                </h3>
+                <div
+                  style={{
+                    background: "rgba(0,0,0,0.3)",
+                    borderRadius: "12px",
+                    padding: "28px 24px",
+                    margin: "16px 0",
+                    overflowX: "auto",
+                    border: "1px solid rgba(255,255,255,0.05)",
+                  }}
+                >
+                  {/*
+                    Grid: label(90) wire(20) H/blank(44) wire(20) CNOT(44) wire(1fr) M(44)
+                    q₁ on TOP = target ⊕   |   q₀ on BOTTOM = H + control ●
+                  */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "90px 20px 44px 20px 44px 1fr 44px",
+                      minWidth: "420px",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* ── q₁ row (TOP — target) ── */}
+                    <span
+                      style={{
+                        color: "var(--text-secondary)",
+                        fontSize: "13px",
+                        fontFamily: "monospace",
+                      }}
+                    >
+                      q₁ |0⟩
+                    </span>
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "var(--text-secondary)",
+                      }}
+                    />
+                    {/* No gate in H column */}
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "var(--text-secondary)",
+                        justifySelf: "stretch",
+                      }}
+                    />
+=======
+                  <strong>b</strong> by applying gates, then transmits her qubit
+                  to Bob. Bob decodes the state using a CNOT and a Hadamard
+                  gate.
+                </p>
+                <div
+                  style={{
+                    background: "rgba(0,0,0,0.3)",
+                    borderRadius: "12px",
+                    padding: "28px 24px",
+                    margin: "16px 0",
+                    overflowX: "auto",
+                    border: "1px solid rgba(255,255,255,0.05)",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "60px 80px 60px 60px 80px 60px 60px 60px",
+                      gridTemplateRows: "30px 30px 60px 60px 60px",
+                      minWidth: "520px",
+                      alignItems: "center",
+                      position: "relative",
+                    }}
+                  >
+                    {/* Classical Wires at the top */}
+                    {/* Row 1: Classical bit a */}
+                    <span
+                      style={{
+                        color: "var(--text-secondary)",
+                        fontSize: "13px",
+                        fontFamily: "monospace",
+                        justifySelf: "center",
+                        gridRow: "1",
+                        gridColumn: "1",
+                      }}
+                    >
+                      a
+                    </span>
+                    <div

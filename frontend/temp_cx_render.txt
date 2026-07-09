@@ -1,0 +1,54 @@
+ts[${gate.split("|")[1]}]))\n`;
+          else if (gate.startsWith("SWAP|"))
+            displayCode += `circuit.append(cirq.SWAP(qubits[${qIdx}], qubits[${gate.split("|")[1]}]))\n`;
+        }
+      }
+    }
+    setCode(displayCode);
+  }, [grid, language, numQubits, isTyping]);
+
+  // 2. Code -> Grid
+  const handleCodeChange = (newCode: string | undefined) => {
+    if (newCode === undefined) return;
+    setCode(newCode);
+    setIsTyping(true);
+
+    if (typeTimeoutRef.current) clearTimeout(typeTimeoutRef.current);
+
+    typeTimeoutRef.current = setTimeout(() => {
+      const operations: { gate: string; q?: number; c?: number; t?: number }[] =
+        [];
+      let newNumQ = numQubits;
+      const lines = newCode.split("\n");
+
+      for (const line of lines) {
+        const l = line.trim();
+        if (language === "qiskit") {
+          const qcMatch = l.match(/qc\s*=\s*QuantumCircuit\((\d+)/);
+          if (qcMatch) newNumQ = parseInt(qcMatch[1], 10);
+          const singleGateMatch = l.match(
+            /qc\.(h|x|y|z|s|t)\s*\(\s*(\d+)\s*\)/,
+          );
+          if (singleGateMatch)
+            operations.push({
+              gate: singleGateMatch[1].toUpperCase(),
+              q: parseInt(singleGateMatch[2], 10),
+            });
+          const rotGateMatch = l.match(
+            /qc\.(rx|ry|rz)\s*\(\s*([^,]+)\s*,\s*(\d+)\s*\)/,
+          );
+          if (rotGateMatch)
+            operations.push({
+              gate: `${rotGateMatch[1].toUpperCase()}(${rotGateMatch[2].trim()})`,
+              q: parseInt(rotGateMatch[3], 10),
+            });
+          const mMatch = l.match(/qc\.measure\(\s*(\d+)\s*,\s*\d+\s*\)/);
+          if (mMatch)
+            operations.push({ gate: "M", q: parseInt(mMatch[1], 10) });
+          const twoQubitMatch = l.match(
+            /qc\.(cx|cz|swap)\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)/,
+          );
+          if (twoQubitMatch)
+            operations.push({
+              gate: twoQubitMatch[1].toUpperCase(),
+              c: parseInt(twoQubit

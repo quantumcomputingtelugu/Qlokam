@@ -8598,20 +8598,20 @@ export const tutorialSessions: TutorialSession[] = [
               <div>
                 <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>The Quantum Query Model</h3>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`In classical computing, we analyze algorithm complexity by counting the total number of basic operations (gates) required. However, for many quantum algorithms, we use the `}<strong>Quantum Query Model</strong>{String.raw`.`}
+                  {"In classical computing, we analyze algorithm complexity by counting the total number of basic operations (gates) required. However, for many quantum algorithms, we use the"}<strong>Quantum Query Model</strong>{"."}
                 </p>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`In this model, we do `}<strong>not</strong>{String.raw` know the internal workings of a function \( f(x) \). It is provided to us purely as a "black box" called an `}<strong>Oracle</strong>{String.raw`. We can only learn about the function by giving it inputs and taking its outputs. The algorithm's cost is strictly the number of times it queries this oracle to determine some global property of \( f \) (like whether it is constant or balanced) or to find a specific input, using the fewest possible queries.`}
+                  {"In this model, we do"}<strong>not</strong>{"know the internal workings of a function  f(x) . It is provided to us purely as a \"black box\" called an"}<strong>Oracle</strong>{". We can only learn about the function by giving it inputs and taking its outputs. The algorithm's cost is strictly the number of times it queries this oracle to determine some global property of  f  (like whether it is constant or balanced) or to find a specific input, using the fewest possible queries."}
                 </p>
-                <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>{String.raw`The Oracle Operator \( U_f \)`}</h4>
+                <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>{"The Oracle Operator  U_f"}</h4>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`A quantum oracle must be a reversible unitary operation. If we have a boolean function \( f: \{0,1\}^n \rightarrow \{0,1\} \), the standard oracle \( U_f \) acts on two registers (an input register \( |x\rangle \) and a target register \( |y\rangle \)) as follows:`}
+                  {"A quantum oracle must be a reversible unitary operation. If we have a boolean function  f: {0,1}^n → {0,1} , the standard oracle  U_f  acts on two registers (an input register  |x⟩  and a target register  |y⟩ ) as follows:"}
                 </p>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto" }}>
-                  {String.raw`\( U_f |x\rangle |y\rangle = |x\rangle |y \oplus f(x)\rangle \)`}
+                  {"U_f |x⟩ |y⟩ = |x⟩ |y ⊕ f(x)\rangle"}
                 </div>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`By passing a superposition of all possible inputs into the \( |x\rangle \) register, a quantum computer evaluates \( f(x) \) for `}<em>all</em>{String.raw` inputs simultaneously. However, we cannot directly measure all results; we must use clever interference to extract the useful information!`}
+                  {"By passing a superposition of all possible inputs into the  |x⟩  register, a quantum computer evaluates  f(x)  for"}<em>all</em>{"inputs simultaneously. However, we cannot directly measure all results; we must use clever interference to extract the useful information!"}
                 </p>
               </div>),
             practiceGoal: "Understand how query complexity works in quantum circuits.",
@@ -8626,13 +8626,13 @@ export const tutorialSessions: TutorialSession[] = [
               <div>
                 <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Deutsch's Algorithm</h3>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Deutsch's Algorithm is the simplest example of a quantum algorithm that is strictly faster than any classical counterpart.`}
+                  {"Deutsch's Algorithm is the simplest example of a quantum algorithm that is strictly faster than any classical counterpart."}
                 </p>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  <strong>The Problem:</strong>{String.raw` You are given a black-box function \( f(x) \) taking a 1-bit input (0 or 1) and producing a 1-bit output. The function is either `}<strong>constant</strong>{String.raw` (outputs the same value for both 0 and 1) or `}<strong>balanced</strong>{String.raw` (outputs 0 for one input and 1 for the other). You must determine which it is.`}
+                  <strong>The Problem:</strong>{"You are given a black-box function  f(x)  taking a 1-bit input (0 or 1) and producing a 1-bit output. The function is either"}<strong>constant</strong>{"(outputs the same value for both 0 and 1) or"}<strong>balanced</strong>{"(outputs 0 for one input and 1 for the other). You must determine which it is."}
                 </p>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Classically, you `}<em>must</em>{String.raw` evaluate both \( f(0) \) and \( f(1) \) (two queries). Deutsch's algorithm solves this in exactly `}<strong>one</strong>{String.raw` query.`}
+                  {"Classically, you"}<em>must</em>{"evaluate both  f(0)  and  f(1)  (two queries). Deutsch's algorithm solves this in exactly"}<strong>one</strong>{"query."}
                 </p>
                 <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>The Circuit</h4>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto", whiteSpace: "pre" }}>
@@ -8644,13 +8644,13 @@ export const tutorialSessions: TutorialSession[] = [
        └ H ┘     └───┘              `}
                 </div>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  <strong>Analysis:</strong>{String.raw` We prepare the target qubit in the \( |-\rangle \) state by applying an X and H gate. When the Oracle \( U_f \) acts on \( |x\rangle |-\rangle \), it applies a phase of \( (-1)^{f(x)} \) to the \( |x\rangle \) state (Phase Kickback).`}
+                  <strong>Analysis:</strong>{"We prepare the target qubit in the  |-⟩  state by applying an X and H gate. When the Oracle  U_f  acts on  |x⟩ |-⟩ , it applies a phase of  (-1)^{f(x)}  to the  |x⟩  state (Phase Kickback)."}
                 </p>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto" }}>
-                  {String.raw`State before final H: \( \frac{1}{\sqrt{2}} \big[ (-1)^{f(0)}|0\rangle + (-1)^{f(1)}|1\rangle \big] \)`}
+                  {"State before final H:  \frac{1}{\sqrt{2}} \big[ (-1)^{f(0)}|0⟩ + (-1)^{f(1)}|1⟩ \big]"}
                 </div>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`If \( f \) is constant, the state is \( \pm|+\rangle \), which the final H gate maps to \( |0\rangle \). If \( f \) is balanced, the state is \( \pm|-\rangle \), which the final H gate maps to \( |1\rangle \). A single measurement gives the answer with 100% certainty!`}
+                  {"If  f  is constant, the state is  \pm|+⟩ , which the final H gate maps to  |0⟩ . If  f  is balanced, the state is  \pm|-⟩ , which the final H gate maps to  |1⟩ . A single measurement gives the answer with 100% certainty!"}
                 </p>
               </div>),
             practiceGoal: "Implement Deutsch's algorithm.",
@@ -8665,10 +8665,10 @@ export const tutorialSessions: TutorialSession[] = [
               <div>
                 <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Deutsch-Jozsa Algorithm</h3>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`The Deutsch-Jozsa algorithm generalizes Deutsch's algorithm for an \( n \)-bit input \( f: \{0,1\}^n \rightarrow \{0,1\} \). We are promised the function is either perfectly constant or perfectly balanced.`}
+                  {"The Deutsch-Jozsa algorithm generalizes Deutsch's algorithm for an  n -bit input  f: {0,1}^n → {0,1} . We are promised the function is either perfectly constant or perfectly balanced."}
                 </p>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Classically, to be 100% sure, you might have to check up to \( 2^{n-1} + 1 \) inputs (worst case). The quantum algorithm still requires only `}<strong>one</strong>{String.raw` query, demonstrating an exponential speedup!`}
+                  {"Classically, to be 100% sure, you might have to check up to  2^{n-1} + 1  inputs (worst case). The quantum algorithm still requires only"}<strong>one</strong>{"query, demonstrating an exponential speedup!"}
                 </p>
                 <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>The Circuit</h4>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto", whiteSpace: "pre" }}>
@@ -8681,14 +8681,14 @@ export const tutorialSessions: TutorialSession[] = [
                 </div>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
                   <strong>Mathematical Derivation:</strong> 
-                  {String.raw`We apply \( H^{\otimes n} \) to the initial \( |0\rangle^{\otimes n} \) state, creating a uniform superposition of all \( 2^n \) possible inputs. `}
-                  {String.raw`Just like before, the target qubit is set to \( |-\rangle \), causing the oracle to kick back a phase of \( (-1)^{f(x)} \).`}
+                  {"We apply  H^{⊗ n}  to the initial  |0⟩^{⊗ n}  state, creating a uniform superposition of all  2^n  possible inputs."}
+                  {"Just like before, the target qubit is set to  |-⟩ , causing the oracle to kick back a phase of  (-1)^{f(x)} ."}
                 </p>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto" }}>
-                  {String.raw`State after oracle: \( \frac{1}{\sqrt{2^n}} \sum_{x} (-1)^{f(x)} |x\rangle \)`}
+                  {"State after oracle:  1/√(2^n) \sum_{x} (-1)^{f(x)} |x⟩"}
                 </div>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`We apply \( H^{\otimes n} \) again. The probability of measuring the all-zero state \( |0\rangle^{\otimes n} \) depends entirely on the sum of \( (-1)^{f(x)} \). If \( f \) is constant, the terms add up perfectly (constructive interference), yielding a 100% chance to measure all zeros. If \( f \) is balanced, exactly half are positive and half are negative, perfectly canceling out (destructive interference), making the probability of measuring all zeros exactly 0.`}
+                  {"We apply  H^{⊗ n}  again. The probability of measuring the all-zero state  |0⟩^{⊗ n}  depends entirely on the sum of  (-1)^{f(x)} . If  f  is constant, the terms add up perfectly (constructive interference), yielding a 100% chance to measure all zeros. If  f  is balanced, exactly half are positive and half are negative, perfectly canceling out (destructive interference), making the probability of measuring all zeros exactly 0."}
                 </p>
               </div>),
             practiceGoal: "Implement the Deutsch-Jozsa algorithm.",
@@ -8703,21 +8703,21 @@ export const tutorialSessions: TutorialSession[] = [
               <div>
                 <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Grover's Algorithm: The Phase Oracle</h3>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Grover's algorithm searches an unstructured database of \( N \) items in \( O(\sqrt{N}) \) time, providing a quadratic speedup over classical \( O(N) \) searches. The first crucial component is the `}<strong>Phase Oracle</strong>{String.raw`.`}
+                  {"Grover's algorithm searches an unstructured database of  N  items in  O(√N)  time, providing a quadratic speedup over classical  O(N)  searches. The first crucial component is the"}<strong>Phase Oracle</strong>{"."}
                 </p>
                 <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>Marking the Solution</h4>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Suppose we are looking for a specific winning state \( |w\rangle \). The oracle \( O \) is designed to flip the sign (phase) of this specific state while leaving all other states alone.`}
+                  {"Suppose we are looking for a specific winning state  |w\rangle . The oracle  O  is designed to flip the sign (phase) of this specific state while leaving all other states alone."}
                 </p>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto" }}>
-                  {String.raw`\( O |x\rangle = -|x\rangle \) if \( x = w \)`}<br/>
-                  {String.raw`\( O |x\rangle = |x\rangle \) if \( x \neq w \)`}
+                  {"O |x⟩ = -|x⟩  if  x = w"}<br/>
+                  {"O |x⟩ = |x⟩  if  x \neq w"}
                 </div>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Mathematically, this operator can be written as \( I - 2|w\rangle\langle w| \). In a circuit, this is often implemented using a multi-controlled Z gate. For example, if the solution is \( |111\rangle \), a CCZ gate will apply a -1 phase only when all three qubits are in the 1 state.`}
+                  {"Mathematically, this operator can be written as  I - 2|w\rangle\langle w| . In a circuit, this is often implemented using a multi-controlled Z gate. For example, if the solution is  |111\rangle , a CCZ gate will apply a -1 phase only when all three qubits are in the 1 state."}
                 </p>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Applying this oracle to a uniform superposition doesn't change the probabilities (since \( |-1|^2 = |1|^2 \)), but it changes the relative phases, setting the stage for the next step: Amplitude Amplification.`}
+                  {"Applying this oracle to a uniform superposition doesn't change the probabilities (since  |-1|^2 = |1|^2 ), but it changes the relative phases, setting the stage for the next step: Amplitude Amplification."}
                 </p>
               </div>),
             practiceGoal: "Understand the Oracle in Grover's algorithm.",
@@ -8732,14 +8732,14 @@ export const tutorialSessions: TutorialSession[] = [
               <div>
                 <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Grover's Algorithm: Amplitude Amplification</h3>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`After the Phase Oracle flips the sign of the solution state, we apply the `}<strong>Grover Diffusion Operator</strong>{String.raw` (\( U_s \)). This operator performs a geometric reflection known as "inversion about the mean".`}
+                  {"After the Phase Oracle flips the sign of the solution state, we apply the"}<strong>Grover Diffusion Operator</strong>{"( U_s ). This operator performs a geometric reflection known as \"inversion about the mean\"."}
                 </p>
                 <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>Inversion About the Mean</h4>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto" }}>
-                  {String.raw`\( U_s = 2|s\rangle\langle s| - I \)`}
+                  {"U_s = 2|s\rangle\langle s| - I"}
                 </div>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Where \( |s\rangle \) is the uniform superposition state. Because the oracle made the solution's amplitude negative, the overall average (mean) amplitude of all states is slightly lowered. When the diffuser reflects all amplitudes across this new, lower mean, the negative amplitude of the solution gets flipped way up, significantly amplifying it!`}
+                  {"Where  |s\rangle  is the uniform superposition state. Because the oracle made the solution's amplitude negative, the overall average (mean) amplitude of all states is slightly lowered. When the diffuser reflects all amplitudes across this new, lower mean, the negative amplitude of the solution gets flipped way up, significantly amplifying it!"}
                 </p>
                 <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>The Diffuser Circuit</h4>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto", whiteSpace: "pre" }}>
@@ -8748,7 +8748,7 @@ export const tutorialSessions: TutorialSession[] = [
 |q_2⟩ ── H ── X ───Z─── X ── H ──`}
                 </div>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`This circuit pattern (H, X, multi-controlled-Z, X, H) effectively implements the \( 2|s\rangle\langle s| - I \) operator. By repeatedly applying the Oracle and then the Diffuser about \( \sim \frac{\pi}{4}\sqrt{N} \) times, the probability of measuring the solution state approaches 100%.`}
+                  {"This circuit pattern (H, X, multi-controlled-Z, X, H) effectively implements the  2|s\rangle\langle s| - I  operator. By repeatedly applying the Oracle and then the Diffuser about  \sim \frac{π}{4}√N  times, the probability of measuring the solution state approaches 100%."}
                 </p>
               </div>),
             practiceGoal: "Understand Amplitude Amplification.",
@@ -8784,20 +8784,20 @@ export const tutorialSessions: TutorialSession[] = [
               <div>
                 <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>The Integer Factorization Problem</h3>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Integer factorization is the process of breaking down a composite number into its prime factors. For example, factoring 15 gives 3 and 5. While easy for small numbers, factoring large numbers (e.g., hundreds of digits long) is considered computationally intractable for classical computers.`}
+                  {"Integer factorization is the process of breaking down a composite number into its prime factors. For example, factoring 15 gives 3 and 5. While easy for small numbers, factoring large numbers (e.g., hundreds of digits long) is considered computationally intractable for classical computers."}
                 </p>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`The security of widely used cryptosystems, like `}<strong>RSA</strong>{String.raw`, relies entirely on this classical difficulty. `}
+                  {"The security of widely used cryptosystems, like"}<strong>RSA</strong>{", relies entirely on this classical difficulty."}
                 </p>
                 <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>Reduction to Period Finding</h4>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Shor's algorithm tackles factoring by transforming it into a `}<strong>Period Finding</strong>{String.raw` problem. Given a number \( N \) to factor, we pick a random number \( a < N \), and define the modular exponentiation function:`}
+                  {"Shor's algorithm tackles factoring by transforming it into a"}<strong>Period Finding</strong>{"problem. Given a number  N  to factor, we pick a random number  a < N , and define the modular exponentiation function:"}
                 </p>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto" }}>
-                  {String.raw`\( f(x) = a^x \pmod N \)`}
+                  {"f(x) = a^x \pmod N"}
                 </div>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`This function is periodic. That means there exists some integer \( r \) (the period) such that \( f(x+r) = f(x) \). If we can find this period \( r \) efficiently, number theory allows us to extract the prime factors of \( N \). Classical computers struggle to find \( r \), but a quantum computer can find it exponentially faster.`}
+                  {"This function is periodic. That means there exists some integer  r  (the period) such that  f(x+r) = f(x) . If we can find this period  r  efficiently, number theory allows us to extract the prime factors of  N . Classical computers struggle to find  r , but a quantum computer can find it exponentially faster."}
                 </p>
               </div>),
             practiceGoal: "Understand the factoring problem.",
@@ -8812,10 +8812,10 @@ export const tutorialSessions: TutorialSession[] = [
               <div>
                 <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Quantum Phase Estimation (QPE)</h3>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`To find the period, Shor's algorithm utilizes `}<strong>Quantum Phase Estimation (QPE)</strong>{String.raw`. QPE is a subroutine that estimates the phase \( \theta \) added by a unitary operator \( U \) when it acts on its eigenvector \( |\psi\rangle \).`}
+                  {"To find the period, Shor's algorithm utilizes"}<strong>Quantum Phase Estimation (QPE)</strong>{". QPE is a subroutine that estimates the phase  θ  added by a unitary operator  U  when it acts on its eigenvector  |\psi\rangle ."}
                 </p>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto" }}>
-                  {String.raw`\( U|\psi\rangle = e^{2\pi i \theta}|\psi\rangle \)`}
+                  {"U|\psi\rangle = e^{2π i θ}|\psi\rangle"}
                 </div>
                 <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>The QPE Circuit</h4>
                 <div style={{ background: "var(--bg-secondary)", padding: "16px", borderRadius: "8px", fontFamily: "monospace", color: "var(--text-primary)", marginBottom: "16px", overflowX: "auto", whiteSpace: "pre" }}>
@@ -8831,10 +8831,10 @@ export const tutorialSessions: TutorialSession[] = [
                      └───┘   └─────┘  └──────┘`}
                 </div>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  <strong>How it works:</strong>{String.raw` We use two registers. The top "counting" register is placed in a superposition. We then apply controlled-\( U^{2^k} \) operations targeting the eigenvector \( |\psi\rangle \) in the bottom register.`}
+                  <strong>How it works:</strong>{"We use two registers. The top \"counting\" register is placed in a superposition. We then apply controlled- U^{2^k}  operations targeting the eigenvector  |\psi\rangle  in the bottom register."}
                 </p>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Due to phase kickback, the phase \( e^{2\pi i \theta} \) is kicked back into the counting register. The resulting state is exactly the Quantum Fourier Transform of the binary fraction of \( \theta \). By applying the Inverse QFT (\( QFT^\dagger \)), we decode the phase and can measure it directly!`}
+                  {"Due to phase kickback, the phase  e^{2π i θ}  is kicked back into the counting register. The resulting state is exactly the Quantum Fourier Transform of the binary fraction of  θ . By applying the Inverse QFT ( QFT^\dagger ), we decode the phase and can measure it directly!"}
                 </p>
               </div>),
             practiceGoal: "Implement Phase Estimation.",
@@ -8849,18 +8849,18 @@ export const tutorialSessions: TutorialSession[] = [
               <div>
                 <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Putting It All Together: Shor's Algorithm</h3>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`Shor's Algorithm elegantly combines classical number theory with the Quantum Phase Estimation subroutine to break integer factorization.`}
+                  {"Shor's Algorithm elegantly combines classical number theory with the Quantum Phase Estimation subroutine to break integer factorization."}
                 </p>
                 <h4 style={{ fontSize: "16px", color: "var(--text-primary)", marginTop: "24px", marginBottom: "8px" }}>The Step-by-Step Flowchart</h4>
                 <ul style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6", paddingLeft: "20px" }}>
-                  <li style={{ marginBottom: "8px" }}><strong>Classical:</strong>{String.raw` Choose a random number \( a \) where \( 1 < a < N \). If \( \gcd(a, N) > 1 \), we got lucky and found a factor! Otherwise, proceed.`}</li>
-                  <li style={{ marginBottom: "8px" }}><strong>Quantum:</strong>{String.raw` We define a unitary operator \( U \) that performs modular multiplication: \( U|y\rangle = |a \cdot y \pmod N\rangle \).`}</li>
-                  <li style={{ marginBottom: "8px" }}><strong>Quantum:</strong>{String.raw` Run the QPE circuit to estimate the phase of \( U \). It turns out the phases of this operator are of the form \( \frac{s}{r} \), where \( r \) is the period we want!`}</li>
-                  <li style={{ marginBottom: "8px" }}><strong>Classical:</strong>{String.raw` The QPE measurement gives us a decimal approximation of \( \frac{s}{r} \). We use a classical algorithm called `}<strong>Continued Fractions</strong>{String.raw` to extract the exact integer \( r \).`}</li>
-                  <li style={{ marginBottom: "8px" }}><strong>Classical:</strong>{String.raw` Once we have the period \( r \), the prime factors of \( N \) are given by \( \gcd(a^{r/2} \pm 1, N) \).`}</li>
+                  <li style={{ marginBottom: "8px" }}><strong>Classical:</strong>{"Choose a random number  a  where  1 < a < N . If  \gcd(a, N) > 1 , we got lucky and found a factor! Otherwise, proceed."}</li>
+                  <li style={{ marginBottom: "8px" }}><strong>Quantum:</strong>{"We define a unitary operator  U  that performs modular multiplication:  U|y⟩ = |a \cdot y \pmod N\rangle ."}</li>
+                  <li style={{ marginBottom: "8px" }}><strong>Quantum:</strong>{"Run the QPE circuit to estimate the phase of  U . It turns out the phases of this operator are of the form  \frac{s}{r} , where  r  is the period we want!"}</li>
+                  <li style={{ marginBottom: "8px" }}><strong>Classical:</strong>{"The QPE measurement gives us a decimal approximation of  \frac{s}{r} . We use a classical algorithm called"}<strong>Continued Fractions</strong>{"to extract the exact integer  r ."}</li>
+                  <li style={{ marginBottom: "8px" }}><strong>Classical:</strong>{"Once we have the period  r , the prime factors of  N  are given by  \gcd(a^{r/2} \pm 1, N) ."}</li>
                 </ul>
                 <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
-                  {String.raw`By delegating only the computationally heavy "period finding" step to the quantum computer via QPE, Shor's algorithm achieves an exponential speedup, rendering classical RSA encryption insecure against large-scale quantum computers.`}
+                  {"By delegating only the computationally heavy \"period finding\" step to the quantum computer via QPE, Shor's algorithm achieves an exponential speedup, rendering classical RSA encryption insecure against large-scale quantum computers."}
                 </p>
               </div>),
             practiceGoal: "Put it all together in Shor's algorithm.",

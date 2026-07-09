@@ -1,0 +1,60 @@
+                  >
+                    |q{qIdx}⟩
+                  </div>
+                  <div style={{ display: "flex", position: "relative" }}>
+                    {row.map((cell, sIdx) => {
+                      const hasMeasureBefore = row.slice(0, sIdx).includes("M");
+                      // Check if this cell is a target of any 2-qubit gate in the same step
+                      const controlQubits: number[] = [];
+                      for (let i = 0; i < numQubits; i++) {
+                        const c = grid[i][sIdx];
+                        if (
+                          c &&
+                          (c.startsWith("CX|") ||
+                            c.startsWith("CZ|") ||
+                            c.startsWith("SWAP|"))
+                        ) {
+                          const target = parseInt(c.split("|")[1], 10);
+                          if (target === qIdx) {
+                            controlQubits.push(i);
+                          }
+                        }
+                      }
+                      const isTwoQTarget = controlQubits.length > 0;
+                      const isTwoQPending = cell.endsWith("_PENDING");
+                      const isOccupied =
+                        cell !== "" || isTwoQTarget || isTwoQPending;
+                      const isTwoQ =
+                        cell.startsWith("CX|") ||
+                        cell.startsWith("CZ|") ||
+                        cell.startsWith("SWAP|");
+                      const isSWAP = cell.startsWith("SWAP");
+
+                      let cxDist = 0;
+                      let cxLineHeight = 0;
+                      let cxLineTop = "50%";
+                      if (isTwoQ) {
+                        const target = parseInt(cell.split("|")[1], 10);
+                        cxDist = target - qIdx;
+                        cxLineHeight = Math.abs(cxDist) * 36; // 32px height + 4px gap
+                        cxLineTop =
+                          cxDist < 0 ? "50%" : `calc(50% - ${cxLineHeight}px)`;
+                      }
+
+                      const isPendingCol = pendingTwoQubit?.sIdx === sIdx;
+                      const isPendingRow = pendingTwoQubit?.qIdx === qIdx;
+
+                      return (
+                        <div
+                          key={sIdx}
+                          style={{
+                            position: "relative",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: hasMeasureBefore ? "calc(50% - 2px)" : "50%",
+                              left: "-2px",

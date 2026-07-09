@@ -1,0 +1,50 @@
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        color: "#b28215",
+                        background: "rgba(178,130,21,0.08)",
+                        justifySelf: "center",
+                      }}
+                    >
+                      M
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      marginTop: "12px",
+                      fontSize: "12px",
+                      color: "var(--text-secondary)",
+                      fontFamily: "monospace",
+                    }}
+                  >
+                    q₁ on top (CNOT target ⊕) · q₀ at bottom (H gate + CNOT
+                    control ●)
+                  </div>
+                </div>
+
+                {/* ── Step by Step ── */}
+                <h3
+                  style={{
+                    fontSize: "20px",
+                    color: "var(--text-primary)",
+                    marginTop: "32px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  Step-by-Step State Analysis
+                </h3>
+                <p
+                  style={{
+                    marginBottom: "16px",
+                    color: "var(--text-secondary)",
+                    fontSize: "14px",
+                  }}
+                >
+                  We track the 2-qubit state <strong>|q₀ q₁⟩</strong> (where q₀
+                  is the bottom qubit and q₁ is the top qubit) at each timestep
+                  T.
+                </p>
+                {[
+                  {
+                    t: "T=0",

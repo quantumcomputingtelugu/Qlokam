@@ -1,0 +1,65 @@
+ === "T") displayCode += `qc.t(${qIdx})\n`;
+          else if (
+            gate.startsWith("RX(") ||
+            gate.startsWith("RY(") ||
+            gate.startsWith("RZ(")
+          ) {
+            const type = gate.substring(0, 2).toLowerCase();
+            const angle = gate.substring(3, gate.length - 1);
+            displayCode += `qc.${type}(${angle}, ${qIdx})\n`;
+          } else if (gate === "M")
+            displayCode += `qc.measure(${qIdx}, ${qIdx})\n`;
+          else if (gate.startsWith("CX|"))
+            displayCode += `qc.cx(${qIdx}, ${gate.split("|")[1]})\n`;
+          else if (gate.startsWith("CZ|"))
+            displayCode += `qc.cz(${qIdx}, ${gate.split("|")[1]})\n`;
+          else if (gate.startsWith("SWAP|"))
+            displayCode += `qc.swap(${qIdx}, ${gate.split("|")[1]})\n`;
+        }
+      }
+    } else if (language === "cirq") {
+      displayCode = `import cirq\n\nqubits = [cirq.LineQubit(i) for i in range(${numQubits})]\ncircuit = cirq.Circuit()\n`;
+      for (let sIdx = 0; sIdx < NUM_STEPS; sIdx++) {
+        for (let qIdx = 0; qIdx < numQubits; qIdx++) {
+          const gate = grid[qIdx][sIdx];
+          if (gate === "H")
+            displayCode += `circuit.append(cirq.H(qubits[${qIdx}]))\n`;
+          else if (gate === "X")
+            displayCode += `circuit.append(cirq.X(qubits[${qIdx}]))\n`;
+          else if (gate === "Y")
+            displayCode += `circuit.append(cirq.Y(qubits[${qIdx}]))\n`;
+          else if (gate === "Z")
+            displayCode += `circuit.append(cirq.Z(qubits[${qIdx}]))\n`;
+          else if (gate === "S")
+            displayCode += `circuit.append(cirq.S(qubits[${qIdx}]))\n`;
+          else if (gate === "T")
+            displayCode += `circuit.append(cirq.T(qubits[${qIdx}]))\n`;
+          else if (
+            gate.startsWith("RX(") ||
+            gate.startsWith("RY(") ||
+            gate.startsWith("RZ(")
+          ) {
+            const type = gate.substring(0, 2).toLowerCase();
+            const angle = gate.substring(3, gate.length - 1);
+            displayCode += `circuit.append(cirq.${type}(${angle})(qubits[${qIdx}]))\n`;
+          } else if (gate === "M")
+            displayCode += `circuit.append(cirq.measure(qubits[${qIdx}]))\n`;
+          else if (gate.startsWith("CX|"))
+            displayCode += `circuit.append(cirq.CNOT(qubits[${qIdx}], qubits[${gate.split("|")[1]}]))\n`;
+          else if (gate.startsWith("CZ|"))
+            displayCode += `circuit.append(cirq.CZ(qubits[${qIdx}], qubits[${gate.split("|")[1]}]))\n`;
+          else if (gate.startsWith("SWAP|"))
+            displayCode += `circuit.append(cirq.SWAP(qubits[${qIdx}], qubits[${gate.split("|")[1]}]))\n`;
+        }
+      }
+    }
+    setCode(displayCode);
+  }, [grid, language, numQubits, isTyping]);
+
+  // 2. Code -> Grid
+  const handleCodeChange = (newCode: string | undefined) => {
+    if (newCode === undefined) return;
+    setCode(newCode);
+    setIsTyping(true);
+
+    if (typeTimeoutRef.current) clearTimeout(typeTime

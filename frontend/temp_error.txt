@@ -1,0 +1,20 @@
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                {/* ── Step by Step ── */}
+                <h3
+                  style={{
+                    fontSize: "20px",
+                    color: "var(--text-primary)",
+                    marginTop: "32px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  Step-by-Step State Analysis (sending "11")
+                </h3>
+                <p
+                  style={{
+                    marginBottom: "16px",
+                    color: "var(--text-secondary)",

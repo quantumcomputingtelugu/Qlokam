@@ -1,0 +1,98 @@
+ate(gate);
+    e.dataTransfer.setData("gate", gate);
+  };
+
+  const handleDrop = (e: React.DragEvent, qIdx: number, sIdx: number) => {
+    e.preventDefault();
+    if (pendingTwoQubit) return; // Block drops while pending 2-qubit
+
+    const gate = e.dataTransfer.getData("gate");
+    if (!gate) return;
+
+    if (gate === "DEL") {
+      const controlQubits: number[] = [];
+      for (let i = 0; i < numQubits; i++) {
+        const c = grid[i][sIdx];
+        if (
+          c &&
+          (c.startsWith("CX|") || c.startsWith("CZ|") || c.startsWith("SWAP|"))
+        ) {
+          const target = parseInt(c.split("|")[1], 10);
+          if (target === qIdx) {
+            controlQubits.push(i);
+          }
+        }
+      }
+
+      if (controlQubits.length > 0) {
+        setIsTyping(false);
+        setGrid((prevGrid) => {
+          const newGrid = [...prevGrid];
+          controlQubits.forEach((c) => {
+            newGrid[c] = [...newGrid[c]];
+            newGrid[c][sIdx] = "";
+          });
+          return newGrid;
+        });
+      } else if (grid[qIdx][sIdx]) {
+        setIsTyping(false);
+        setGrid((prevGrid) => {
+          const newGrid = [...prevGrid];
+          newGrid[qIdx] = [...newGrid[qIdx]];
+          newGrid[qIdx][sIdx] = "";
+          return newGrid;
+        });
+      }
+      return;
+    }
+
+    let finalGate = gate;
+
+    if (gate === "CX" || gate === "CZ" || gate === "SWAP") {
+      setPendingTwoQubit({ qIdx, sIdx, gate });
+      finalGate = `${gate}_PENDING`;
+    } else if (gate === "RX" || gate === "RY" || gate === "RZ") {
+      setAnglePrompt({ gate, qIdx, sIdx });
+      setAngleInputValue("pi/2");
+      return; // Do not place gate yet, wait for prompt
+    }
+
+    setIsTyping(false);
+    setGrid((prevGrid) => {
+      const newGrid = [...prevGrid];
+      newGrid[qIdx] = [...newGrid[qIdx]];
+      newGrid[qIdx][sIdx] = finalGate;
+      return newGrid;
+    });
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    if (!pendingTwoQubit) e.preventDefault();
+  };
+
+  const removeGate = (qIdx: number, sIdx: number) => {
+    setIsTyping(false);
+    setGrid((prevGrid) => {
+      const newGrid = [...prevGrid];
+      newGrid[qIdx] = [...newGrid[qIdx]];
+      newGrid[qIdx][sIdx] = "";
+      return newGrid;
+    });
+  };
+
+  // 1. Grid -> Code
+  useEffect(() => {
+    if (isTyping) return;
+
+    let displayCode = "";
+    if (language === "qiskit") {
+      displayCode = `from qiskit import QuantumCircuit\n\nqc = QuantumCircuit(${numQubits}, ${numQubits})\n`;
+      for (let sIdx = 0; sIdx < NUM_STEPS; sIdx++) {
+        for (let qIdx = 0; qIdx < numQubits; qIdx++) {
+          const gate = grid[qIdx][sIdx];
+          if (gate === "H") displayCode += `qc.h(${qIdx})\n`;
+          else if (gate === "X") displayCode += `qc.x(${qIdx})\n`;
+          else if (gate === "Y") displayCode += `qc.y(${qIdx})\n`;
+          else if (gate === "Z") displayCode += `qc.z(${qIdx})\n`;
+          else if (gate === "S") displayCode += `qc.s(${qIdx})\n`;
+          else if (gate

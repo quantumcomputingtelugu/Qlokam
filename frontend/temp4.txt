@@ -1,0 +1,40 @@
+                        fontSize: "13px",
+                        fontFamily: "monospace",
+                      }}
+                    >
+                      q₁ |0⟩
+                    </span>
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "var(--text-secondary)",
+                      }}
+                    />
+                    {/* No gate in H column */}
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "var(--text-secondary)",
+                        justifySelf: "stretch",
+                      }}
+                    />
+                    <div
+                      style={{
+                        height: "2px",
+                        background: "var(--text-secondary)",
+                      }}
+                    />
+                    {/* CNOT target ⊕ with line going DOWN to q₀ */}
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "44px",
+                        height: "44px",
+                        justifySelf: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: 0,
