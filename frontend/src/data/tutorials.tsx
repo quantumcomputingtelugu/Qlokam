@@ -8594,7 +8594,17 @@ export const tutorialSessions: TutorialSession[] = [
             title: "Query Model",
             description: "Introduction to the quantum query model.",
             difficulty: "Intermediate",
-            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            lessonContent: (
+              <div>
+                <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>The Quantum Query Model</h3>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  In the quantum query model, the cost of an algorithm is measured by the number of queries it makes to an oracle, rather than the total number of gates.
+                </p>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  An oracle is a "black box" operation that evaluates a function f(x). Quantum computers can query this oracle in superposition, allowing them to evaluate the function for all possible inputs simultaneously.
+                </p>
+              </div>
+            ),
             practiceGoal: "Understand how query complexity works in quantum circuits.",
             quizzes: []
           },
@@ -8603,7 +8613,17 @@ export const tutorialSessions: TutorialSession[] = [
             title: "Deutsch Algorithm",
             description: "Learn Deutsch's algorithm.",
             difficulty: "Intermediate",
-            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            lessonContent: (
+              <div>
+                <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Deutsch's Algorithm</h3>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  Deutsch's algorithm solves a simple problem: determining whether a function f(x) (where x is a single bit, 0 or 1) is constant or balanced.
+                </p>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  Classically, this requires two queries to the function (evaluating f(0) and f(1)). By utilizing superposition and phase kickback, Deutsch's algorithm can determine this with just a single quantum query!
+                </p>
+              </div>
+            ),
             practiceGoal: "Implement Deutsch's algorithm.",
             quizzes: []
           },
@@ -8612,7 +8632,17 @@ export const tutorialSessions: TutorialSession[] = [
             title: "Deutsch-Jozsa Algorithm",
             description: "Learn the Deutsch-Jozsa algorithm.",
             difficulty: "Intermediate",
-            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            lessonContent: (
+              <div>
+                <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Deutsch-Jozsa Algorithm</h3>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  The Deutsch-Jozsa algorithm generalizes Deutsch's algorithm for an n-bit input. It determines whether a function is perfectly constant or perfectly balanced.
+                </p>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  A classical computer would need up to 2^(n-1) + 1 queries in the worst case to be absolutely certain. The quantum algorithm achieves this in exactly one query, demonstrating exponential speedup for this specific black-box problem.
+                </p>
+              </div>
+            ),
             practiceGoal: "Implement the Deutsch-Jozsa algorithm.",
             quizzes: []
           },
@@ -8621,7 +8651,17 @@ export const tutorialSessions: TutorialSession[] = [
             title: "Grover-1",
             description: "First part of Grover's algorithm.",
             difficulty: "Intermediate",
-            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            lessonContent: (
+              <div>
+                <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Grover's Algorithm: The Oracle</h3>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  The first key component of Grover's algorithm is the Phase Oracle. It marks the solution(s) we are looking for.
+                </p>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  If a state |x&gt; is a solution, the oracle applies a negative phase, transforming it to -|x&gt;. If it is not a solution, the state remains unchanged. This is known as phase kickback.
+                </p>
+              </div>
+            ),
             practiceGoal: "Understand the Oracle in Grover's algorithm.",
             quizzes: []
           },
@@ -8630,7 +8670,17 @@ export const tutorialSessions: TutorialSession[] = [
             title: "Grover-2",
             description: "Second part of Grover's algorithm.",
             difficulty: "Intermediate",
-            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            lessonContent: (
+              <div>
+                <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Grover's Algorithm: Amplitude Amplification</h3>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  After the oracle marks the solution with a negative phase, we use the Diffuser (or Grover Diffusion Operator) to amplify its probability amplitude.
+                </p>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  The diffuser performs an "inversion about the mean". Because the solution state's amplitude was made negative by the oracle, the average amplitude is lowered. Inverting all amplitudes around this new, lower average significantly magnifies the marked state while shrinking the rest.
+                </p>
+              </div>
+            ),
             practiceGoal: "Understand Amplitude Amplification.",
             quizzes: []
           }
@@ -8660,7 +8710,17 @@ export const tutorialSessions: TutorialSession[] = [
             title: "Problem",
             description: "The integer factorization problem.",
             difficulty: "Advanced",
-            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            lessonContent: (
+              <div>
+                <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>The Integer Factorization Problem</h3>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  Factoring large numbers is a computationally hard problem for classical computers. The security of modern cryptography, like RSA, relies on the assumption that integer factorization is practically impossible for very large numbers.
+                </p>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  Shor's algorithm completely breaks this assumption by turning the factoring problem into a period-finding problem, which can be solved exponentially faster on a quantum computer.
+                </p>
+              </div>
+            ),
             practiceGoal: "Understand the factoring problem.",
             quizzes: []
           },
@@ -8669,7 +8729,17 @@ export const tutorialSessions: TutorialSession[] = [
             title: "Phase Estimation",
             description: "Quantum Phase Estimation.",
             difficulty: "Advanced",
-            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            lessonContent: (
+              <div>
+                <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Quantum Phase Estimation (QPE)</h3>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  Quantum Phase Estimation is a core quantum subroutine. It estimates the phase θ introduced by a unitary operator U when applied to its eigenvector |ψ&gt;, where U|ψ&gt; = e^(2πiθ)|ψ&gt;.
+                </p>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  QPE is the engine inside Shor's algorithm, utilizing the Quantum Fourier Transform (QFT) to extract this phase, which directly relates to the period we are trying to find.
+                </p>
+              </div>
+            ),
             practiceGoal: "Implement Phase Estimation.",
             quizzes: []
           },
@@ -8678,7 +8748,17 @@ export const tutorialSessions: TutorialSession[] = [
             title: "Shor Algo",
             description: "The complete Shor's algorithm.",
             difficulty: "Advanced",
-            lessonContent: <div><i>(Content pending from user.)</i></div>,
+            lessonContent: (
+              <div>
+                <h3 style={{ fontSize: "20px", color: "var(--text-primary)", marginBottom: "12px" }}>Putting It All Together: Shor's Algorithm</h3>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  Shor's algorithm works in two parts: a classical reduction, and a quantum subroutine.
+                </p>
+                <p style={{ color: "var(--text-secondary)", marginBottom: "16px", lineHeight: "1.6" }}>
+                  First, factoring N is classically reduced to finding the period r of the function a^x mod N. Next, the quantum subroutine uses QPE to find this period r efficiently. Finally, classical post-processing uses r to extract the prime factors of N.
+                </p>
+              </div>
+            ),
             practiceGoal: "Put it all together in Shor's algorithm.",
             quizzes: []
           }
