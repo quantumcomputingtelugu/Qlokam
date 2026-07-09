@@ -542,7 +542,7 @@ export default function TutorialsPage() {
             <div
               style={{
                 display: "flex",
-                overflowX: "auto",
+                flexWrap: "wrap",
                 gap: "8px",
                 paddingBottom: "12px",
                 marginBottom: "16px",
@@ -605,7 +605,7 @@ export default function TutorialsPage() {
                             )
                           ) {
                             alert(
-                              <>{'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "text-bottom" }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>'} Locked: Please achieve a perfect score (5/5) on the prerequisite quiz to unlock this module.</>,
+                              "🔒 Locked: Please achieve a perfect score (5/5) on the prerequisite quiz to unlock this module.",
                             );
                             return;
                           }
@@ -691,7 +691,7 @@ export default function TutorialsPage() {
                               !completedTutorials.includes(
                                 tutorial.prerequisiteId,
                               ) &&
-                              <>{'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "text-bottom" }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>'} </>}
+                              "🔒 "}
                             {tutorial.isFinalTest
                               ? "🏆 "
                               : `${moduleIndex + 1}. `}
@@ -704,7 +704,7 @@ export default function TutorialsPage() {
                                 color: "var(--success)",
                               }}
                             >
-                              {'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "text-bottom" }}><polyline points="20 6 9 17 4 12"></polyline></svg>'}
+                              ✔
                             </span>
                           )}
                         </div>
@@ -740,7 +740,7 @@ export default function TutorialsPage() {
                                       )
                                     ) {
                                       alert(
-                                        <>{'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "text-bottom" }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>'} Locked: Please achieve a perfect score (5/5) on the prerequisite quiz to unlock this module.</>,
+                                        "🔒 Locked: Please achieve a perfect score (5/5) on the prerequisite quiz to unlock this module.",
                                       );
                                       return;
                                     }
@@ -785,7 +785,7 @@ export default function TutorialsPage() {
                                         !completedTutorials.includes(
                                           subModule.prerequisiteId,
                                         ) &&
-                                        <>{'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "text-bottom" }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>'} </>}
+                                        "🔒 "}
                                       {index + 1}. {subModule.title}
                                     </h4>
                                     {subCompleted && (
@@ -795,7 +795,7 @@ export default function TutorialsPage() {
                                           color: "var(--success)",
                                         }}
                                       >
-                                        {'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "text-bottom" }}><polyline points="20 6 9 17 4 12"></polyline></svg>'}
+                                        ✔
                                       </span>
                                     )}
                                   </div>
@@ -976,7 +976,7 @@ export default function TutorialsPage() {
                                   color: "var(--text-secondary)",
                                 }}
                               >
-                                {'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "text-bottom" }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>'} Please sign in to take this quiz and save
+                                🔒 Please sign in to take this quiz and save
                                 your progress.
                               </div>
                             );
@@ -998,7 +998,7 @@ export default function TutorialsPage() {
                                   marginTop: "16px",
                                 }}
                               >
-                                {'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "text-bottom" }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>'} You must complete the quiz for the previous
+                                🔒 You must complete the quiz for the previous
                                 topic before you can take this quiz.
                               </div>
                             );
